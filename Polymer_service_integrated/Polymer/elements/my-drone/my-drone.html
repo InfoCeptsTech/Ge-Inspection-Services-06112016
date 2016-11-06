@@ -1,0 +1,431 @@
+<!-- Polymer web component used to display the assets list -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<dom-module id="my-drone">
+    <template is="dom-bind">
+        <style>
+        :host {
+            display: block;
+        }
+        
+        .zoom-slider {
+            width: 100%;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+        .drop-left{    
+    width: 50%;
+    float: left;
+    text-align: center;}
+
+ .drop-right{    
+    width: 50%;
+    float: right;
+    text-align: center;}
+    .clr{clear: both}
+        </style>
+        <drones-data-service id="ajaxDrone" url="{{url}}" drones-service-response="{{dronesServiceResponse}}">
+        </drones-data-service>
+        <!-- <drones-data-service url="/compressor.json" drones-service-response="{{dronesServiceResponse}}">
+    </drones-data-service>
+    <drones-data-service url="/tank.json" drones-service-response="{{dronesServiceResponse}}">
+    </drones-data-service>
+    <drones-data-service url="/intake.json" drones-service-response="{{dronesServiceResponse}}">
+    </drones-data-service> -->
+        <!--  <iron-ajax id="ajax" url="/drones.json" on-response="handleResponse" auto></iron-ajax> -->
+
+       
+<div class="headin">
+       <div calss="drop-left" style="width:auto;float: left; text-align: center;">
+       <select style="padding: 6px;font-size: 20px;border: none;">
+         <option>{{userName}}</option>
+        
+       </select>
+       </div>
+         <div calss="drop-left" style="width: 79%;  float: left; text-align: center;">
+       <select style="padding: 6px;font-size: 20px;border: none;">
+         <option>Inspection</option>
+        
+       </select>
+       </div>
+	   <div calss="drop-left" style="width: 10%;float: right;text-align: center;">
+       <a href="/" class="logOutBtn">Log Out</a>
+       </div>
+        <div class="clr"></div>
+        </div>
+
+        <paper-drawer-panel>
+         
+            <paper-header-panel main id="main">
+                <div class="left-section">
+                    <paper-header-panel drawer left-drawer>
+                        <div>
+                            <iron-selector selected="0">
+                                <template is="dom-repeat" items="{{dronesServiceResponse}}">
+                                    <a class="nav-link assetsLabel" is="pushstate-anchor" id="{{item.id}}" href="{{item.url}}" on-click="handleAssetsClick">
+                                    <!-- <iron-icon  id="iron-icon" icon="add" on-click="_onClick" class="addBtn"></iron-icon> -->
+                                        <span class="asset-title">{{item.title}}</span>
+                                        <template is="dom-repeat" items="{{item.issues-markers}}">
+                                            <img width="30" height="30" src="{{item.path}}">
+                                        </template>
+
+                                        <!-- <iron-collapse style="width:219px" id="collapse"> -->
+                                    <!-- <div class="deco-collpase collapsePhase"> -->
+                                        <template is="dom-repeat" items="{{dronesServiceResponse}}">
+                                    <template is="dom-repeat" items="{{item.inspection}}">
+                                    <iron-selector selected="0">
+                                    <template is="dom-repeat" items="{{item.phase}}">
+                                    <a on-click="phaseSubItem" class="sub-menu" href="{{item.title}}">{{item.title}}</a>  
+                                    </template>   
+                                    </iron-selector>                                          
+                                    </template>
+                                </template>
+                                    <!-- </div> -->
+                               <!--  </iron-collapse> -->
+                                    </a>
+                                </template>
+                            </iron-selector>
+                        </div>
+                    </paper-header-panel>
+                </div>
+                <div class="right-section">
+                    <paper-header-panel drawer right-drawer>
+                        <div>
+                            <iron-selector attr-for-selected="id">
+                                <paper-tabs selected="{{selected}}" name="media" id="issuesTab">
+                                    <paper-tab name="media" class="main-tab-sec" active="true">
+                                        <a is="pushstate-anchor" on-click="handleMediaClick" href="/my-assets">Media</a>
+                                    </paper-tab>
+                                    <paper-tab name="issues" class="main-tab-sec">
+                                        <a is="pushstate-anchor" on-click="handleIssuesClick" href="/my-iassets">Issues</a>
+                                    </paper-tab>
+                                </paper-tabs>
+                            </iron-selector>
+                            <div id="media">
+                                <app-router>
+                                    <app-route path="/my-assets" import="/elements/my-assets/my-assets.html"></app-route>
+                                </app-router>
+                            </div>
+                            <div id="issues">
+                                <app-router>
+                                    <app-route path="/my-iassets" import="/elements/my-iassets/my-iassets.html"></app-route>
+                                </app-router>
+                            </div>
+                        </div>
+                    </paper-header-panel>
+                </div>
+                <div class="main-section">
+                    <iron-pages class="main-content" selected="{{selected}}">
+                        <div>
+                            <paper-toolbar fixed class="head-toolbar">
+                                <!--  <paper-icon-button icon="menu" class="list-view"></paper-icon-button>
+                                <paper-icon-button icon="camera-enhance" class="camera-view" on-click="cameraViewSelected" id="cameraView"></paper-icon-button>
+                                  <paper-icon-button icon="invert-colors" class="invert-color-view" on-click="invertColorSelected" id="invertColor"></paper-icon-button> -->
+                        
+                                <div class="zoom-slider">
+                                    <span class="zoomTitle">Zoom</span>
+                                    <span><input type="button" value="-" id="button" name="decrementButton" on-click="zoomOut"></span>
+                                    <span><input type="range" id="range" value="0" min="0" max="4"></span>
+                                    <span><input type="button" value="+" id="button" name="incrementButton" on-click="zoomIn"></span>
+                                </div>
+                            </paper-toolbar>
+                            <app-router>
+                                <app-route path="/my-media" import="/elements/my-media/my-media.html"></app-route>
+                            </app-router>
+                        </div>
+                        <div>
+                            <app-router>
+                                 <app-route path="/my-issues" import="/elements/my-issues/my-issues.html"></app-route>
+                            </app-router>
+                            <!-- <my-issues></my-issues> -->
+                        </div>
+                    </iron-pages>
+                </div>
+            </paper-header-panel>
+        </paper-drawer-panel>
+    </template>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-drone',
+
+            properties: {
+                selected: {
+                    type: String,
+                    value: "0"
+                },
+
+                dronesServiceResponse: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true,
+                    observer: 'handleResponse'
+                },
+                path: {
+                    type: String,
+                    value: ''
+                },
+                url: {
+                    type: String,
+                    value: '/Polymer/drones.json'
+                },
+                phase: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                },
+                metadata: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                },
+                userName:{
+                    type:String,
+                    value:''
+                }
+
+            },
+
+            cameraViewSelected: function() {
+                var cameraViewButtonClasses = document.getElementById("cameraView").classList;
+                var invertColorButtonClasses = document.getElementById("invertColor").classList;
+                invertColorButtonClasses.add("invert-color-view");
+                invertColorButtonClasses.remove("invert-color");
+                cameraViewButtonClasses.add("camera-view");
+                cameraViewButtonClasses.remove("camera-color-view");
+            },
+
+            invertColorSelected: function() {
+                var cameraViewButtonClasses = document.getElementById("cameraView").classList;
+                var invertColorButtonClasses = document.getElementById("invertColor").classList;
+                invertColorButtonClasses.remove("invert-color-view");
+                invertColorButtonClasses.add("invert-color");
+                cameraViewButtonClasses.remove("camera-view");
+                cameraViewButtonClasses.add("camera-color-view");
+            },
+            handleMediaClick: function() {
+                var a = document.querySelector("#issues");
+                var b = document.querySelector("#media");
+                // a.class("hidden");
+                a.style.display = "none";
+                b.style.display = "block";
+            },
+            handleIssuesClick: function() {
+                // debugger;
+                var a = document.querySelector("#media");
+                var b = document.querySelector("#issues");
+                //  a.class("hidden");
+                a.style.display = "none";
+                b.style.display = "block";
+            },
+            handleResponse: function() {
+                // debugger;
+                if (typeof(this.dronesServiceResponse[localStorage.getItem('assetId')]) != 'undefined') {
+
+                    this.path = this.dronesServiceResponse[0].url;
+                    this.path = '/' + this.path;
+                    this.urlState(this.path);
+                }
+                 if(localStorage.getItem('assetTitle')==null){
+                if(this.dronesServiceResponse[0]!=undefined && this.dronesServiceResponse[0]!='undefined'){
+                localStorage.setItem('assetTitle',this.dronesServiceResponse[0].title );
+               } 
+              }
+            },
+           handleAssetsClick: function(e) {
+                var id = e.model.item.id;
+                var title=e.model.item.title;
+                //alert(id);
+                //debugger;
+                /*
+                if (id == "1") {
+                    this.url = "/Polymer/drones-compressor.json";
+                    document.getElementById('ajaxDrone').url = this.url;
+                } else if (id == "2") {
+                    this.url = "/Polymer/drones-tank.json";
+                    this.$.ajaxDrone.url = this.url;
+                } else if (id == "3") {
+                    this.url = "/Polymer/drones-intake.json";
+                    this.$.ajaxDrone.url = this.url;
+                } else {
+                   
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=1&assetId="+title;
+                    this.$.ajaxDrone.url = this.url;
+                }
+                */
+                localStorage.setItem('assetId', id);
+                localStorage.setItem('assetTitle', title);
+
+              //  alert("title in drone: "+title);
+
+                localStorage.removeItem('inspectionId');
+                inspectorId= localStorage.getItem('inspectorId')
+
+             
+                this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId="+inspectorId+"&assetId="+title;    
+               // alert(this.url);
+                 this.$.ajaxDrone.url = this.url;
+                this.$.ajaxDrone.generateRequest();
+            },
+            zoomIn: function() {
+                // debugger;
+                var val = document.getElementById("range").value;
+                val = Number(val) + 1;
+                // alert(val);
+                document.getElementById("range").value = val;
+                //map.setZoom(Number(val));
+                var a = document.getElementsByClassName("abc");
+                for (key in a) {
+                    if (val == 0) {
+                        a[key].style.width = "24.3%";
+                    } else if (val == 1) {
+                        a[key].style.width = "32.7%";
+                    } else if (val == 2) {
+                        a[key].style.width = "32.7%";
+                    } else if (val == 3) {
+                        a[key].style.width = "49%";
+                    } else if (val == 4) {
+                        a[key].style.width = "99%";
+                    }
+                }
+
+
+
+            },
+            zoomOut: function() {
+                //  debugger;
+                var val = document.getElementById("range").value;
+                val = Number(val) - 1;
+
+                document.getElementById("range").value = val;
+                var a = document.getElementsByClassName("abc");
+                for (key in a) {
+                    if (val == 0) {
+                        a[key].style.width = "24.3%";
+                    } else if (val == 1) {
+                        a[key].style.width = "32.7%";
+                    } else if (val == 2) {
+                        a[key].style.width = "32.7%";
+                    } else if (val == 3) {
+                        a[key].style.width = "49%";
+                    } else if (val == 4) {
+                        a[key].style.width = "99%";
+                    }
+                }
+
+            },
+				phaseSubItem: function(e){
+                debugger;
+                a = this.dronesServiceResponse;
+                var title=e.model.item.title;
+                console.log(title)
+
+                for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                    inspection = null;
+                    phaseTitle = null;
+                    phase = null;
+                    metadata = [];
+                    inspection = this.dronesServiceResponse[i].inspection;
+                    for (var j = 0; j < inspection.length; j++) {
+                        phase = inspection[j].phase;
+                        for (var k = 0; k < phase.length; k++) {
+                            phaseTitle = phase[k].title;
+                            if (title == phaseTitle){
+                                
+                                //break;
+                            }
+                             else {
+                               // return false;
+                               inspection[j].splice(k,1);
+                               k--;
+                            }
+                        }
+                    }
+                }
+
+
+                    
+            
+            },
+            _onClick: function() {
+                var button = document.getElementById('iron-icon'),
+                    collapse = document.getElementById('collapse')
+                collapse.toggle()
+                if (collapse.opened) {
+                    Polymer.dom(button).setAttribute('icon', 'remove')
+                } else if (!collapse.opened) {
+                    Polymer.dom(button).setAttribute('icon', 'add')
+                }
+			},
+            ready: function() {
+                var xx=document.getElementById("basic1");
+     xx.style.display="none"
+                localStorage.setItem('assetId', "0");
+                 localStorage.setItem('assetId', "0");
+                inspectorId=localStorage.getItem('inspectorId');
+                 
+                 this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId="+inspectorId;   
+                 this.userName = localStorage.getItem("username");
+            },
+            urlState: function(urlPath) {
+                //  debugger;
+                window.history.pushState('', '', urlPath);
+                window.dispatchEvent(new PopStateEvent('popstate', {
+                    bubbles: false,
+                    cancelable: false,
+                    state: {
+                        message: ''
+                    }
+                }));
+            }
+
+        });
+    })();
+    </script>
+    <script>
+    jQuery(document).ready(function() {
+
+
+        /*$(function () {
+
+    noUiSlider.create($('#slider')[0], {
+        start: 0,
+        limit:4,
+        step: 1,
+        range: {
+            'min': 1,
+                'max': 4
+        },
+        connect: true
+    });
+
+});*/
+
+        $("#slider").noUiSlider({
+            start: 0,
+            limit: 4,
+            step: 1,
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 4
+            }
+        });
+
+        $("#slider").on('slide', function(event, values) {
+
+            $("input.unibox-price-min").val(values[0]);
+            $("input.unibox-price-max").val(values[1]);
+        });
+
+    });
+    </script>
+</dom-module>

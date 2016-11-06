@@ -1,0 +1,153 @@
+[{
+    "id": "0013",
+    "issuePath": "/Polymer/images/marker.png",
+    "annotation": [{
+        "id": "1",
+        "src": "http://localhost:8080/Polymer/images/0013.jpg",
+        "text": "need attention",
+        "shapes": [{
+            "type": "rect",
+            "geometry": {
+                "x": 0.4134134134134134,
+                "y": 0.32798573975044565,
+                "width": 0.2092092092092092,
+                "height": 0.23707664884135474
+            },
+            "style": {}
+        }],
+        "context": "http://localhost:8080/my-media"
+    }],
+    "comments": "",
+    "defectType": "Corrosion",
+    "statusType": "Fix",
+    "description": "",
+    "class": "issue-marker"
+}, {
+    "id": "0014",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "first comment on pressure vessel",
+    "defectType": "null",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}, {
+    "id": "0016",
+    "issuePath": "/Polymer/images/marker.png",
+    "annotation": [],
+    "comments": "",
+    "defectType": "Thinning",
+    "statusType": "Fix",
+    "description": "",
+    "class": "issue-marker"
+}, {
+    "id": "0019",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "myyyyyyyyyyy",
+    "defectType": "null",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}, {
+    "id": "0009",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "first comment on pressure vessel",
+    "defectType": "null",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}, {
+    "id": "0020",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "first comment on pressure vessel",
+    "defectType": "null",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}, {
+    "id": "0018",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "",
+    "defectType": "Corrosion",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}, {
+    "id": "0012",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "",
+    "defectType": "Corrosion",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}, {
+    "id": "0010",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "need attention not an issue",
+    "defectType": "null",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}, {
+    "id": "0007",
+    "issuePath": "/Polymer/images/marker.png",
+    "annotation": [{
+        "id": "1",
+        "src": "http://localhost:8080/Polymer/images/0007.jpg",
+        "text": "Not proper need attention",
+        "shapes": [{
+            "type": "rect",
+            "geometry": {
+                "x": 0.31431431431431434,
+                "y": 0.0855614973262032,
+                "width": 0.27927927927927926,
+                "height": 0.47058823529411764
+            },
+            "style": {}
+        }],
+        "context": "http://localhost:8080/my-media"
+    }],
+    "comments": "",
+    "defectType": "Corrosion",
+    "statusType": "Fix",
+    "description": "",
+    "class": "issue-marker"
+}, {
+    "id": "0011",
+    "issuePath": "/Polymer/images/marker.png",
+    "annotation": [{
+        "id": "2",
+        "src": "http://localhost:8080/Polymer/images/0011.jpg",
+        "text": "my annotated comment",
+        "shapes": [{
+            "type": "rect",
+            "geometry": {
+                "x": 0.5365365365365365,
+                "y": 0.5508021390374331,
+                "width": 0.12912912912912913,
+                "height": 0.0944741532976827
+            },
+            "style": {}
+        }],
+        "context": "http://localhost:8080/my-media"
+    }, {
+        "id": "3",
+        "src": "http://localhost:8080/Polymer/images/0011.jpg",
+        "text": "my first",
+        "shapes": [{
+            "type": "rect",
+            "geometry": {
+                "x": 0.33233233233233234,
+                "y": 0.12834224598930483,
+                "width": 0.2972972972972973,
+                "height": 0.26559714795008915
+            },
+            "style": {}
+        }],
+        "context": "http://localhost:8080/my-media"
+    }],
+    "comments": "",
+    "defectType": "Corrosion",
+    "statusType": "Fix",
+    "description": "",
+    "class": "issue-marker"
+}, {
+    "id": "0017",
+    "issuePath": "/Polymer/images/marker.png",
+    "comments": "",
+    "defectType": "Corrosion",
+    "statusType": "Fix",
+    "class": "issue-marker"
+}]

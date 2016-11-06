@@ -1,0 +1,2051 @@
+<!-- Polymer web component used to display media list -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link type="text/css" rel="stylesheet" href="/elements/annotorious-bower/css/annotorious-dark.css" />
+<script type="text/javascript" src="/elements/annotorious-bower/annotorious.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<dom-module id="my-media">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        #ratings {
+            --paper-slider-active-color: #fff;
+            --paper-slider-height: 15px;
+            --paper-slider-container-color: #fff;
+            width: 50%;
+            float: left;
+            margin-top: 10px;
+        }
+		.hi{font-size: 10px}
+        
+        #progressContainer {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 0 15px;
+            border-radius: 16px;
+        }
+        
+        .paper-progress-0 #primaryProgress.paper-progress {
+            background: #ccc;
+            padding: 0 15px;
+            border-radius: 15px;
+        }
+        
+        .sect {
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .dailog-box {
+            max-width: 100%;
+            position: absolute;
+            z-index: 17;
+            display: none;
+        }
+        
+        .dailog-box::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .dialog-container.style-scope.my-media {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            z-index: 99999;
+            background: #fff;
+            box-shadow: 2px 3px 4px #ccc;
+            margin: 1%;
+            padding: 10px;
+            width: 96%;
+        }
+        </style>
+        <iron-ajax id="AjaxPost" url="https://dashboard.immuta.io/ir-0.0.1/inspection/addIssue" method="POST" content-type="application/json" handle-as="json" on-response="_handleAjaxPostResponse" on-error="_handleAjaxPostError">
+        </iron-ajax>
+        <iron-ajax id="ajaxAddUpdatePost" url="https://dashboard.immuta.io/ir-0.0.1/inspection/addUpdateIssue" method="POST" content-type="application/json" handle-as="json" on-response="_handleAjaxPostResponse" on-error="_handleAjaxPostError">
+        </iron-ajax>
+        <drones-data-service id="ajax" url="{{url}}" drones-service-response="{{droneServiceResponse}}">
+        </drones-data-service>
+        <iron-ajax auto id="issueAjax" url="{{markerurl}}" handle-as="json" on-response="handleResponseIssueMarker"></iron-ajax>
+        <!-- <iron-ajax auto id="annotoriousAjax" url="/Polymer/annotorious.json" handle-as="json" on-response="handleResponseAnnotorious"></iron-ajax> -->
+        <div class="filters">
+        <span style="font-size:15px;">Filter By &#8758;</span>
+            <paper-dropdown-menu id="filters" on-iron-select="_itemSelected" >
+                <paper-listbox class="dropdown-content" selected="0">
+                    <paper-item>Altitude</paper-item>
+                 </paper-listbox>
+            </paper-dropdown-menu>
+         
+            <paper-dropdown-menu id="filtersValue" on-iron-select="_valueSelected"  on-change="report">
+                <paper-listbox class="dropdown-content" selected="0" >
+                    <paper-item>All</paper-item>
+                    <paper-item>0-40</paper-item>
+                    <paper-item>40-80</paper-item>
+                </paper-listbox>
+            </paper-dropdown-menu>
+         <!-- <span class="drop-span">Filter By :</span>
+         <select  class="dropdown-style" >
+            <option>Altitude</option>
+         </select>
+         <select class="dropdown-style" onchange="report">
+            <option value="all">All</option>
+            <option value="0-40">0-40</option>
+            <option value="40-80">40-80</option>
+         </select> -->
+        </div>
+        <div class="image-gallery">
+            <template is="dom-repeat" items="{{dronesServiceResponse}}">
+                <template is="dom-repeat" items="{{item.inspection}}">
+                    <div class="image-gall">
+                        <template is="dom-repeat" items="{{item.phase}}">
+                            <!--  <span class="phase-title" id="{{item.title}}">{{item.title}}<label class="phase-title">0 issues</label><paper-checkbox class="paper-checkbox">NEED REVIEW</paper-checkbox></span> -->
+                            <span class="phase-title">{{item.title}}<label class="phase-title" id="{{item.title}}">0 issues</label><paper-checkbox class="checkit paper-checkbox" id="check{{index}}"  on-click="_yesno" /></paper-checkbox>
+                           <label for="smoking" name="yesnos" id="lable{{index}}">NEED REVIEW</label></span>
+                            <br/>
+                            <div class="modal-body">
+                                <template is="dom-repeat" items="{{item.img}}">
+                                    <div class="abc" id="abc">
+                                        <paper-icon-button raised on-dblclick="toggleDialog" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.miniPath}}" class="phases-img" id="{{item.id}}">
+                                            <!--  <img id="{{item.id}}" on-tap="addQuantity" raised class="phases-img" src="{{item.src}}"> -->
+                                        </paper-icon-button>
+                                        <!--  <img class$="{{item.class}}" src="{{item.issuePath}}"> -->
+                                    </div>
+                                    <!--  <paper-dialog heading="" id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop> -->
+                                    <!--     </paper-dialog> -->
+                            </div>
+                    </div>
+                    </template>
+        </div>
+        <paper-dialog heading="" id="editDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop style="padding:10px;">
+            <div>
+                <span>
+                                Defect Type:
+                                <br/>
+                            </span>
+                <span>
+                                 <paper-dropdown-menu>
+                                <paper-listbox class="dropdown-content" id="defectType"  selected="0">
+                                    <paper-item>Corrosion</paper-item>
+                                    <paper-item>Thinning</paper-item>
+                                    <paper-item>Stress cracking</paper-item>
+                                    <paper-item>Mechanical Fatigue</paper-item>
+                                    <paper-item>Thermal Fatigue</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+                            </span>
+            </div>
+            <div>
+                <span>
+                                Status:
+                                <br/>
+                            </span>
+                <span>
+                                  <paper-dropdown-menu>
+                                <paper-listbox class="dropdown-content" id="statusType" selected="0">
+                                    <paper-item>Fix</paper-item>
+                                    <paper-item>Continue to monitor</paper-item>
+                                    <paper-item>Manual Inspection</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+                            </span>
+            </div>
+            <div class="modal-footer ">
+                <paper-button dialog-dismiss class="submit" on-click="editSubmitClick">Submit</paper-button>
+                <paper-button dialog-dismiss class="close">Close</paper-button>
+            </div>
+        </paper-dialog>
+        <paper-dialog heading="" id="commentDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <span>Enter Comments Here:</span>
+            <paper-textarea label="" id="textarea"></paper-textarea>
+            <div class="modal-footer">
+                <paper-button dialog-dismiss class="submit">Submit</paper-button>
+                <paper-button dialog-dismiss class="close">Close</paper-button>
+            </div>
+        </paper-dialog>
+        <div class="editSection" id="editSection{{index}}" style="border-bottom:1px solid #ccc;">
+            <span class="edit">
+                        <paper-icon-button src="/images/edit.PNG" on-click="toggleDialogEdit"></paper-icon-button>
+                        </span>
+            <span class="comment">
+                        <paper-icon-button src="/images/comment.PNG" on-click="toggleDialogComment"></paper-icon-button>
+                        </span>
+        </div>
+        </template>
+        </div>
+        </template>
+        </template>
+        <div class="dailog-box" id="dialog-box">
+            <div class="dialog-container">
+                <div class="img-data">
+                    <div class="zoomed-img flexchild">
+                        <img id="expandImg">
+                    </div>
+                    <div class="img-metadata flexchild">
+                        <!-- <h3> Altitude </h3>
+                                                <span id="imgAltitude"> 42.026914</span>
+                                                    <hr> -->
+                        <div class="metadataSet">
+                            <div class="defectDrop">
+                                <span>Defect Type:</span>
+                                <paper-dropdown-menu>
+                                    <paper-listbox class="dropdown-content" selected="0" id="popdefectType">
+                                        <paper-item>Corrosion</paper-item>
+                                        <paper-item>Thinning</paper-item>
+                                        <paper-item>Stress cracking</paper-item>
+                                        <paper-item>Mechanical Fatigue</paper-item>
+                                        <paper-item>Thermal Fatigue</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                                <span>Status:</span>
+                                <paper-dropdown-menu>
+                                    <paper-listbox class="dropdown-content" selected="0" id="popstatusType">
+                                        <paper-item>Fix</paper-item>
+                                        <paper-item>Continue to monitor</paper-item>
+                                        <paper-item>Manual Inspection</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                                <br/>
+                                <span id="imageDetail"><iron-icon  id="iron-icon" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
+                                <iron-collapse style="width:219px" id="collapse">
+                                    <div class="deco-collpase">
+                                        <div class="Imgtitle">Altitude</div>
+                                        <div class="ImgValue">87.5465</div>
+                                        <div class="Imgtitle">Latitude &amp; Longitude</div>
+                                        <div class="ImgValue">(3.414725, -122.167969)</div>
+                                    </div>
+                                </iron-collapse>
+                                </paper-dropdown-menu>
+                                <!-- <button id="imageDetail" on-click="toggleDescr">Image Detail</button>
+                                                        <iron-collapse id="collapse" class="deco-collpase">
+                                                          <div>
+                                                            <div class="Imgtitle">Altitude</div>
+                                                            <div class="ImgValue">87.5465</div>
+                                                            <div class="Imgtitle">Latitude &amp; Longitude</div>
+                          <div class="ImgValue">(3.414725, -122.167969)</div>
+                                                          </div>
+                                                        </iron-collapse> -->
+                                <span>Inspection Requirement :</span>
+								<!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+                                <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
+                                <div id="appendMsg" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div>
+                                <div id="requirementMsg"></div>
+                                <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
+                                <!-- <paper-button class="submit addComment">Add</paper-button> -->
+                                <hr class="divider">
+                                <span>Inspection Findings :</span>
+								<paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+                                <div id="appendMsgInspectionFinding" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div>
+                                <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
+                                
+                                <!--  <input type="text" id="commentSection">
+                                                        <paper-textarea label="" id="commentSection"></paper-textarea>
+                                                        <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
+                            </div>
+                            <div class="editCropSection">
+                                <paper-icon-button src="/images/zoomout_rest.png" on-click="zoomOut"></paper-icon-button>
+                                <paper-icon-button src="/images/zoomin_rest.png" on-click="zoomIn"></paper-icon-button>
+                            </div>
+                        </div>
+                        <!-- <div class="editCropSection">
+                                                        <iron-icon icon="icons:flip-to-back"></iron-icon>
+                                                        <iron-icon icon="icons:create"></iron-icon>
+                                                 </div>
+                                                    <div class="modal-footer ">
+
+                                                    </div> -->
+                        <div class="modal-footer ">
+                            <paper-button on-click="saveDialog" class="btn-default">Submit</paper-button>
+                            <paper-button on-click="closeDialog" class="btn-default">Close</paper-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- <paper-slider id="ratings" pin snaps min="0" max="18" max-markers="18" step="1" value="4.15" editable></paper-slider> -->
+        <paper-button id="reviewBtn" class="reviewbtn pull-right reviewMargin">Review Issue</paper-button>
+        <!--  <paper-dialog id="modal" modal>
+            <template is="dom-repeat " items="{{dronesServiceResponse}} ">
+                <template is="dom-repeat " items="{{item.inspection}} ">
+                    <div class="image-gall ">
+                        <template is="dom-repeat " items="{{item.phase}} ">
+                            <template is="dom-if " if="{{item.img}}=='id' " items="{{item.img}} ">
+                                <img class="phases-img " src="{{item.src}} ">
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+            <div class="buttons ">
+                <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+            </div>
+        </paper-dialog> -->
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-media',
+
+            properties: {
+                droneServiceResponse: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true,
+                    observer: 'handleResponse'
+                },
+                dronesServiceResponse: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true
+                        // observer: 'handleResponse'
+                },
+                idArr: {
+                    type: Array,
+                    value: []
+                },
+                megaPath: {
+                    type: String,
+                    value: ''
+                },
+                issueMarkerServiceResponse: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true,
+                    observer: 'handleResponseIssueMarker'
+                },
+                // annotoriousResponse: {
+                //     type: Array,
+                //     value: function() {
+                //         return [];
+                //     },
+                //     notify: true,
+                //     observer: 'handleResponseAnnotorious'
+                // },
+                phase: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                },
+                img: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                },
+                title: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                },
+                metadata: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                },
+                url: {
+                    type: String,
+                    value: '/Polymer/drones.json'
+                },
+                annoArray: {
+                    type: Array,
+                    value: []
+                },
+                userInput: {
+                    type: String,
+                    notify: true,
+                },
+                target: {
+                    type: Object,
+                    value: function() {
+                        return document.querySelector('#inputReq');
+                    }
+                },
+                userInputComment: {
+                    type: String,
+                    notify: true,
+                },
+                targetComment: {
+                    type: Object,
+                    value: function() {
+                        return document.querySelector('#inputComment');
+                    }
+
+                },
+                annoSpanId: {
+                    type: Number,
+                    value: 0
+                },
+                currentId: {
+                    type: String,
+                    value: ''
+                },
+                commentArray: {
+                    type: Array,
+                    value: []
+                },
+                commentArrayInspectionFinding: {
+                    type: Array,
+                    value: []
+				},
+                altitude:{
+                      type: String,
+                    value: ''
+                },
+                userName:{
+                    type:String,
+                    value:''
+                }
+
+            },
+            _yesno: function(e) {
+                var id = e.model.index;
+                var checkboxvar = document.getElementById("check" + id);
+                var labelvar = document.getElementById("lable" + id);
+                if (!checkboxvar.checked) {
+                    labelvar.innerHTML = "Need Review";
+                    document.getElementById("editSection" + id).style.display = "block";
+                } else {
+                    labelvar.innerHTML = "Reviewed";
+                    document.getElementById("editSection" + id).style.display = "none";
+                }
+            },
+            _onClick: function() {
+                var button = document.getElementById('iron-icon'),
+                    collapse = document.getElementById('collapse')
+                collapse.toggle()
+                if (collapse.opened) {
+                    Polymer.dom(button).setAttribute('icon', 'remove')
+                } else if (!collapse.opened) {
+                    Polymer.dom(button).setAttribute('icon', 'add')
+                }
+            },
+            ready: function() {
+                //  alert(" in ready-----------");
+                title = localStorage.getItem('assetTitle');
+                inspectorId = localStorage.getItem('inspectorId');
+                inspectionId = localStorage.getItem('inspectionId');
+
+                //       alert("title in media: "+title+ ", inspectionId: "+inspectionId);
+
+                if (title == null || title == 'null') {
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId=" + inspectorId;
+                } else if (inspectionId == null || inspectionId == 'undefined') {
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId + "&assetId=" + title;
+                } else {
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/inspectorId=" + inspectorId + "&assetId=" + title + "&inspectionId=" + inspectionId;
+
+                    var inspectionId = localStorage.getItem("inspectionId");
+                    var assetId = localStorage.getItem("assetId");
+                }
+                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId
+                    //  alert(this.url);
+
+
+            },
+            _hideShow: function() {
+                //document.getElementById("appendMsg").style.height = "auto";
+                //document.getElementById("appendMsgInspectionFinding").style.height = "auto";
+            },
+            handleResponse: function() {
+                // debugger;
+				this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                //this.dronesServiceResponse = this.droneServiceResponse;
+                //alert("response :::: "+this.dronesServiceResponse);
+                //console.log(this.dronesServiceResponse);
+                if (this.dronesServiceResponse.length > 0) {
+                    var a = JSON.stringify(this.dronesServiceResponse);
+                    localStorage.setItem('dronesServiceResponse', a);
+                    this.dronesServiceResponse = JSON.parse(localStorage.getItem('dronesServiceResponse'));
+                    this.url = localStorage.getItem('url');
+                    inspectorId = localStorage.getItem('inspectorId');
+                    //  alert("inspectorId::::"+inspectorId);
+                    document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId;
+
+                    document.getElementById('issueAjax').generateRequest();
+                    //       alert("marker url:: "+document.getElementById('issueAjax').url);
+                }
+
+
+
+            },
+            handleResponseIssueMarker: function(data) {
+                debugger;
+                // alert(this.$.issueAjax.lastResponse);
+                console.log("last response :::" + this.$.issueAjax.lastResponse);
+                this.issueMarkerServiceResponse = this.$.issueAjax.lastResponse;
+
+
+                for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                    inspection = this.dronesServiceResponse[i].inspection;
+                    if (inspection != undefined && inspection != 'undefined') {
+                        for (var j = 0; j < inspection.length; j++) {
+                            debugger;
+                            phaseArr = inspection[j].phase;
+                            if (phaseArr) {
+                                for (var k = 0; k < phaseArr.length; k++) {
+                                    var phaseIssueCount = 0;
+                                    if (phaseArr) {
+                                        var imgList = phaseArr[k].img;
+                                        for (var x = 0; x < imgList.length; x++) {
+                                            for (var l = 0; l < this.issueMarkerServiceResponse.length; l++) {
+                                                if (this.issueMarkerServiceResponse[l].id == imgList[x].id) {
+                                                    phaseIssueCount++;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    console.log(phaseArr[k].title + " , issues: " + phaseIssueCount);
+                                    document.getElementById(phaseArr[k].title).innerHTML = phaseIssueCount + " issues";
+                                    //
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // console.log('issue-marker:');issueMarkerServiceResponse
+                console.log(this.issueMarkerServiceResponse);
+                if (this.issueMarkerServiceResponse != undefined) {
+                    for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                        var elem = document.createElement("img");
+                        var defectType = this.issueMarkerServiceResponse[i].defectType;
+                        if(defectType == 'Mechanical Fatigue')
+                        {
+                            elem.setAttribute("src", "/images/marker3.png");
+                        }
+                        else if(defectType == 'Corrosion')
+                        {
+                            elem.setAttribute("src", "/images/marker.png");
+                        }
+                        else if(defectType == 'Thinning')
+                        {
+                            elem.setAttribute("src", "/images/marker1.png");
+                        }
+                        else if(defectType == 'Stress cracking')
+                        {
+                            elem.setAttribute("src", "/images/marker2.png");
+                        }
+                        else if(defectType == 'Thermal Fatigue')
+                        {
+                            elem.setAttribute("src", "/images/marker4.png");
+                        }
+                        else
+                        {
+                           elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath); 
+                        }
+						//elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath);
+                        elem.setAttribute("class", this.issueMarkerServiceResponse[i].class);
+                        console.log(this.issueMarkerServiceResponse[i]);
+                        if (document.getElementById(this.issueMarkerServiceResponse[i].id) != null) {
+                            document.getElementById(this.issueMarkerServiceResponse[i].id).appendChild(elem);
+                        }
+
+                    }
+                }
+
+            },
+            _handleAjaxPostResponse: function() {
+
+
+                var inspectionId = localStorage.getItem("inspectionId");
+                var assetId = localStorage.getItem("assetId");
+                // alert("success");
+                var inspectorId = localStorage.getItem("inspectorId");
+
+                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId;
+
+                document.getElementById('issueAjax').generateRequest();
+                var div = document.getElementById("dialog-box");
+                div.style.display = "none";
+
+            },
+            _handleAjaxPostError: function() {
+                //   alert("error");
+            },
+            addComments: function(e) {
+                //debugger;
+                var inspection;
+                var phase;
+                var inspectionArr;
+                var img = [];
+                var id = null;
+
+                var id;
+                var comments;
+                var inspectorId;
+                var defectType;
+                var statusType;
+                var inspectionId;
+                var assetId;
+                debugger;
+                if (this.idArr.length > 0) {
+
+                    var objectArray = [];
+
+                    for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                        inspection = this.dronesServiceResponse[i].inspection;
+                        for (var j = 0; j < inspection.length; j++) {
+                            phaseArr = inspection[j].phase;
+                            if (phaseArr) {
+                                for (var k = 0; k < phaseArr.length; k++) {
+                                    if (phaseArr) {
+                                        var imgList = phaseArr[k].img;
+                                        for (var x = 0; x < imgList.length; x++) {
+                                            for (var l = 0; l < this.idArr.length; l++) {
+                                                if (this.idArr[l] == imgList[x].id) {
+                                                    console.log(this.dronesServiceResponse[i].title);
+                                                    console.log("id : " + imgList[x].id);
+                                                    console.log("mega path: " + imgList[x].megaPath);
+                                                    console.log("phase : " + phaseArr[k].title);
+                                                    console.log("inspection Id: " + inspection[j].inspectionId);
+                                                    /*
+                                                    console.log("defect type: "+getDefectName(document.getElementById('popdefectType').selected));
+                                                    console.log("status type: "+getStatusName(document.getElementById('popstatusType').selected));
+                                                    */
+
+                                                    console.log("inspectorId: " + localStorage.getItem('inspectorId'));
+
+                                                    objectArray.push({
+                                                        "id": imgList[x].megaPath,
+                                                        "inspectorId": localStorage.getItem('inspectorId'),
+                                                        "comments": document.getElementById('popupcomments').value,
+                                                        /*
+                                                        "defectType": getDefectName(document.getElementById('popdefectType').selected),
+                                                        "statusType": getStatusName(document.getElementById('popstatusType').selected),
+                                                        */
+                                                        "assetId": this.dronesServiceResponse[i].title,
+                                                        "inspectionId": inspection[j].inspectionId
+
+                                                    });
+
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                        console.log(objectArray);
+                        this.$.AjaxPost.body = objectArray;
+                        this.$.AjaxPost.generateRequest();
+
+
+
+                    }
+                    return;
+
+                } else {
+                    alert('Please select image');
+                }
+            },
+            // handleResponseAnnotorious: function() {
+            //     //debugger;
+            //     this.annotoriousResponse = this.$.annotoriousAjax.lastResponse;
+            // },
+            addQuantity: function(e) {
+                //debugger;
+                var target = e.model.item.id;
+                var id = document.getElementById(target),
+                    style = window.getComputedStyle(id),
+                    border = style.getPropertyValue('border'),
+                    borderNone = "0px none rgb(0, 0, 0)";
+                if (border.toString() == borderNone) {
+                    id.style.border = "4px solid #049FCF";
+                    this.idArr.push(target);
+                } else {
+                    id.style.border = "none";
+                    var index = this.idArr.indexOf(target);
+                    this.idArr.splice(index, 1);
+                }
+                // console.log(this.stringify(this.dronesServiceResponse));
+                //  console.log(this.dronesServiceResponse);
+            },
+            editSubmitClick: function(e) {
+                //debugger;
+                var inspection;
+                var phase;
+                var inspectionArr;
+                var img = [];
+                var id = null;
+
+                var id;
+                var comments;
+                var inspectorId;
+                var defectType;
+                var statusType;
+                var inspectionId;
+                var assetId;
+                debugger;
+                if (this.idArr.length > 0) {
+
+                    var objectArray = [];
+
+                    for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                        inspection = this.dronesServiceResponse[i].inspection;
+                        for (var j = 0; j < inspection.length; j++) {
+                            phaseArr = inspection[j].phase;
+                            if (phaseArr) {
+                                for (var k = 0; k < phaseArr.length; k++) {
+                                    if (phaseArr) {
+                                        var imgList = phaseArr[k].img;
+                                        for (var x = 0; x < imgList.length; x++) {
+                                            for (var l = 0; l < this.idArr.length; l++) {
+                                                if (this.idArr[l] == imgList[x].id) {
+                                                    console.log(this.dronesServiceResponse[i].title);
+                                                    console.log("id : " + imgList[x].id);
+                                                    console.log("mega path: " + imgList[x].megaPath);
+                                                    console.log("phase : " + phaseArr[k].title);
+                                                    console.log("inspection Id: " + inspection[j].inspectionId);
+                                                    console.log("defect type: " + getDefectName(document.getElementById('popdefectType').selected));
+                                                    console.log("status type: " + getStatusName(document.getElementById('popstatusType').selected));
+                                                    console.log("inspectorId: " + localStorage.getItem('inspectorId'));
+
+                                                    objectArray.push({
+                                                        "id": imgList[x].megaPath,
+                                                        "inspectorId": localStorage.getItem('inspectorId'),
+                                                        "comments": '',
+                                                        "defectType": getDefectName(document.getElementById('popdefectType').selected),
+                                                        "statusType": getStatusName(document.getElementById('popstatusType').selected),
+                                                        "assetId": this.dronesServiceResponse[i].title,
+                                                        "inspectionId": inspection[j].inspectionId
+
+                                                    });
+
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                        console.log(objectArray);
+                        this.$.AjaxPost.body = objectArray;
+                        this.$.AjaxPost.generateRequest();
+
+
+
+                    }
+                    return;
+                    /*
+                    "id"
+                    "comments"
+                    "inspectorId"
+                    "defectType";
+                    "statusType";
+                    "inspectionId";
+                    "assetId";
+                    */
+
+
+                    // for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                    //     inspection = this.dronesServiceResponse[i].inspection;
+                    //     for (var j = 0; j < inspection.length; j++) {
+                    //         inspectionArr = inspection[j].phase;
+                    //         //  phase.push(inspection[j].phase);
+
+
+                    //         for (var k = 0; k < inspectionArr.length; k++) {
+                    //             phase = inspectionArr[k].img;
+                    //             for (var b = 0; b < phase.length; b++) {
+                    //                 img.push(phase[b]);
+                    //             }
+
+                    //         }
+                    //     }
+                    // }
+                    // for (var i = 0; i < img.length; i++) {
+                    //     for (var k = 0; k < this.idArr.length; k++) {
+                    //         if (this.idArr[k] == img[i].id) {
+                    //             img[i].issuePath = "/images/marker.png";
+                    //             img[i].classPath = "issue-marker";
+                    //         }
+                    //     }
+                    // }
+
+
+                    // for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                    //     inspection = null;
+                    //     inspectionArr = null;
+                    //     phase = null;
+                    //     inspection = this.dronesServiceResponse[i].inspection;
+                    //     for (var j = 0; j < inspection.length; j++) {
+                    //         inspectionArr = inspection[j].phase;
+                    //         //  phase.push(inspection[j].phase);
+
+
+                    //         for (var k = 0; k < inspectionArr.length; k++) {
+                    //             phase = inspectionArr[k].img;
+                    //             for (var b = 0; b < phase.length; b++) {
+                    //                 // img.push(phase[b]);
+                    //                 for (var x = 0; x < img.length; x++) {
+                    //                     for (var l = 0; l < this.idArr.length; l++) {
+                    //                         if (this.idArr[l] == img[x].id &&
+                    //                             img[x].id == phase[b].id) {
+                    //                             phase[b] = img[x];
+                    //                         }
+                    //                     }
+                    //                 }
+                    //             }
+
+                    //         }
+                    //     }
+                    // }
+                    //console.log('hi');
+                    // console.log(this.dronesServiceResponse);
+                    //debugger;
+                    inspectorId = localStorage.getItem('inspectorId');
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId;
+                    localStorage.setItem('url', this.url);
+                    //localStorage.setItem('issueUrl', '/Polymer/issues1.json');
+                    document.getElementById('ajax').url = this.url;
+                    document.getElementById('ajax').generateRequest();
+                    document.getElementById('issueAjax').generateRequest();
+                    this.urlState('/my-iassets');
+                    var a = document.querySelector("#media");
+                    var b = document.querySelector("#issues");
+                    a.style.display = "none";
+                    b.style.display = "block";
+                    var b = document.querySelector("#issuesTab");
+                    b.selected = "1";
+
+
+                } else {
+                    alert('Please select image');
+                }
+            },
+            toggleDialog: function(e) {
+
+                debugger;
+				var assetId = localStorage.getItem("assetId");
+                this.userName = localStorage.getItem("username");
+				
+				anno.reset();
+                localStorage.setItem("target", "media");
+                // anno.destroy("http://localhost:8000/images/0002.jpg");
+                // if(this.annoArray.length > 0){
+                //     anno.removeAnnotation(this.annoArray);
+                // }
+                this.currentId = e.model.item.id;
+                var dialog = document.querySelector('#dialog');
+                var expand = document.querySelector('#expandImg');
+
+                /*var altitude = document.querySelector('#imgAltitude');*/
+                var srvsrc = "https://dashboard.immuta.io";
+                var zoomImgsrc = e.model.item.megaPath;
+                expand.src = srvsrc.concat(zoomImgsrc);
+                this.megaPath = e.model.item.megaPath;
+                var div = document.getElementById("dialog-box");
+                div.style.display = "block";
+                this.annoArray = [];
+                var polymerThis = this;
+                anno.setProperties({
+                    stroke: 'red',
+                    stroke_width: 5,
+                    hi_stroke: '#3e87e8',
+                    hi_stroke_width: 5
+                });
+                var a = this.annoArray;
+                anno.makeAnnotatable(document.getElementById('expandImg'));
+                var canvas = document.getElementById('myCanvas');
+                var ctx = canvas.getContext("2d");
+                ctx.font = "20px Verdana";
+                ctx.fillStyle = 'white';
+                //var annotationsArray = [];
+                for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                    if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
+                        //annotationsArray = this.annotoriousResponse[i].annotation;
+                        this.commentArray = this.issueMarkerServiceResponse[i].comments;
+                        this.commentArrayInspectionFinding = this.issueMarkerServiceResponse[i].description;
+                        this.annoArray = this.issueMarkerServiceResponse[i].annotation;
+                        if (this.issueMarkerServiceResponse[i].width != "" && this.issueMarkerServiceResponse[i].width != undefined) {
+                            expand.style.width = this.issueMarkerServiceResponse[i].width + "px";
+                            canvas.style.width = this.issueMarkerServiceResponse[i].width + "px";
+                        } else {
+                            expand.style.width = 814.5 + "px";
+                            canvas.style.width = 814.5 + "px";
+                        }
+                        if (this.issueMarkerServiceResponse[i].height != "" && this.issueMarkerServiceResponse[i].height != undefined) {
+                            expand.style.height = this.issueMarkerServiceResponse[i].height + "px";
+                            canvas.style.height = this.issueMarkerServiceResponse[i].height + "px";
+                        } else {
+                            expand.style.height = 450 + "px";
+                            canvas.style.height = 450 + "px";
+                        }
+
+                        break;
+
+                    } else {
+                        this.commentArray = [];
+                        this.commentArrayInspectionFinding = [];
+                        this.annoArray = [];
+                        expand.style.width = 814.5 + "px";
+                        expand.style.height = 450 + "px";
+                        canvas.style.width = 814.5 + "px";
+                        canvas.style.height = 450 + "px";
+                    }
+                }
+                if (this.commentArray != undefined) {
+                    for (var i = 0; i < this.commentArray.length; i++) {
+                        var CurrentDate = this.commentArray[i].date;
+                        var message = this.commentArray[i].message;
+                        //console.log(commentArray[i]);
+                        var mainDiv = document.createElement('div');
+                        //mainDiv.id="main"+i;
+                        var dateDiv = document.createElement('div');
+                        dateDiv.class = "date";
+                        dateDiv.innerHTML = CurrentDate;
+                        var commentDiv = document.createElement('div');
+                        commentDiv.class = "comments";
+                        commentDiv.innerHTML = message;
+                        mainDiv.appendChild(dateDiv);
+                        mainDiv.appendChild(commentDiv);
+                        var aDiv = document.getElementById('appendMsg');
+                        aDiv.appendChild(mainDiv);
+
+                    }
+                } else {
+                    this.commentArray = [];
+                }
+                if (this.commentArrayInspectionFinding != undefined) {
+                    for (var i = 0; i < this.commentArrayInspectionFinding.length; i++) {
+                        var CurrentDate = this.commentArrayInspectionFinding[i].date;
+                        var message = this.commentArrayInspectionFinding[i].message;
+                        //console.log(commentArray[i]);
+                        var mainDiv = document.createElement('div');
+                        //mainDiv.id="main"+i;
+                        var dateDiv = document.createElement('div');
+                        dateDiv.class = "date";
+                        dateDiv.innerHTML = CurrentDate;
+                        var commentDiv = document.createElement('div');
+                        commentDiv.class = "comments";
+                        commentDiv.innerHTML = message;
+                        mainDiv.appendChild(dateDiv);
+                        mainDiv.appendChild(commentDiv);
+                        var aDiv = document.getElementById('appendMsgInspectionFinding');
+                        aDiv.appendChild(mainDiv);
+
+                    }
+                } else {
+                    this.commentArrayInspectionFinding = [];
+                }
+
+                // for(var i=0;i<this.annoArray.length;i++){
+                //     var src = this.annoArray[i].src;
+                //     var s1 = src.substring(0,5);
+                //     var s2 = src.substring(5,src.length);
+                //     var srcNew = s1+s2;
+                //     alert(srcNew);
+                //     this.annoArray.src=srcNew; 
+                // }
+
+                document.getElementById("expandImg").onload = function() {
+                    //alert("The image has loaded!");
+                    //debugger;
+                    var obj;
+                    if (a.length > 0) {
+                        for (var i = 0; i < a.length; i++) {
+                            obj = a[i];
+                            this.annoSpanId = obj.id;
+                            localStorage.setItem("annoSpanId", this.annoSpanId);
+                            anno.addAnnotation(obj);
+                            var coordArr = [];
+                            coordArr = localStorage.getItem("coordArr");
+                            var parsed = JSON.parse(coordArr);
+
+                            var arr = [];
+
+                            for (var x in parsed) {
+                                arr.push(parsed[x]);
+                            }
+                            //var span = document.createElement('span');
+
+                            // span.id = "anno" + obj.id;
+                            // span.width = 300;
+                            // span.height = 300;
+                            // span.style.zIndex = 8;
+                            // span.style.position = "absolute";
+                            // //span.style.border = "1px solid red";
+                            // span.style.paddingLeft = "8px";
+                            // span.style.paddingTop = "4px";
+                            // span.style.color = "white";
+                            // span.style.top = arr[1] + "px";
+                            // span.style.left = arr[0] + "px";
+                            // span.innerHTML = obj.id;
+
+                            // var body = document.getElementsByClassName("annotorious-item annotorious-opacity-fade annotorious-item-unfocus");
+                            // body[0].appendChild(span);
+                            
+                            // ctx.fillText(spanId,arr[0],arr[1]);
+
+                            //initJS();
+                            // anno.addHandler('onMouseOverAnnotation', function(event) {
+                            //     anno.highlightAnnotation(obj);
+                            // });
+
+
+                            // anno.addHandler('onMouseOverItem', function(event) {
+                            //     debugger;
+                            //     var x = anno.getAvailableSelectors();
+                            //     console.log(event);
+                            //     alert('a');
+                            // });
+                            // anno.addHandler('onSelectionStarted', function(event) {
+                            //     alert('anno updated');
+                            //     console.log(anno);
+                            // });
+
+                            // anno.activateSelector(a[i].src);
+                        }
+                    } else {
+                        localStorage.setItem("annoSpanId", "0");
+                    }
+                    anno.addHandler('beforeAnnotationRemoved', function(event) {
+                        if (localStorage.getItem("deleteCount") == "1") {
+                            // debugger;
+                            // alert('vish');
+                            console.log(event);
+                            var x = anno.getAnnotations();
+                            // var id = null;
+                            // for (var i = 0; i < x.length; i++) {
+                            //     if (x[i].text == event.text) {
+                            //         id = x[i].text;
+                            //         break;
+                            //     }
+                            // }
+                            var id = event.id;
+                            var span = document.getElementById("anno" + id);
+                            span.parentNode.removeChild(span);
+                            localStorage.setItem("deleteCount", "0");
+                        }
+                    });
+                    // anno.addHandler('onPopupShown', function(event) {
+
+                    //     debugger;
+                    //     // alert('vishakha');
+                    //     console.log(event);
+                    //     var popup = document.getElementsByClassName('annotorious-popup top-left');
+                    //     var img = document.getElementById('expandImg');
+                    //     var height = img.height;
+                    //     var width = img.width
+                    //     var zmh = height / 450;
+                    //     var zmw = width / 814.5;
+                    //     var t = popup[0].style.top;
+                    //     var l = popup[0].style.left;
+                    //     t = t.replace("px", "");
+                    //     l = l.replace("px", "");
+
+                    //     popup[0].style.top = (t * zmh) + "px";
+                    //     popup[0].style.left = (l * zmw) + "px";
+                    //     //var x = anno.getAnnotations();
+
+
+
+                    // });
+                    anno.addHandler('onSelectionCompleted', function(event) {
+                        debugger;
+                       var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
+                            event.id = spanId;
+                            console.log(event);
+                            localStorage.setItem("annoSpanId", spanId);
+                            var x = anno.getAnnotations();
+                            var sc = localStorage.getItem("sc");
+                            var parsed = JSON.parse(sc);
+
+                            var arr = [];
+
+                            for (var x in parsed) {
+                                arr.push(parsed[x]);
+                            }
+                            ctx.fillText(spanId,arr[1],arr[2]);
+                    });
+                    anno.addHandler('onAnnotationCreated', function(event) {
+                        if (localStorage.getItem("saveCount") == "1") {
+                            //alert('vish');
+                            // debugger;
+
+                            var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
+                            event.id = spanId;
+                            console.log(event);
+                            localStorage.setItem("annoSpanId", spanId);
+                            var x = anno.getAnnotations();
+                            var sc = localStorage.getItem("sc");
+                            var parsed = JSON.parse(sc);
+
+                            var arr = [];
+
+                            for (var x in parsed) {
+                                arr.push(parsed[x]);
+                            }
+                            var span = document.createElement('span');
+
+                            span.id = "anno" + spanId;
+                            span.width = 300;
+                            span.height = 300;
+                            span.style.zIndex = 8;
+                            span.style.position = "absolute";
+                            //span.style.border = "1px solid red";
+                            span.style.paddingLeft = "8px";
+                            span.style.paddingTop = "4px";
+                            span.style.color = "white";
+                            span.style.top = arr[2] + "px";
+                            span.style.left = arr[1] + "px";
+                            span.innerHTML = spanId;
+
+                            var body = document.getElementsByClassName("annotorious-annotationlayer");
+                            body[0].appendChild(span);
+                            //var body = document.getElementById('myCanvas');
+                            //body.appendChild(span);
+                            
+                            //ctx.fillText(spanId,arr[1],arr[2]);
+
+
+
+                            // this.target = null;
+                            // this.targetComment = document.querySelector('#inputComment');
+                            // var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                            // while (myNodeInspectionFinding.firstChild) {
+                            //     myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            // }
+                            // if (localStorage.getItem("target") == "media") {
+                            //     var d = new Date();
+                            //     var month = d.getMonth() + 1;
+                            //     var day = d.getDate();
+
+                            //     var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                            //         (('' + month).length < 2 ? '0' : '') + month + '/' +
+                            //         d.getFullYear();
+                            //     debugger;
+                            //     var CurrentDate = output;
+                            //     var comments = spanId + "." + event.text;
+                            //     var obj = {
+                            //         "date": CurrentDate,
+                            //         "message": comments
+                            //     }
+                            //     polymerThis.commentArrayInspectionFinding.push(obj);
+                            //     var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                            //     while (myNodeInspectionFinding.firstChild) {
+                            //         myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            //     }
+                            //     var count = polymerThis.commentArrayInspectionFinding.length;
+                            //     for (var i = 0; i < count; i++) {
+                            //         debugger;
+                            //         console.log(polymerThis.commentArrayInspectionFinding[i]);
+                            //         var mainDivInspectionFinding = document.createElement('div');
+                            //         //mainDiv.id="main"+i;
+                            //         var dateDivInspectionFinding = document.createElement('div');
+                            //         dateDivInspectionFinding.class = "date";
+                            //         dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
+                            //         var commentDivInspectionFinding = document.createElement('div');
+                            //         commentDivInspectionFinding.class = "comments";
+                            //         commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
+                            //         mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                            //         mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                            //         var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
+                            //         aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                            //     }
+                            // } else {
+                            //     var d = new Date();
+                            //     var month = d.getMonth() + 1;
+                            //     var day = d.getDate();
+
+                            //     var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                            //         (('' + month).length < 2 ? '0' : '') + month + '/' +
+                            //         d.getFullYear();
+                            //     debugger;
+                            //     var CurrentDate = output;
+                            //     var comments = spanId + "." + event.text;
+                            //     var obj = {
+                            //         "date": CurrentDate,
+                            //         "message": comments
+                            //     }
+                            //     polymerThis.commentArrayInspectionFinding.push(obj);
+                            //     var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
+                            //     while (myNodeInspectionFinding.firstChild) {
+                            //         myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            //     }
+                            //     var count = polymerThis.commentArrayInspectionFinding.length;
+                            //     for (var i = 0; i < count; i++) {
+                            //         debugger;
+                            //         console.log(polymerThis.commentArrayInspectionFinding[i]);
+                            //         var mainDivInspectionFinding = document.createElement('div');
+                            //         //mainDiv.id="main"+i;
+                            //         var dateDivInspectionFinding = document.createElement('div');
+                            //         dateDivInspectionFinding.class = "date";
+                            //         dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
+                            //         var commentDivInspectionFinding = document.createElement('div');
+                            //         commentDivInspectionFinding.class = "comments";
+                            //         commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
+                            //         mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                            //         mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                            //         var aDivInspectionFinding = document.getElementById('appendMsgInspectionFindingIssue');
+                            //         aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                            //     }
+
+                            // }
+
+
+                            localStorage.setItem("saveCount", "0");
+
+
+                        }
+                    });
+
+
+                    //anno.showAnnotations(document.getElementById('expandImg'));
+
+
+                };
+                // dialog.toggle();
+                /*var a = [];
+                var id = null;
+                id = e.model.item.id;
+                for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                    if(id == this.issueMarkerServiceResponse[i].id){
+
+                        a = this.issueMarkerServiceResponse[i].metaData;
+                        break;
+                    }
+                         altitude = (a[0].altitude);
+                    }*/
+            },
+            closeDialog: function() {
+                //debugger;
+                var div = document.getElementById("dialog-box");
+                div.style.display = "none";
+                //anno.makeAnnotatable(document.getElementById('expandImg'));
+                //anno.destroy(document.getElementById('expandImg'));
+                if (this.annoArray.length > 0) {
+                    for (var i = 0; i < this.annoArray.length; i++) {
+                        anno.removeAnnotation(this.annoArray[i]);
+                    }
+                }
+                // for (var i = 0; i < this.commentArray.length; i++) {
+                //     document.getElementById('appendMsg').innerHTML = "";
+                // }
+                debugger;
+                //document.getElementById('appendMsg').innerHTML = "";
+                this.commentArray = [];
+                this.commentArrayInspectionFinding = [];
+                var myNode = document.getElementById("appendMsg");
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
+                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                while (myNodeInspectionFinding.firstChild) {
+                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                }
+                document.getElementById('appendMsg').innerHTML = "";
+                document.getElementById('appendMsgInspectionFinding').innerHTML = "";
+                document.getElementById('inputReq').value = "";
+                document.getElementById('inputComment').value = "";
+                var img = document.getElementById("expandImg");
+                var canvas = document.getElementById("myCanvas");
+                img.style.width = 0 + "px";
+                img.style.height = 0 + "px";
+                canvas.style.width = 0 + "px";
+                canvas.style.height = 0 + "px";
+
+            },
+            saveDialog: function(e) {
+                debugger;
+                var el = document.getElementById('expandImg');
+
+                var p;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                var img1 = document.createElement("img");
+                img1.width = el.width;
+                img1.height = el.height;
+                var sourceCanvas = document.getElementById('myCanvas')
+                var sourceCtx = sourceCanvas.getContext("2d");
+                sourceCtx.font="30px Verdana";
+                sourceCtx.fillStyle = "white";
+                var annotationArray = anno.getAnnotations();
+                for(var i=0;i<annotationArray.length;i++){
+                   var spanId = document.getElementById("anno"+annotationArray[i].id);
+                   var top = spanId.style.top;
+                   top = top.replace("px","");
+                   var left = spanId.style.left;
+                    left = left.replace("px","");
+                   sourceCtx.fillText(annotationArray[i].id,left,top);
+                }
+
+
+                // p = document.getElementById("fileUpload").value;
+                img1.setAttribute('src', el.src);
+                canvas.width = el.width;
+                canvas.height = el.height;
+                ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+                ctx.drawImage(sourceCanvas, 0, 0);
+                var dataURL = canvas.toDataURL("image/jpeg");
+                //alert("from getbase64 function" + dataURL);
+                window.open(dataURL);
+                // return dataURL;
+
+
+                var viewportOffset = el.getBoundingClientRect();
+
+
+
+
+                // these are relative to the viewport, i.e. the window
+
+                // alert(viewportOffset.x+"---"+viewportOffset.left);
+                // alert(viewportOffset.y+"---"+viewportOffset.top);
+
+
+                var xposition = viewportOffset.left;
+                var yposition = viewportOffset.top;
+                // var getAbsPosition = getPosition(el);
+                // var abc = getAbsoluteOffsetFromBody(el);
+                // var abc = getAbsoluteOffsetFromRelative(divNeww);
+                // var xposition = abc.left;
+                // var yposition = abc.top;
+                var width = viewportOffset.width;
+                var height = viewportOffset.height;
+
+
+
+                var id = this.megaPath;
+
+                var div = document.getElementById("dialog-box");
+                var inspectorId = localStorage.getItem('inspectorId');
+                var defectType = getDefectName(document.getElementById("defectType").selected);
+
+                //  alert(document.getElementById('requirementMsg'));
+                // alert(document.getElementById('appendMsg'));
+
+                // var comment;
+                // var desc;
+                // for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                //     if (this.currentId == this.issueMarkerServiceResponse[i].id) {
+                //         comment = this.issueMarkerServiceResponse[i].comments;
+                //         desc = this.issueMarkerServiceResponse[i].description;
+                //         break;
+                //     }
+                // }
+
+                // if (comment == 'undefined') {
+                //     comment = [];
+                // }
+                // if (desc == 'undefined') {
+                //     desc = [];
+                // }
+                var comments = this.commentArray; //document.getElementById('requirementMsg').innerHTML;
+                var desc = this.commentArrayInspectionFinding; //document.getElementById('inputCommentIssue').value;
+
+
+                var statusType = getStatusName(document.getElementById("statusType").selected);
+
+                var assetId = localStorage.getItem("assetTitle");
+                var inspectionId = localStorage.getItem("inspectionId");
+                var annotatedMetadata = anno.getAnnotations();
+
+
+
+                console.log("id : " + id + "defectType: " + defectType + ", comments: " + comments + ", statusType : " + statusType + " , assetId : " + assetId + " , inspectionId: " + inspectionId + " , annotatedMetadata: " + annotatedMetadata + " , desc: " + desc + " :" + ", viewportOffset: " + viewportOffset);
+
+
+                this.$.AjaxPost.body = [{
+                    "id": id,
+                    "inspectorId": inspectorId,
+                    "annotation": annotatedMetadata,
+                    "comments": comments,
+                    "defectType": defectType,
+                    "statusType": statusType,
+                    "assetId": assetId,
+                    "inspectionId": inspectionId,
+                    "description": desc,
+                    "viewportOffset": [xposition, yposition, width, height]
+                }];
+
+                console.log(this.$.AjaxPost.body);
+
+                //this.$.AjaxPost.body = {"id":"/Polymer/images/0001.jpg"};
+                this.$.AjaxPost.generateRequest();
+                this.$.issueAjax.generateRequest();
+                var div = document.getElementById("dialog-box");
+                div.style.display = "none";
+                var obj = {
+                    "id": this.currentId,
+                    "annotation": anno.getAnnotations()
+                };
+                //anno.destroy(document.getElementById('expandImg'));
+                if (this.annoArray.length > 0) {
+                    for (var i = 0; i < this.annoArray.length; i++) {
+                        anno.removeAnnotation(this.annoArray[i]);
+                    }
+                }
+                var img = document.getElementById("expandImg");
+                var canvas = document.getElementById("myCanvas");
+                img.style.width = 0 + "px";
+                img.style.height = 0 + "px";
+                canvas.style.width = 0 + "px";
+                canvas.style.height = 0 + "px";
+                //document.getElementById('appendMsg').innerHTML = "";
+                // for (var i = 0; i < this.commentArray.length; i++) {
+                //     document.getElementById('appendMsg').innerHTML = "";
+                // }
+
+                this.commentArray = [];
+                this.commentArrayInspectionFinding = [];
+                var myNode = document.getElementById("appendMsg");
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
+                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                while (myNodeInspectionFinding.firstChild) {
+                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                }
+                document.getElementById('appendMsg').innerHTML = "";
+                document.getElementById('appendMsgInspectionFinding').innerHTML = "";
+                document.getElementById('inputReq').value = "";
+                document.getElementById('inputComment').value = "";
+
+            },
+            toggleDialogEdit: function(e) {
+                var dialog = document.querySelector('#editDialog');
+                dialog.toggle();
+            },
+            toggleDialogComment: function(e) {
+                var dialog = document.querySelector('#commentDialog');
+                dialog.toggle();
+            },
+            // onEnter: function(e) {
+            //     debugger;
+            //     if (e.keyCode === 13) {
+            //         // enter pressed!
+            //         alert('enter pressed');
+            //     }
+            //     alert('v');
+            //     console.log(this.target);
+            //     console.log(this.userInput);
+            //     this.target = null;
+            //     this.targetComment = null;
+            //     this.target = document.querySelector('#input');
+
+            // var requirement = null;
+            // var id = null;
+            // id = e.model.item.id;
+            // for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+            //     if (id == this.issueMarkerServiceResponse[i].id) {
+
+            //         requirement = this.userInput;
+            //         document.querySelector('#requirementMsg').innerHTML = requirement;
+            //         break;
+            //     } else {
+            //         requirement = "";
+            //         document.querySelector('#requirementMsg').innerHTML = requirement;
+
+            //     }
+            // }
+            //},
+            onEnterComment: function(e) {
+                debugger;
+                if (e.keyCode === 13) {
+                    console.log(this.userInput);
+                    console.log(this.userInputComment);
+                    var d = new Date();
+                    var month = d.getMonth() + 1;
+                    var day = d.getDate();
+
+                    var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                        (('' + month).length < 2 ? '0' : '') + month + '/' +
+                        d.getFullYear();
+                    var CurrentDate = output;
+                    console.log(CurrentDate);
+
+
+                    var comments = null;
+                    //var commentArray = this.commentArray;
+                    var id = null;
+                    id = this.currentId;
+                    var user = this.userName;
+                    for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                       // if (id == this.issueMarkerServiceResponse[i].id) {
+                            if (this.target != null) {
+                                comments = this.userInput;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments,
+                                    "user": user
+                                }
+                                this.commentArray.push(obj);
+                                var myNode = document.getElementById("appendMsg");
+                                while (myNode.firstChild) {
+                                    myNode.removeChild(myNode.firstChild);
+                                }
+                                var count = this.commentArray.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(this.commentArray[i]);
+                                    var mainDiv = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDiv = document.createElement('div');
+                                    dateDiv.classList.add("date");
+                                    dateDiv.innerHTML = this.commentArray[i].date;
+                                    var commentDiv = document.createElement('div');
+                                    commentDiv.classList.add("comments");
+                                    commentDiv.innerHTML = this.commentArray[i].message;
+                                    var userDiv = document.createElement('div');
+                                    userDiv.classList.add("users");
+                                    userDiv.innerHTML = user;
+
+                                    mainDiv.appendChild(userDiv);
+                                    mainDiv.appendChild(commentDiv);
+                                    mainDiv.appendChild(dateDiv);
+                                    
+                                    
+                                    var aDiv = document.getElementById('appendMsg');
+                                    aDiv.appendChild(mainDiv);
+                                }
+                                break;
+                            } else {
+                                comments = this.userInputComment;
+                                var obj = {
+
+                                    "date": CurrentDate,
+                                    "message": comments,
+                                    "user": user
+
+                                }
+                                this.commentArrayInspectionFinding.push(obj);
+                                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = this.commentArrayInspectionFinding.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(this.commentArrayInspectionFinding[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.classList.add("date");
+                                    dateDivInspectionFinding.innerHTML = this.commentArrayInspectionFinding[i].date;
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.classList.add("comments");
+                                    commentDivInspectionFinding.innerHTML = this.commentArrayInspectionFinding[i].message;
+
+                                    var userDivInspectionFinding = document.createElement('div');
+                                    userDivInspectionFinding.classList.add("users");
+                                    userDivInspectionFinding.innerHTML = this.userName;
+
+                                    mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    
+
+                                    var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
+                                break;
+
+                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            // comments = this.userInputComment;
+
+                       // } //else {
+
+
+                            //comments = "";
+
+                            // document.querySelector('#appendMsg').innerHTML = comments;
+                            // document.querySelector('#appendMsgInspectionFinding').innerHTML = comments;
+
+                       // }
+
+                    }
+                    document.getElementById("inputReq").value="";
+                     document.getElementById("inputComment").value="";
+                }
+            },
+            stringify: function(obj) {
+                return JSON.stringify(obj);
+            },
+            zoomOut: function() {
+                debugger;
+                var zm = 0.9;
+                var zoomLevel = 100;
+                var maxZoomLevel = 105;
+                var minZoomLevel = 95;
+                var img = document.getElementById("expandImg");
+                var canvas = document.getElementById("myCanvas");
+                var span = document.getElementById("anno1");
+                if (zoomLevel > minZoomLevel) {
+                    zoomLevel--;
+                } else {
+                    return;
+                }
+                wid = img.width;
+                ht = img.height;
+                img.style.width = (wid * zm) + "px";
+                img.style.height = (ht * zm) + "px";
+                canvas.style.width = (wid * zm) + "px";
+                canvas.style.height = (ht * zm) + "px";
+                var t = span.style.top;
+                t = t.replace('px', '');
+                var l = span.style.left;
+                l = l.replace('px', '');
+                span.style.top = (Number(t) * zm) + "px";
+                span.style.left = (Number(l) * zm) + "px";
+                // img.style.marginLeft = -(img.width / 2) + "px";
+                // img.style.marginTop = -(img.height / 2) + "px";
+            },
+            zoomIn: function() {
+                debugger;
+                var zm = 1.1;
+                var zoomLevel = 100;
+                var maxZoomLevel = 105;
+                var minZoomLevel = 95;
+                var img = document.getElementById("expandImg");
+                var canvas = document.getElementById("myCanvas");
+                var span = document.getElementById("anno1");
+                var annoNumber = anno.getAnnotations();
+                if (zoomLevel < maxZoomLevel) {
+                    zoomLevel++;
+                } else {
+                    return;
+                }
+                wid = img.width;
+                ht = img.height;
+                img.style.width = (wid * zm) + "px";
+                img.style.height = (ht * zm) + "px";
+                canvas.style.width = (wid * zm) + "px";
+                canvas.style.height = (ht * zm) + "px";
+                var t = span.style.top;
+                t = t.replace('px', '');
+                var l = span.style.left;
+                l = l.replace('px', '');
+                span.style.top = (Number(t) * zm) + "px";
+                span.style.left = (Number(l) * zm) + "px";
+                // alert(img.style.width);
+                // alert(img.style.height);
+                // img.style.marginLeft = -(img.width / 2) + "px";
+                // img.style.marginTop = -(img.height / 2) + "px";
+            },
+            setTarget: function() {
+                // alert('inside set target');
+                this.target = document.getElementById('inputReq');
+                this.targetComment = null;
+            },
+            setTargetComment: function() {
+                //alert('inside set target comment');
+                this.target = null;
+                this.targetComment = document.querySelector('#inputComment');
+            },
+            urlState: function(urlPath) {
+                //debugger;
+                window.history.pushState('', '', urlPath);
+                window.dispatchEvent(new PopStateEvent('popstate', {
+                    bubbles: false,
+                    cancelable: false,
+                    state: {
+                        message: ''
+                    }
+                }));
+            },
+            toggleDescr: function(e) {
+                //debugger;
+                var description = document.querySelector('#collapse');
+                description.toggle();
+                var alt = [];
+                var title = [];
+                var img = [];
+                var meta = [];
+                phaseArr = null;
+                var id = null;
+                id = e.model.item.id;
+                a = this.dronesServiceResponse;
+                for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                    /*if(id == this.dronesServiceResponse[i].id){*/
+                    inspection = null;
+                    inspectionArr = null;
+                    phase = null;
+                    metadata = [];
+                    inspection = this.dronesServiceResponse[i].inspection;
+                    for (var j = 0; j < inspection.length; j++) {
+                        inspectionArr = inspection[j].phase;
+                        //  phase.push(inspection[j].phase);
+
+
+                        for (var k = 0; k < inspectionArr.length; k++) {
+                            phase = inspectionArr[k].img;
+                            for (var b = 0; b < phase.length; b++) {
+                                // img.push(phase[b]);
+                                metadata = phase[b].metadata;
+                                //var title = metadata[b].title;
+                                for (var x = 0; x < metadata.length; x++) {
+                                    title.push(metadata[x])
+                                        /*title = metadata[x].title;
+                                        alt = metadata[x].value; */
+                                }
+                            }
+
+                        }
+                    }
+                    /*}*/
+                }
+            },
+             _itemSelected: function(e) {
+                //debugger;
+                // var alt = [];
+                // var img = [];
+                // var meta = [];
+
+
+
+                // phaseArr = null;
+                // a = this.dronesServiceResponse;
+                // var selectedItem = e.target.selectedItem;
+                // if (selectedItem.innerText == "Altitude") {
+                //     for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                //         inspection = null;
+                //         inspectionArr = null;
+                //         phase = null;
+                //         metadata = [];
+                //         inspection = this.dronesServiceResponse[i].inspection;
+                //         for (var j = 0; j < inspection.length; j++) {
+                //             inspectionArr = inspection[j].phase;
+                //             //  phase.push(inspection[j].phase);
+
+
+                //             for (var k = 0; k < inspectionArr.length; k++) {
+                //                 phase = inspectionArr[k].img;
+                //                 for (var b = 0; b < phase.length; b++) {
+                //                     // img.push(phase[b]);
+                //                     metadata = phase[b].metadata;
+                //                     //var title = metadata[b].title;
+                //                     for (var x = 0; x < metadata.length; x++) {
+                //                         alt = metadata[x].value;
+
+                //                         this._valueSelected(e);
+                //                     }
+                //                 }
+
+                //             }
+                //         }
+                //     }
+                // } else if (selectedItem.innerText == "Latitude & Longitutde") {
+                //     console.log('hi');
+                // }
+            },
+            _valueSelected: function(e) {
+               debugger;
+                
+
+                var selectedItem = e.target.selectedItem;
+                console.log('vish');
+                console.log(selectedItem.innerText);
+                //alert(selectedItem);
+                if (selectedItem.innerText == "All") {
+                 //alert('All');
+                 //this.dronesServiceResponse = this.droneServiceResponse;
+                 this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+
+                }
+                else if (selectedItem.innerText == "0-40") {
+                //alert('0-40');
+                this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                var arr = [];
+                debugger;
+                 for(var i=0;i<this.dronesServiceResponse.length;i++){
+
+
+
+
+
+                    var inspection = this.dronesServiceResponse[i].inspection;
+                    for(var j=0;j<inspection.length;j++){
+                         if(localStorage.getItem("inspectionId") == inspection[i].inspectionId){
+                             var phase = inspection[j].phase;
+                             for(var k=0;k<phase.length;k++){
+                                var img = phase[k].img;
+
+                                for(var l=0;l<img.length;l++){
+                                    var metadata = img[l].metadata;
+                                    if(metadata[0].value >= 0 && metadata[0].value <=40){
+                                        // arr.push(metadata[0]);
+                                        // this.dronesServiceResponse
+                                     }else{
+                                        //img[l] = [];
+                                        img.splice(l, 1);
+                                        l--;
+                                     }
+                                }
+                         }
+
+                        }
+                    }
+                   
+
+
+
+                 }
+               }
+                else if (selectedItem.innerText == "40-80") {
+                   // alert('heys');
+                  this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                    for(var i=0;i<this.dronesServiceResponse.length;i++){
+                    var inspection = this.dronesServiceResponse[i].inspection;
+                    for(var j=0;j<inspection.length;j++){
+                         if(localStorage.getItem("inspectionId") == inspection[i].inspectionId){
+                             var phase = inspection[j].phase;
+                             for(var k=0;k<phase.length;k++){
+
+                            var img = phase[k].img;
+                            for(var l=0;l<img.length;l++){
+                                var metadata = img[l].metadata;
+                                if(metadata[0].value > 40 && metadata[0].value <=80){
+                                 
+                                }else{
+                                    img.splice(l, 1);
+                                    l--;
+                                    // if(img[l]==""){
+                                    //   var cc= document.getElementsByClassName(image-gallery);
+                                    //   cc.style.display="none";
+
+
+
+
+
+
+
+
+
+                                    // }
+
+
+                                }
+                            }
+                         }
+
+
+                        }
+                    }
+                   
+
+                 }
+
+
+                }
+            },
+
+
+
+
+
+
+
+
+
+
+
+        });
+    })();
+
+    function getStatusName(statusId) {
+        if (statusId == 0) {
+            return "Fix";
+        } else if (statusId == 1) {
+            return "Continue to Monitor";
+        } else if (statusId == 2) {
+            return "Manual Inspection";
+        }
+    }
+
+    function getDefectName(statusId) {
+        if (statusId == 0) {
+            return "Corrosion";
+        } else if (statusId == 1) {
+            return "Thinning";
+        } else if (statusId == 2) {
+            return "Stress cracking";
+        } else if (statusId == 3) {
+            return "Mechanical Fatigue";
+        } else if (statusId == 4) {
+            return "Thermal Fatigue";
+        }
+
+    }
+
+    function getPosition(el) {
+        debugger;
+        var el2 = el;
+        var curtop = 0;
+        var curleft = 0;
+        el2.offsetLeft = 14;
+        el2.offsetTop = 75;
+        if (document.getElementById || document.all) {
+            do {
+                curleft += el.offsetLeft - el.scrollLeft;
+                curtop += el.offsetTop - el.scrollTop;
+                el = el.offsetParent;
+                el2 = el2.parentNode;
+                while (el2 != el) {
+                    curleft -= el2.scrollLeft;
+                    curtop -= el2.scrollTop;
+                    el2 = el2.parentNode;
+                }
+            } while (el.offsetParent);
+
+        } else if (document.layers) {
+            curtop += el.y;
+            curleft += el.x;
+        }
+        return {
+            "x": curtop,
+            "y": curleft
+        };
+    }
+
+    getAbsoluteOffsetFromGivenElement = function(el, relativeEl) { // finds the offset of el from relativeEl
+        var _x = 0;
+        var _y = 0;
+        while (el && el != relativeEl && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+            _x += el.offsetLeft - el.scrollLeft + el.clientLeft;
+            _y += el.offsetTop - el.scrollTop + el.clientTop;
+            el = el.offsetParent;
+        }
+        return {
+            top: _y,
+            left: _x
+        };
+    }
+    getAbsoluteOffsetFromRelative = function(el) { // finds the offset of el from the first parent with position: relative
+        var _x = 0;
+        var _y = 0;
+        while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+            _x += el.offsetLeft - el.scrollLeft + el.clientLeft;
+            _y += el.offsetTop - el.scrollTop + el.clientTop;
+            el = el.offsetParent;
+            if (el != null) {
+                if (getComputedStyle !== 'undefined')
+                    valString = getComputedStyle(el, null).getPropertyValue('position');
+                else
+                    valString = el.currentStyle['position'];
+                if (valString === "relative")
+                    el = null;
+            }
+        }
+        return {
+            top: _y,
+            left: _x
+        };
+    }
+
+    function getAbsoluteOffsetFromBody(el) { // finds the offset of el from the body or html element
+        var _x = 0;
+        var _y = 0;
+        while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+            _x += el.offsetLeft - el.scrollLeft + el.clientLeft;
+            _y += el.offsetTop - el.scrollTop + el.clientTop;
+            el = el.offsetParent;
+        }
+        return {
+            top: _y,
+            left: _x
+        };
+    }
+    </script>
+    <!-- <script>
+    document.addEventListener('WebComponentsReady', function() {
+        var ratings = document.querySelector('#ratings');
+        ratings.addEventListener('value-change', function() {
+            document.querySelector('#ratingsLabel').textContent = ratings.value;
+        });
+    });
+    </script>
+    <!-- <script>
+    document.addEventListener('WebComponentsReady', function() {
+        var ratings = document.querySelector('#ratings');
+        ratings.addEventListener('value-change', function() {
+            document.querySelector('#ratingsLabel').textContent = ratings.value;
+        });
+    });
+    </script> -->
+</dom-module>

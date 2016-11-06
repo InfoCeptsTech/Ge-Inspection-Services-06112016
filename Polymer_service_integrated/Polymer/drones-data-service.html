@@ -1,0 +1,54 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="drones-data-service">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <iron-ajax id="ajax" auto url="{{url}}" handle-as="json" on-response="handleResponse" last-response={{ajaxResponse}}></iron-ajax>
+    </template>
+    <script>
+        Polymer({
+            is: 'drones-data-service',
+            properties: {
+                // Bind to URL recieved from host
+                url : {
+                  type: String,
+                  value : '',
+                  notify: true
+                },
+                id : {
+                    type: String,
+                    value: '',
+                },
+                dronesServiceResponse: {
+                    type: Object,
+                    value: function() {
+                    return [];
+                },
+                    notify: true
+                },
+                issuesServiceResponse: {
+                    type: Object,
+                    value: function() {
+                    return [];
+                },
+                    notify: true
+                }
+            },
+
+            handleResponse: function() {
+                // Capture response in a variable 
+                //alert(this.url);
+                //debugger;
+                this.dronesServiceResponse = this.$.ajax.lastResponse;
+              
+                this.issuesServiceResponse = this.$.ajax.lastResponse;
+             
+            }
+
+        });
+    </script>
+</dom-module>

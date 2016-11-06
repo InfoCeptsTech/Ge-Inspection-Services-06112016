@@ -1,0 +1,122 @@
+[
+   {
+      "id": "1",
+      "title": "Flare Stack 2",
+      "url": "drone-one",
+      "inspection":[
+        {
+          "url":"my-issues",
+          "date":"Jan 06 15",
+          "duration":"13:06-13:24",
+          "issues":[
+            {
+              "defect-type":"Thinning",
+              "miniPath":"/images/0005.jpg",
+              "megaPath":"/images/0005.jpg",
+              "issues-markers":"/images/marker2.png",
+              "status-type":"fix",
+              "tooltip":"Thickness 0.20” tmin = 0.25"
+            },
+            {
+              "defect-type":"Mechanical Fatigue",
+              "miniPath":"/images/0010.jpg",
+              "megaPath":"/images/0010.jpg",
+              "issues-markers":"/images/marker2.png",
+              "status-type":"Continue to monitor",
+              "tooltip":"Thickness 0.20” tmin = 0.25"
+            },
+            {
+              "defect-type":"Thermal Fatigue",
+              "miniPath":"/images/0021.jpg",
+              "megaPath":"/images/0021.jpg",
+              "issues-markers":"/images/marker2.png",
+              "status-type":"Manual Inspection",
+              "tooltip":"Thickness 0.20” tmin = 0.25"
+            }
+
+          ]
+        }
+      ]
+   },
+
+   {
+      "url": "drone-one",
+      "id": "2",
+      "title": "Compressor 7",
+      "inspection":[
+        {
+          "date":"Jan 06 15"
+        },
+        {
+          "date":"Jun 16 15"
+        },
+        {
+          "date":"Aug 12 15"
+        },
+        {
+          "date":"Jan 29 16"
+        }
+      ]
+
+   },
+
+   {
+      "url": "drone-one",
+      "id": "3",
+      "title": "Tank 23",
+      "issues-markers":[
+        {
+          "miniPath": "/images/marker.png"
+        },
+        {
+          "miniPath": "/images/marker4.png"
+        },
+        {
+          "miniPath": "/images/marker3.png"
+        }
+      ],
+      "inspection":[
+        {
+          "date":"Jan 06 15"
+        },
+        {
+          "date":"Jun 16 15"
+        },
+        {
+          "date":"Aug 12 15"
+        },
+        {
+          "date":"Jan 29 16"
+        }
+      ]
+    },
+
+    {
+      "url": "drone-one",
+      "id": "4",
+      "title": "Intake 33",
+      "issues-markers":[
+        {
+          "miniPath": "/images/marker.png"
+        },
+        {
+          "miniPath": "/images/marker1.png"
+        }
+      ],
+      "inspection":[
+        {
+          "date":"Jan 06 15"
+        },
+        {
+          "date":"Jun 16 15"
+        },
+        {
+          "date":"Aug 12 15"
+        },
+        {
+          "date":"Jan 29 16"
+        }
+      ]
+   }
+
+]

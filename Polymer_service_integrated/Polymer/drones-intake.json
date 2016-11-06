@@ -1,0 +1,789 @@
+[
+   {
+      "id": "0",
+      "title": "Flare Stack 2",
+      "url": "my-assets",
+       "issues-markers":[
+        {
+          "path": "/Polymer/images/marker.png",
+          "targeted-img":[
+            {
+              "img":[
+                {
+                  "src":"/Polymer/images/0001.jpg"
+                },
+                {
+                  "src":"/Polymer/images/0004.jpg"
+                }
+              ]
+            }
+          ]
+        },
+         {
+          "path": "/Polymer/images/marker1.PNG",
+          "targeted-img":[
+            {
+              "img":[
+                {
+                  "src":"/Polymer/images/0018.jpg"
+                },
+                {
+                  "src":"/Polymer/images/0014.jpg"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": "/Polymer/images/marker2.png"
+        }
+
+      ],
+      "inspection":[
+       
+      ]
+   },
+
+   {
+      "url": "my-assets",
+      "id": "1",
+      "title": "Compressor 7",
+      "issues-markers":[
+        {
+          "path": "/Polymer/images/marker1.PNG"
+        },
+        {
+          "path": "/Polymer/images/marker2.png"
+        }
+      ],
+       "inspection":[
+        
+      ]
+
+   },
+
+   {
+      "url": "my-assets",
+      "id": "2",
+      "title": "Tank 23",
+       "issues-markers":[
+        {
+          "path": "/Polymer/images/marker.png"
+        },
+        {
+          "path": "/Polymer/images/marker4.png"
+        },
+        {
+          "path": "/Polymer/images/marker3.png"
+        }
+      ],
+      "inspection":[
+       
+       
+      ]
+    },
+
+    {
+      "url": "my-assets",
+      "id": "3",
+      "title": "Intake 33",
+       "issues-markers":[
+        {
+          "path": "/Polymer/images/marker.png"
+        },
+        {
+          "path": "/Polymer/images/marker1.PNG"
+        }
+      ],
+      "inspection":[
+         {
+          "url":"my-media",
+          "date":"Jan 02 15",
+          "duration":"13:06-13:24",
+          "phase":[
+            {
+              "title": "Flare-tip",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0001.jpg",
+                  "megaPath":"/Polymer/images/0001.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                  "id": "p1"
+                },
+                {
+                  "miniPath":"/Polymer/images/0002.jpg",
+                  "megaPath":"/Polymer/images/0002.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                  "id": "p2"
+                },
+                {
+                  "miniPath":"/Polymer/images/0003.jpg",
+                  "megaPath":"/Polymer/images/0003.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p3"
+                },
+                {
+                  "miniPath":"/Polymer/images/0004.jpg",
+                  "megaPath":"/Polymer/images/0004.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                  "id": "p4"
+                }
+              ]
+            },
+            {
+              "title": "Top-Flange",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0005.jpg",
+                  "megaPath":"/Polymer/images/0005.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p5"
+                },
+                {
+                  "miniPath":"/Polymer/images/0006.jpg",
+                  "megaPath":"/Polymer/images/0006.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p6"
+                },
+                {
+                  "miniPath":"/Polymer/images/0007.jpg",
+                  "megaPath":"/Polymer/images/0007.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p7"
+                },
+                {
+                  "miniPath":"/Polymer/images/0008.jpg",
+                  "megaPath":"/Polymer/images/0008.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p8"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Top",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0009.jpg",
+                  "megaPath":"/Polymer/images/0009.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p9"
+                },
+                {
+                  "miniPath":"/Polymer/images/0010.jpg",
+                  "megaPath":"/Polymer/images/0010.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p10"
+                },
+                {
+                  "miniPath":"/Polymer/images/0011.jpg",
+                  "megaPath":"/Polymer/images/0011.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p11"
+                },
+                {
+                  "miniPath":"/Polymer/images/0012.jpg",
+                  "megaPath":"/Polymer/images/0012.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p12"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Bottom",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0013.jpg",
+                  "megaPath":"/Polymer/images/0013.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p13"
+                },
+                {
+                  "miniPath":"/Polymer/images/0014.jpg",
+                  "megaPath":"/Polymer/images/0014.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p14"
+                },
+                {
+                  "miniPath":"/Polymer/images/0015.jpg",
+                  "megaPath":"/Polymer/images/0015.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p15"
+                },
+                {
+                  "miniPath":"/Polymer/images/0016.jpg",
+                  "megaPath":"/Polymer/images/0016.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p16"
+                }
+              ]
+            },
+            {
+              "title": "Foundation",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0018.jpg",
+                  "megaPath":"/Polymer/images/0018.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p17"
+                },
+                {
+                  "miniPath":"/Polymer/images/0019.jpg",
+                  "megaPath":"/Polymer/images/0019.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p18"
+                },
+                {
+                  "miniPath":"/Polymer/images/0020.jpg",
+                  "megaPath":"/Polymer/images/0020.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p19"
+                },
+                {
+                  "miniPath":"/Polymer/images/0021.jpg",
+                  "megaPath":"/Polymer/images/0021.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p20"
+                }
+              ]
+            }
+
+          ]
+        },
+        {
+          "date":"Jun 12 15",
+          "duration":"13:28-13:44",
+          "phase":[
+            {
+              "title": "Flare-tip",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0001.jpg",
+                  "megaPath":"/Polymer/images/0001.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                   "id": "p21"
+                },
+                {
+                  "miniPath":"/Polymer/images/0002.jpg",
+                  "megaPath":"/Polymer/images/0002.jpg",
+                  "issuePath": "",
+                  "class":"",
+                   "id": "p22"
+                },
+                {
+                  "miniPath":"/Polymer/images/0003.jpg",
+                  "megaPath":"/Polymer/images/0003.jpg",
+                  "issuePath": "",
+                  "class":"",
+                   "id": "p23"
+                },
+                {
+                  "miniPath":"/Polymer/images/0004.jpg",
+                  "megaPath":"/Polymer/images/0004.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                   "id": "p24"
+                }
+              ]
+            },
+            {
+              "title": "Top-Flange",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0005.jpg",
+                  "megaPath":"/Polymer/images/0005.jpg",
+                  "issuePath": "",
+                  "class":"",
+                   "id": "p25"
+                },
+                {
+                  "miniPath":"/Polymer/images/0006.jpg",
+                  "megaPath":"/Polymer/images/0006.jpg",
+                  "issuePath": "",
+                  "class":"",
+                   "id": "p26"
+                },
+                {
+                  "miniPath":"/Polymer/images/0007.jpg",
+                  "megaPath":"/Polymer/images/0007.jpg",
+                  "issuePath": "",
+                  "class":"",
+                   "id": "p27"
+                },
+                {
+                  "miniPath":"/Polymer/images/0008.jpg",
+                  "megaPath":"/Polymer/images/0008.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p28"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Top",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0009.jpg",
+                  "megaPath":"/Polymer/images/0009.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p29"
+                },
+                {
+                  "miniPath":"/Polymer/images/0010.jpg",
+                  "megaPath":"/Polymer/images/0010.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p30"
+                },
+                {
+                  "miniPath":"/Polymer/images/0011.jpg",
+                  "megaPath":"/Polymer/images/0011.jpg",
+                  "issuePath": "",
+                  "id": "p31"
+                },
+                {
+                  "miniPath":"/Polymer/images/0012.jpg",
+                  "megaPath":"/Polymer/images/0012.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p32"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Bottom",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0013.jpg",
+                  "megaPath":"/Polymer/images/0013.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p33"
+                },
+                {
+                  "miniPath":"/Polymer/images/0014.jpg",
+                  "megaPath":"/Polymer/images/0014.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p34"
+                },
+                {
+                  "miniPath":"/Polymer/images/0015.jpg",
+                  "megaPath":"/Polymer/images/0015.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p35"
+                },
+                {
+                  "miniPath":"/Polymer/images/0016.jpg",
+                  "megaPath":"/Polymer/images/0016.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p36"
+                }
+              ]
+            },
+            {
+              "title": "Foundation",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0018.jpg",
+                  "megaPath":"/Polymer/images/0018.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p37"
+                },
+                {
+                  "miniPath":"/Polymer/images/0019.jpg",
+                  "megaPath":"/Polymer/images/0019.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p38"
+                },
+                {
+                  "miniPath":"/Polymer/images/0020.jpg",
+                  "megaPath":"/Polymer/images/0020.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p39"
+                },
+                {
+                  "miniPath":"/Polymer/images/0021.jpg",
+                  "megaPath":"/Polymer/images/0021.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p40"
+                }
+              ]
+            }
+
+          ]
+        },
+        {
+          "date":"Aug 09 15",
+          "duration":"17:23-17:27",
+          "phase":[
+            {
+              "title": "Flare-tip",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0001.jpg",
+                  "megaPath":"/Polymer/images/0001.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                  "id": "p41"
+                },
+                {
+                  "miniPath":"/Polymer/images/0002.jpg",
+                  "megaPath":"/Polymer/images/0002.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p42"
+                },
+                {
+                  "miniPath":"/Polymer/images/0003.jpg",
+                  "megaPath":"/Polymer/images/0003.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p43"
+                },
+                {
+                  "miniPath":"/Polymer/images/0004.jpg",
+                  "megaPath":"/Polymer/images/0004.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                  "id": "p44"
+                }
+              ]
+            },
+            {
+              "title": "Top-Flange",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0005.jpg",
+                  "megaPath":"/Polymer/images/0005.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p45"
+                },
+                {
+                  "miniPath":"/Polymer/images/0006.jpg",
+                  "megaPath":"/Polymer/images/0006.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p46"
+                },
+                {
+                  "miniPath":"/Polymer/images/0007.jpg",
+                  "megaPath":"/Polymer/images/0007.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p47"
+                },
+                {
+                  "miniPath":"/Polymer/images/0008.jpg",
+                  "megaPath":"/Polymer/images/0008.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p48"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Top",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0009.jpg",
+                  "megaPath":"/Polymer/images/0009.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p49"
+                },
+                {
+                  "miniPath":"/Polymer/images/0010.jpg",
+                  "megaPath":"/Polymer/images/0010.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p50"
+                },
+                {
+                  "miniPath":"/Polymer/images/0011.jpg",
+                  "megaPath":"/Polymer/images/0011.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p51"
+                },
+                {
+                  "miniPath":"/Polymer/images/0012.jpg",
+                  "megaPath":"/Polymer/images/0012.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p52"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Bottom",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0013.jpg",
+                  "megaPath":"/Polymer/images/0013.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p53"
+                },
+                {
+                  "miniPath":"/Polymer/images/0014.jpg",
+                  "megaPath":"/Polymer/images/0014.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p54"
+                },
+                {
+                  "miniPath":"/Polymer/images/0015.jpg",
+                  "megaPath":"/Polymer/images/0015.jpg",
+                  "issuePath": "",
+                  "class":""
+                },
+                {
+                  "miniPath":"/Polymer/images/0016.jpg",
+                  "megaPath":"/Polymer/images/0016.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p55"
+                }
+              ]
+            },
+            {
+              "title": "Foundation",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0018.jpg",
+                  "megaPath":"/Polymer/images/0018.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p56"
+                },
+                {
+                  "miniPath":"/Polymer/images/0019.jpg",
+                  "megaPath":"/Polymer/images/0019.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p57"
+                },
+                {
+                  "miniPath":"/Polymer/images/0020.jpg",
+                  "megaPath":"/Polymer/images/0020.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p58"
+                },
+                {
+                  "miniPath":"/Polymer/images/0021.jpg",
+                  "megaPath":"/Polymer/images/0021.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p59"
+                }
+              ]
+            }
+
+          ]
+        },
+        {
+          "date":"Jan 22 16",
+          "duration":"18:16-18:24",
+          "phase":[
+            {
+              "title": "Flare-tip",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0001.jpg",
+                  "megaPath":"/Polymer/images/0001.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                  "id": "p60"
+                },
+                {
+                  "miniPath":"/Polymer/images/0002.jpg",
+                  "megaPath":"/Polymer/images/0002.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p61"
+                },
+                {
+                  "miniPath":"/Polymer/images/0003.jpg",
+                  "megaPath":"/Polymer/images/0003.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p62"
+                },
+                {
+                  "miniPath":"/Polymer/images/0004.jpg",
+                  "megaPath":"/Polymer/images/0004.jpg",
+                  "issuePath": "/Polymer/images/marker.png",
+                  "class":"issue-marker",
+                  "id": "p63"
+                }
+              ]
+            },
+            {
+              "title": "Top-Flange",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0005.jpg",
+                  "megaPath":"/Polymer/images/0005.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p64"
+                },
+                {
+                  "miniPath":"/Polymer/images/0006.jpg",
+                  "megaPath":"/Polymer/images/0006.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p65"
+                },
+                {
+                  "miniPath":"/Polymer/images/0007.jpg",
+                  "megaPath":"/Polymer/images/0007.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p66"
+                },
+                {
+                  "miniPath":"/Polymer/images/0008.jpg",
+                  "megaPath":"/Polymer/images/0008.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p67"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Top",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0009.jpg",
+                  "megaPath":"/Polymer/images/0009.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p68"
+                },
+                {
+                  "miniPath":"/Polymer/images/0010.jpg",
+                  "megaPath":"/Polymer/images/0010.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p69"
+                },
+                {
+                  "miniPath":"/Polymer/images/0011.jpg",
+                  "megaPath":"/Polymer/images/0011.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p70"
+                },
+                {
+                  "miniPath":"/Polymer/images/0012.jpg",
+                  "megaPath":"/Polymer/images/0012.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p71"
+                }
+              ]
+            },
+            {
+              "title": "Riser-Bottom",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0013.jpg",
+                  "megaPath":"/Polymer/images/0013.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p72"
+                },
+                {
+                  "miniPath":"/Polymer/images/0014.jpg",
+                  "megaPath":"/Polymer/images/0014.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p73"
+                },
+                {
+                  "miniPath":"/Polymer/images/0015.jpg",
+                  "megaPath":"/Polymer/images/0015.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p74"
+                },
+                {
+                  "miniPath":"/Polymer/images/0016.jpg",
+                  "megaPath":"/Polymer/images/0016.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p75"
+                }
+              ]
+            },
+            {
+              "title": "Foundation",
+              "img":[
+                {
+                  "miniPath":"/Polymer/images/0018.jpg",
+                  "megaPath":"/Polymer/images/0018.jpg",
+                  "issuePath": "/Polymer/images/marker1.PNG",
+                  "class":"issue-marker1",
+                  "id": "p76"
+                },
+                {
+                  "miniPath":"/Polymer/images/0019.jpg",
+                  "megaPath":"/Polymer/images/0019.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p77"
+                },
+                {
+                  "miniPath":"/Polymer/images/0020.jpg",
+                  "megaPath":"/Polymer/images/0020.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p78"
+                },
+                {
+                  "miniPath":"/Polymer/images/0021.jpg",
+                  "megaPath":"/Polymer/images/0021.jpg",
+                  "issuePath": "",
+                  "class":"",
+                  "id": "p79"
+                }
+              ]
+            }
+
+          ]
+        }
+      ]
+   }
+
+]

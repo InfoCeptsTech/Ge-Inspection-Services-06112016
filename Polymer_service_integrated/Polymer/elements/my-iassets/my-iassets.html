@@ -1,0 +1,98 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="my-iassets">
+  <template is="dom-bind">
+    <style>
+      :host {
+        display: block;
+      }
+      .bottom-ico{ float: left;
+    width: 100%;
+    padding-top: 10px;
+    bottom: 0;
+    position: absolute;}  
+    </style>
+    <!-- <iron-ajax auto url="/drones.json" handle-as="json" last-response="{{data}}" ></iron-ajax> -->
+     <div>
+    <drones-data-service url="{{url}}" drones-service-response="{{issuesServiceResponse}}">
+    </drones-data-service>
+    <iron-selector selected="0">
+    <template is="dom-repeat" items="{{issuesServiceResponse}}">
+    <template is="dom-repeat" items="{{item.inspection}}">
+    <a class="nav-link" is="pushstate-anchor" id="{{item.id}}" href="{{item.url}}" onclick="handelIssueClick">
+    <span class="inspections-title">{{item.date}}</span>
+    </template>
+    </template>
+    </a>
+    </iron-selector>
+    </div>
+    <br/>
+    <div class="bottom-ico">
+        <span style="padding-left: 15px">
+  <paper-icon-button icon="add-circle" class="add-delete-view"></paper-icon-button>
+  </span>
+        <span style="padding-left: 25px;">
+  <paper-icon-button icon="delete" class="add-delete-view"></paper-icon-button>
+  </span>
+  </div>
+  </template>
+  <script>
+  (function() {
+    Polymer({
+      is: 'my-iassets',
+
+      properties: {
+       selected: {
+        value: 0
+                  },
+
+        issuesServiceResponse: {
+                type: Array,
+                value: function() {
+                    return [];
+                },
+                notify: true,
+                observer: 'handleResponse'
+            }
+          },
+          ready:function(){
+           // alert("in issue ready");
+            var assetId=localStorage.getItem('assetTitle');
+             var inspectorId=localStorage.getItem('inspectorId');
+           
+            this.url="https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueDate/inspectorId="+inspectorId+"&assetId="+assetId;
+
+          },
+          handelIssueClick :function(){
+       // alert("in issue click");
+          var assetId=localStorage.getItem('assetTitle');
+            
+            this.url="https://dashboard.immuta.io/ir-0.0.1/inspection/getIssues/inspectorId="+inspectorId+"&assetId="+assetId;
+          //  alert(this.url);
+       }, 
+
+       handleResponse: function() {
+                console.log(this.issuesServiceResponse);
+                if (typeof(this.issuesServiceResponse[0]) != 'undefined') {
+
+                    this.inspection = this.issuesServiceResponse[0].inspection;
+                    this.path = this.inspection[0].url;
+                    this.path = '/' + this.path;
+                    this.urlState(this.path);
+                }
+            },
+            urlState: function(urlPath) {
+                //  debugger;
+                window.history.pushState('', '', urlPath);
+                window.dispatchEvent(new PopStateEvent('popstate', {
+                    bubbles: false,
+                    cancelable: false,
+                    state: {
+                        message: ''
+                    }
+                }));
+            },
+    });
+  })();
+  </script>
+</dom-module>

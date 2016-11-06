@@ -1,0 +1,37 @@
+<link rel="import" href="/Polymer/bower_components/polymer/polymer.html">
+<dom-module id="report-type-data-service">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
+        <iron-ajax id="ajax" auto url="{{url}}" handle-as="json" on-response="handleResponse" last-response={{ajaxResponse}}></iron-ajax>
+    </template>
+    <script>
+    Polymer({
+        is: 'report-type-data-service',
+        properties: {
+            // Bind to URL recieved from host
+            url: {
+                type: String,
+                value: '',
+                notify: true
+            },
+            reportTypeServiceResponse: {
+                type: Object,
+                value: function() {
+                    return [];
+                },
+                notify: true
+            }
+        },
+
+        handleResponse: function() {
+            // Capture response in a variable 
+            this.reportTypeServiceResponse = this.$.ajax.lastResponse;
+        }
+
+    });
+    </script>
+</dom-module>

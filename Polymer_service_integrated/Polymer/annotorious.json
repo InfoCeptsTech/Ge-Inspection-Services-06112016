@@ -1,0 +1,31 @@
+[{
+    "id": "p1",
+    "annotation": [{
+        "src": "http://localhost:8080/Polymer/images/0001.jpg",
+        "text": "abc",
+        "shapes": [{
+            "type": "rect",
+            "geometry": { "x": 0.12048192771084337, "y": 0.31906614785992216, "width": 0.23548740416210295, "height": 0.2509727626459144 },
+            "style": {}
+        }],
+        "context": "http://localhost:8080/my-media"
+    }],
+    "comments":[],
+    "width": 1609.3,
+    "height": 887.7
+}, {
+    "id": "p2",
+    "annotation": [{
+        "src": "http://localhost:8080/Polymer/images/0002.jpg",
+        "text": "def",
+        "shapes": [{
+            "type": "rect",
+            "geometry": { "x": 0.4578313253012048, "y": 0.3443579766536965, "width": 0.171960569550931, "height": 0.21206225680933852 },
+            "style": {}
+        }],
+        "context": "http://localhost:8080/my-media"
+    }],
+    "comments":[],
+    "width": 999,
+    "height": 551
+}]

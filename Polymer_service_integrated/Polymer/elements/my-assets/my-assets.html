@@ -1,0 +1,167 @@
+<!-- Polymer web component used to display assets list -->
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<dom-module id="my-assets">
+    <template is="dom-bind">
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
+         <iron-ajax id="ajaxAssetDate"
+            url="https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=1&assetId="
+            handle-as="json"
+            on-response="handleResponse"
+            debounce-duration="300"></iron-ajax>
+        <drones-data-service id="ajaxAsset" url="{{url}}" drones-service-response="{{dronesServiceResponse}}">
+        </drones-data-service>
+         <div class="image-gallery">
+        <iron-selector selected="0">
+         <template is="dom-repeat" items="{{dronesServiceResponse}}">
+                <template is="dom-repeat" items="{{item.inspection}}">
+                    <a class="nav-link" is="pushstate-anchor" id="{{item.id}}" href="{{item.url}}" on-click="handleInspectionClick">
+                        <span class="inspections-title">{{item.date}}</span>
+                        <span style="font-size:10px">{{item.duration}}</span>
+                </template>
+            </template>
+            </a>
+           </iron-selector>
+        </div>
+        <br/>
+        <br/>
+        <div class="bottom-section">
+        <span style="padding-left: 15px;">
+  <paper-icon-button icon="add-circle" class="add-delete-view"></paper-icon-button>
+  </span>
+        <span style="padding-left: 25px;">
+  <paper-icon-button icon="delete" class="add-delete-view"></paper-icon-button>
+  </span>
+  </div>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-assets',
+
+            properties: {
+                selected: {
+                    value: 0
+                },
+
+                dronesServiceResponse: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true,
+                    observer: 'handleResponse'
+                },
+                inspection: {
+                    type: Array,
+                    notify: true,
+                    value: function() {
+                        return [];
+                    }
+                },
+                url: {
+                    type: String,
+                    value : '/Polymer/drones.json'
+                }
+            },
+
+            handleResponse: function() {
+                
+                console.log(this.dronesServiceResponse);
+                debugger;
+               if (typeof(this.dronesServiceResponse[localStorage.getItem('assetId')]) != 'undefined') {
+
+                    this.inspection = this.dronesServiceResponse[localStorage.getItem('assetId')].inspection;
+                    this.path = this.inspection[0].url;
+                    this.path = '/' + this.path;
+                    this.urlState(this.path);
+                }
+                for(i=0;i<this.dronesServiceResponse.length;i++){
+                    this.inspection=this.dronesServiceResponse[i].inspection;
+                    if(this.inspection!=undefined){
+                      for(j=0;j<this.dronesServiceResponse[i].inspection.length;j++){
+                        if(this.inspection[j].inspectionId!=null){
+                            inspectionId=this.inspection[0].inspectionId;
+                          
+                           if(!localStorage.getItem('inspectionId')){
+                            localStorage.setItem('inspectionId',inspectionId);
+                             // alert("inspectionId ::::"+inspectionId);
+                            break;
+                           }
+                           
+                        }
+                     }
+                    }
+                     
+                 }
+
+            },
+            handleInspectionClick:function(e){
+                        
+            
+                 var inspectionId = e.model.item.inspectionId;
+                 console.log("--------------->>"+inspectionId);
+                 title=localStorage.getItem('assetTitle');
+                 inspectorId=localStorage.getItem('assetTitle');
+                  localStorage.setItem('inspectionId',inspectionId);
+
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/inspectorId="+inspectorId+"&assetId="+title+"&inspectionId="+inspectionId;
+
+                   localStorage.setItem('inspectionId',inspectionId);
+                   
+                    this.$.ajaxAssetDate.url = this.url;
+                     document.getElementById('ajaxAssetDate').url = this.url;
+                    // alert(this.url);
+                    document.getElementById('ajaxAssetDate').generateRequest();
+                    
+            },
+            ready: function(){
+                /*
+                 if(localStorage.getItem('assetId') == "1"){
+                    this.url = "/Polymer/drones-compressor.json";
+                     this.$.ajaxAsset.url = this.url;
+                }
+                else if(localStorage.getItem('assetId') == "2"){
+                    this.url = "/Polymer/drones-tank.json";
+                    this.$.ajaxAsset.url = this.url;
+                }
+                else if(localStorage.getItem('assetId') == "3"){
+                    this.url = "/Polymer/drones-intake.json";
+                   this.$.ajaxAsset.url = this.url;
+                }
+                else{
+                     this.url = "/Polymer/drones.json";
+                    document.getElementById('ajaxAsset').url = this.url;
+                }*/
+                title=localStorage.getItem('assetTitle');
+                inspectorId=localStorage.getItem('inspectorId');
+                 //    alert("title in asset: "+title);
+                     if(title==null || title=='null'){
+                        this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId="+inspectorId;
+                     }else{
+                         this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId="+inspectorId+"&assetId="+title;   
+                     }
+                     
+                  // alert(this.url); 
+                  // document.getElementById('ajaxAsset').url = this.url;
+                  //  document.getElementById('ajaxAsset').generateRequest();
+                   
+            },
+            urlState: function(urlPath) {
+                //  debugger;
+                window.history.pushState('', '', urlPath);
+                window.dispatchEvent(new PopStateEvent('popstate', {
+                    bubbles: false,
+                    cancelable: false,
+                    state: {
+                        message: ''
+                    }
+                }));
+            },
+        });
+    })();
+    </script>
+    </dom-module>

@@ -1,0 +1,127 @@
+[
+   {
+      "id": "1",
+      "title": "Flare Stack 2",
+      "url": "drone-one",
+      "inspection":[
+        {
+          "url":"my-issues",
+          "date":"Jan 06 15",
+          "duration":"13:06-13:24",
+          "issues":[
+            {
+              "defect-type":"Thinning",
+              "miniPath":"/Polymer/images/0005.jpg",
+              "megaPath":"/Polymer/images/0005.jpg",
+              "issues-markers":"/Polymer/images/marker2.png",
+              "status-type":"fix",
+              "tooltip":"Thickness 0.20” tmin = 0.25"
+            },
+            {
+              "defect-type":"Mechanical Fatigue",
+              "miniPath":"/Polymer/images/0010.jpg",
+              "megaPath":"/Polymer/images/0010.jpg",
+              "issues-markers":"/Polymer/images/marker2.png",
+              "status-type":"Continue to monitor"
+            },
+            {
+              "defect-type":"Thermal Fatigue",
+              "miniPath":"/Polymer/images/0021.jpg",
+              "megaPath":"/Polymer/images/0021.jpg",
+              "issues-markers":"/Polymer/images/marker2.png",
+              "status-type":"Manual Inspection"
+            },
+             {
+              "defect-type":"Corrosion",
+              "miniPath":"/Polymer/images/0002.jpg",
+              "megaPath":"/Polymer/images/0002.jpg",
+              "issues-markers":"/Polymer/images/marker2.png",
+              "status-type":"Fix"
+            }
+
+          ]
+        }
+      ]
+   },
+
+   {
+      "url": "drone-one",
+      "id": "2",
+      "title": "Compressor 7",
+      "inspection":[
+        {
+          "date":"Jan 06 15"
+        },
+        {
+          "date":"Jun 16 15"
+        },
+        {
+          "date":"Aug 12 15"
+        },
+        {
+          "date":"Jan 29 16"
+        }
+      ]
+
+   },
+
+   {
+      "url": "drone-one",
+      "id": "3",
+      "title": "Tank 23",
+      "issues-markers":[
+        {
+          "miniPath": "/Polymer/images/marker.png"
+        },
+        {
+          "miniPath": "/Polymer/images/marker4.png"
+        },
+        {
+          "miniPath": "/Polymer/images/marker3.png"
+        }
+      ],
+      "inspection":[
+        {
+          "date":"Jan 06 15"
+        },
+        {
+          "date":"Jun 16 15"
+        },
+        {
+          "date":"Aug 12 15"
+        },
+        {
+          "date":"Jan 29 16"
+        }
+      ]
+    },
+
+    {
+      "url": "drone-one",
+      "id": "4",
+      "title": "Intake 33",
+      "issues-markers":[
+        {
+          "miniPath": "/Polymer/images/marker.png"
+        },
+        {
+          "miniPath": "/Polymer/images/marker1.PNG"
+        }
+      ],
+      "inspection":[
+        {
+          "date":"Jan 06 15"
+        },
+        {
+          "date":"Jun 16 15"
+        },
+        {
+          "date":"Aug 12 15"
+        },
+        {
+          "date":"Jan 29 16"
+        }
+      ]
+   }
+
+]

@@ -1,0 +1,1115 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<!-- Polymer web component used to display issue list -->
+<dom-module id="my-issues">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        .horizontal-section {
+            max-width: 32%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        paper-icon-button {
+            display: inline-block;
+            margin: 0px;
+        }
+        
+        .paper-tooltip-0 #tooltip {
+            font-family: 'Roboto', 'Noto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 12px;
+            line-height: 1;
+            background-color: rgba(255, 255, 255, 0.8);
+            opacity: 1;
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #f0f0f0;
+        }
+        </style>
+         <iron-ajax
+            id="AjaxPost"
+            url="https://dashboard.immuta.io/ir-0.0.1/inspection/addIssue"
+            method="POST"
+            content-type="application/json"
+            handle-as="json"
+            on-response="_handleAjaxPostResponse"
+            on-error="_handleAjaxPostError"
+            >
+        </iron-ajax>
+        <iron-ajax id="ajaxAddUpdatePost" url="https://dashboard.immuta.io/ir-0.0.1/inspection/updateIssue" method="POST" content-type="application/json" handle-as="json" on-response="_handleAjaxPostResponse" on-error="_handleAjaxPostError">
+        </iron-ajax>
+        <iron-ajax auto id="issueAjax" url="{{markerurl}}" handle-as="json" on-response="handleResponseIssueMarker"></iron-ajax>
+        <drones-data-service url="{{url}}" id="ajax" drones-service-response="{{issuesServiceResponse}}">
+        </drones-data-service>
+        <report-type-data-service url="/report-type.json" report-type-service-response="{{reportTypeServiceResponse}}">
+        </report-type-data-service>
+        <!-- <div class="horizontal-section">
+             <span style="background: #F3F3F3;widht:20%;margin-left: 40%;">
+            <paper-icon-button icon="camera-enhance" class="grid-view-selected" id="cameraEnhance" on-click="cameraEnhanceSelected"></paper-icon-button>
+            <paper-icon-button icon="av:videocam" class="grid-view" id="videocam" on-click="videocamSelected"></paper-icon-button>
+            <paper-icon-button icon="invert-colors" class="grid-view" id="invertColorIssue" on-click="invertColorIssueSelected"></paper-icon-button>
+            <paper-icon-button icon="sort" class="grid-view" id="sort" on-click="sortSelected"></paper-icon-button>
+            <paper-icon-button icon="hardware:headset" class="grid-view" id="headset" on-click="headsetSelected"></paper-icon-button>
+             </span>
+        </div> -->
+        <div class="image-gallery-issue">
+            <template is="dom-repeat" items="{{issuesServiceResponse}}">
+                <template is="dom-repeat" items="{{item.inspection}}">
+                    <div class="image-gall">
+                        <template is="dom-repeat" items="{{item.issues}}">
+                            <div class="issues">
+                                <span class="issue-title"><img src="https://dashboard.immuta.io{{item.issues-markers}}" width="20" height="20">{{item.defectType}}</span>
+                                <!-- <img id="img-tooltip" src="{{item.mini-path}}" class="img-tooltip"> -->
+                                <paper-icon-button raised on-dblclick="toggleDialogIssue" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.megaPath}}" class="img-tooltip" id="img-tooltip-{{index}}">
+                                </paper-icon-button>
+                                <paper-tooltip for="img-tooltip-{{index}}">{{item.tooltip}}</paper-tooltip>
+                               <div class="dailog-box" id="dialog-box-issue">
+            <div class="dialog-container">
+                <div class="img-data">
+                    <div class="zoomed-img flexchild">
+                        <img id="expandImgIssue">
+                    </div>
+                    <div class="img-metadata flexchild">
+                        <!-- <h3> Altitude </h3>
+                                                <span id="imgAltitude"> 42.026914</span>
+                                                    <hr> -->
+                        <div class="metadataSet">
+                            <div class="defectDrop">
+                                <span>Defect Type:</span>
+                                <paper-dropdown-menu>
+                                    <paper-listbox class="dropdown-content" selected="0" id="popdefectType">
+                                        <paper-item>Corrosion</paper-item>
+                                        <paper-item>Thinning</paper-item>
+                                        <paper-item>Stress cracking</paper-item>
+                                        <paper-item>Mechanical Fatigue</paper-item>
+                                        <paper-item>Thermal Fatigue</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                                <span>Status:</span>
+                                <paper-dropdown-menu>
+                                    <paper-listbox class="dropdown-content" selected="0" id="popstatusType">
+                                        <paper-item>Fix</paper-item>
+                                        <paper-item>Continue to monitor</paper-item>
+                                        <paper-item>Manual Inspection</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                                <br/>
+                                <span id="imageDetailIssue"><iron-icon  id="iron-icon-issue" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
+                                <iron-collapse style="width:219px" id="collapse-issue">
+                                    <div class="deco-collpase">
+                                        <div class="Imgtitle">Altitude</div>
+                                        <div class="ImgValue">87.5465</div>
+                                        <div class="Imgtitle">Latitude &amp; Longitude</div>
+                                        <div class="ImgValue">(3.414725, -122.167969)</div>
+                                    </div>
+                                </iron-collapse>
+                                </paper-dropdown-menu>
+                                <!-- <button id="imageDetail" on-click="toggleDescr">Image Detail</button>
+                                                        <iron-collapse id="collapse" class="deco-collpase">
+                                                          <div>
+                                                            <div class="Imgtitle">Altitude</div>
+                                                            <div class="ImgValue">87.5465</div>
+                                                            <div class="Imgtitle">Latitude &amp; Longitude</div>
+                          <div class="ImgValue">(3.414725, -122.167969)</div>
+                                                          </div>
+                                                        </iron-collapse> -->
+                                <span>Inspection Requirement :</span>
+                                <div id="appendMsgIssue" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div>
+                                <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+                                <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                <div id="requirementMsg"></div>
+                                <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
+                                <!-- <paper-button class="submit addComment">Add</paper-button> -->
+                                <hr class="divider">
+                                <span>Inspection Findings :</span>
+                                <div id="appendMsgInspectionFindingIssue" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div>
+                                <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
+                                <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                <!--  <input type="text" id="commentSection">
+                                                        <paper-textarea label="" id="commentSection"></paper-textarea>
+                                                        <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
+                            </div>
+                            <div class="editCropSection">
+                                <paper-icon-button src="/images/zoomout_rest.png" on-click="zoomOut"></paper-icon-button>
+                                <paper-icon-button src="/images/zoomin_rest.png" on-click="zoomIn"></paper-icon-button>
+                            </div>
+                        </div>
+                        <!-- <div class="editCropSection">
+                                                        <iron-icon icon="icons:flip-to-back"></iron-icon>
+                                                        <iron-icon icon="icons:create"></iron-icon>
+                                                 </div>
+                                                    <div class="modal-footer ">
+
+                                                    </div> -->
+                        <div class="modal-footer ">
+                            <paper-button on-click="saveDialog" class="btn-default">Submit</paper-button>
+                            <paper-button on-click="closeDialog" class="btn-default">Close</paper-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                            </div>
+                            
+                    </template>
+        </div>
+        </template>
+        </template>
+        </div>
+        <br/>
+        <div class="bottom-section report-type">
+            <div class="shift-rght">
+                <span class="reprt-type"> Report type: </span>
+                <paper-dropdown-menu id="report-type" style="width:40%" vertical-align="top" horizontal-align="left">
+                    <paper-listbox class="dropdown-content" selected="0">
+                        <template is="dom-repeat" items="{{reportTypeServiceResponse}}">
+                            <!--  <paper-item>Regulatory Submission</paper-item>
+                                    <paper-item>Findings & Regualtions</paper-item>
+                                    <paper-item>Fit for purpose and Remediations</paper-item> -->
+                            <paper-item>{{item.type}}</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+               <!--  <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" class="reviewbtn pull-right" target="_blank">Generate Report</a> -->
+               <paper-button raised on-click="toggleDialogGenerate" class="reviewbtn pull-right">Generate Report</paper-button>
+                <paper-dialog id="reportToggle" modal>
+            <span class="dialogTitle">Enter Executive Summary:</span>
+              <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
+              <div class="modal-footer ">
+                <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" on-click="saveDialog" class="btn-default" style="text-decoration: none;">Generate</a>
+                <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
+                <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
+            </div>
+            </paper-dialog>
+            </div>
+        </div>
+    </template>
+    <script>
+    (function() {
+        Polymer({
+            is: 'my-issues',
+
+            properties: {
+                url: {
+                    type: String,
+                    value: ''
+                },
+
+                issuesServiceResponse: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true,
+                    observer: 'handleResponse'
+                },
+                reportTypeServiceResponse: {
+                    type: Object,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true
+                },
+                userInputIssue: {
+                    type: String,
+                    notify: true,
+                },
+                targetIssue: {
+                    type: Object,
+                    value: function() {
+                        return document.querySelector('#inputReqIssue');
+                    }
+                },
+                userInputCommentIssue: {
+                    type: String,
+                    notify: true,
+                },
+                targetCommentIssue: {
+                    type: Object,
+                    value: function() {
+                        return document.querySelector('#inputCommentIssue');
+                    }
+
+                },
+                currentIdIssue: {
+                    type: String,
+                    value: ''
+                },
+                commentArrayIssue: {
+                    type: Array,
+                    value: []
+                },
+                commentArrayInspectionFindingIssue: {
+                    type: Array,
+                    value: []
+                },
+                issueMarkerServiceResponse: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    },
+                    notify: true,
+                    observer: 'handleResponseIssueMarker'
+                },
+                megaPath:{
+                    type: String,
+                    value:''
+                }
+            },
+            handleResponseIssueMarker: function(data) {
+                //debugger;
+                // alert(this.$.issueAjax.lastResponse);
+               this.issueMarkerServiceResponse = this.$.issueAjax.lastResponse;
+            },
+            _change: function(e) {
+                this.megapath = e.model.item.megaPath;
+                if (e.detail.value.length > 0) {
+
+                    document.getElementById('issueAjax').generateRequest();
+                    this.$.AjaxPost.body = [{
+                        "id": this.megapath,
+                        "statusType": e.detail.value
+                    }];
+
+                    console.log(this.$.AjaxPost.body);
+
+                    //this.$.AjaxPost.body = {"id":"/Polymer/images/0001.jpg"};
+                    this.$.AjaxPost.generateRequest();
+
+                }
+
+            },
+            _handleAjaxPostResponse: function() {
+
+                console.log("success");
+
+            },
+            _handleAjaxPostError: function() {
+                console.log("error");
+            },
+            cameraEnhanceSelected: function() {
+                var cameraEnhanceButtonClasses = document.getElementById("cameraEnhance").classList;
+                var videocamButtonClasses = document.getElementById("videocam").classList;
+                var invertColorIssueButtonClasses = document.getElementById("invertColorIssue").classList;
+                var sortButtonClasses = document.getElementById("sort").classList;
+                var headsetButtonClasses = document.getElementById("headset").classList;
+                cameraEnhanceButtonClasses.remove("grid-view");
+                cameraEnhanceButtonClasses.add("grid-view-selected");
+                if (!videocamButtonClasses.contains("grid-view")) {
+                    videocamButtonClasses.remove("grid-view-selected");
+                    videocamButtonClasses.add("grid-view");
+                }
+                if (!invertColorIssueButtonClasses.contains("grid-view")) {
+                    invertColorIssueButtonClasses.remove("grid-view-selected");
+                    invertColorIssueButtonClasses.add("grid-view");
+                }
+                if (!sortButtonClasses.contains("grid-view")) {
+                    sortButtonClasses.remove("grid-view-selected");
+                    sortButtonClasses.add("grid-view");
+                }
+                if (!headsetButtonClasses.contains("grid-view")) {
+                    headsetButtonClasses.remove("grid-view-selected");
+                    headsetButtonClasses.add("grid-view");
+                }
+
+
+            },
+            videocamSelected: function() {
+                var cameraEnhanceButtonClasses = document.getElementById("cameraEnhance").classList;
+                var videocamButtonClasses = document.getElementById("videocam").classList;
+                var invertColorIssueButtonClasses = document.getElementById("invertColorIssue").classList;
+                var sortButtonClasses = document.getElementById("sort").classList;
+                var headsetButtonClasses = document.getElementById("headset").classList;
+                videocamButtonClasses.remove("grid-view");
+                videocamButtonClasses.add("grid-view-selected");
+                if (!cameraEnhanceButtonClasses.contains("grid-view")) {
+                    cameraEnhanceButtonClasses.remove("grid-view-selected");
+                    cameraEnhanceButtonClasses.add("grid-view");
+                }
+                if (!invertColorIssueButtonClasses.contains("grid-view")) {
+                    invertColorIssueButtonClasses.remove("grid-view-selected");
+                    invertColorIssueButtonClasses.add("grid-view");
+                }
+                if (!sortButtonClasses.contains("grid-view")) {
+                    sortButtonClasses.remove("grid-view-selected");
+                    sortButtonClasses.add("grid-view");
+                }
+                if (!headsetButtonClasses.contains("grid-view")) {
+                    headsetButtonClasses.remove("grid-view-selected");
+                    headsetButtonClasses.add("grid-view");
+                }
+
+            },
+            invertColorIssueSelected: function() {
+                var cameraEnhanceButtonClasses = document.getElementById("cameraEnhance").classList;
+                var videocamButtonClasses = document.getElementById("videocam").classList;
+                var invertColorIssueButtonClasses = document.getElementById("invertColorIssue").classList;
+                var sortButtonClasses = document.getElementById("sort").classList;
+                var headsetButtonClasses = document.getElementById("headset").classList;
+                invertColorIssueButtonClasses.remove("grid-view");
+                invertColorIssueButtonClasses.add("grid-view-selected");
+                if (!cameraEnhanceButtonClasses.contains("grid-view")) {
+                    cameraEnhanceButtonClasses.remove("grid-view-selected");
+                    cameraEnhanceButtonClasses.add("grid-view");
+                }
+                if (!videocamButtonClasses.contains("grid-view")) {
+                    videocamButtonClasses.remove("grid-view-selected");
+                    videocamButtonClasses.add("grid-view");
+                }
+                if (!sortButtonClasses.contains("grid-view")) {
+                    sortButtonClasses.remove("grid-view-selected");
+                    sortButtonClasses.add("grid-view");
+                }
+                if (!headsetButtonClasses.contains("grid-view")) {
+                    headsetButtonClasses.remove("grid-view-selected");
+                    headsetButtonClasses.add("grid-view");
+                }
+
+            },
+            sortSelected: function() {
+                var cameraEnhanceButtonClasses = document.getElementById("cameraEnhance").classList;
+                var videocamButtonClasses = document.getElementById("videocam").classList;
+                var invertColorIssueButtonClasses = document.getElementById("invertColorIssue").classList;
+                var sortButtonClasses = document.getElementById("sort").classList;
+                var headsetButtonClasses = document.getElementById("headset").classList;
+                sortButtonClasses.remove("grid-view");
+                sortButtonClasses.add("grid-view-selected");
+                if (!cameraEnhanceButtonClasses.contains("grid-view")) {
+                    cameraEnhanceButtonClasses.remove("grid-view-selected");
+                    cameraEnhanceButtonClasses.add("grid-view");
+                }
+                if (!videocamButtonClasses.contains("grid-view")) {
+                    videocamButtonClasses.remove("grid-view-selected");
+                    videocamButtonClasses.add("grid-view");
+                }
+                if (!invertColorIssueButtonClasses.contains("grid-view")) {
+                    invertColorIssueButtonClasses.remove("grid-view-selected");
+                    invertColorIssueButtonClasses.add("grid-view");
+                }
+                if (!headsetButtonClasses.contains("grid-view")) {
+                    headsetButtonClasses.remove("grid-view-selected");
+                    headsetButtonClasses.add("grid-view");
+                }
+
+
+            },
+            headsetSelected: function() {
+                var cameraEnhanceButtonClasses = document.getElementById("cameraEnhance").classList;
+                var videocamButtonClasses = document.getElementById("videocam").classList;
+                var invertColorIssueButtonClasses = document.getElementById("invertColorIssue").classList;
+                var sortButtonClasses = document.getElementById("sort").classList;
+                var headsetButtonClasses = document.getElementById("headset").classList;
+                headsetButtonClasses.remove("grid-view");
+                headsetButtonClasses.add("grid-view-selected");
+                if (!cameraEnhanceButtonClasses.contains("grid-view")) {
+                    cameraEnhanceButtonClasses.remove("grid-view-selected");
+                    cameraEnhanceButtonClasses.add("grid-view");
+                }
+                if (!videocamButtonClasses.contains("grid-view")) {
+                    videocamButtonClasses.remove("grid-view-selected");
+                    videocamButtonClasses.add("grid-view");
+                }
+                if (!invertColorIssueButtonClasses.contains("grid-view")) {
+                    invertColorIssueButtonClasses.remove("grid-view-selected");
+                    invertColorIssueButtonClasses.add("grid-view");
+                }
+                if (!sortButtonClasses.contains("grid-view")) {
+                    sortButtonClasses.remove("grid-view-selected");
+                    sortButtonClasses.add("grid-view");
+                }
+
+
+            },
+            handleResponse: function() {
+                // console.log(this.dronesServiceResponse);
+                //debugger;
+                // alert(History.getState().url);
+                if (localStorage.getItem('issueUrl') != '' && localStorage.getItem('issueUrl') != null) {
+                    this.url = localStorage.getItem('issueUrl');
+                }
+                //alert(this.url);
+            },
+            addQuantity: function(e) {
+                // var target = e.model.item.id;
+                // var id = document.querySelector('#'+id);
+                // console.log(id);
+                // id.style.border = "2px solid blue";
+            },
+            _onClick: function() {
+                var button = document.getElementById('iron-icon-issue'),
+                    collapse = document.getElementById('collapse-issue')
+                collapse.toggle()
+                if (collapse.opened) {
+                    Polymer.dom(button).setAttribute('icon', 'remove')
+                } else if (!collapse.opened) {
+                    Polymer.dom(button).setAttribute('icon', 'add')
+                }
+            },
+            zoomOut: function() {
+                //debugger;
+                var zm = 0.9;
+                var zoomLevel = 100;
+                var maxZoomLevel = 105;
+                var minZoomLevel = 95;
+                var img = document.getElementById("expandImgIssue");
+                if (zoomLevel > minZoomLevel) {
+                    zoomLevel--;
+                } else {
+                    return;
+                }
+                wid = img.width;
+                ht = img.height;
+                img.style.width = (wid * zm) + "px";
+                img.style.height = (ht * zm) + "px";
+                // img.style.marginLeft = -(img.width / 2) + "px";
+                // img.style.marginTop = -(img.height / 2) + "px";
+            },
+            zoomIn: function() {
+                //debugger;
+                var zm = 1.1;
+                var zoomLevel = 100;
+                var maxZoomLevel = 105;
+                var minZoomLevel = 95;
+                var img = document.getElementById("expandImgIssue");
+                if (zoomLevel < maxZoomLevel) {
+                    zoomLevel++;
+                } else {
+                    return;
+                }
+                wid = img.width;
+                ht = img.height;
+                img.style.width = (wid * zm) + "px";
+                img.style.height = (ht * zm) + "px";
+                // alert(img.style.width);
+                // alert(img.style.height);
+                // img.style.marginLeft = -(img.width / 2) + "px";
+                // img.style.marginTop = -(img.height / 2) + "px";
+            },
+            toggleDialogIssue: function(e) {
+                //var dialog = document.querySelector('#dialogIssue');
+                debugger;
+                localStorage.setItem("target","issue");
+                var expand = document.querySelector('#expandImgIssue');
+                expand.src = "https://dashboard.immuta.io"+e.model.item.megaPath;
+                this.megaPath = e.model.item.megaPath;
+                var div = document.getElementById("dialog-box-issue");
+                div.style.display = "block";
+                this.currentIdIssue = e.model.item.id;
+                anno.reset();
+                // anno.destroy("http://localhost:8000/images/0002.jpg");
+                // if(this.annoArray.length > 0){
+                //     anno.removeAnnotation(this.annoArray);
+                // }
+                this.currentId = e.model.item.id;
+                this.annoArray = [];
+                var polymerThis = this;
+                //var annotationsArray = [];
+                for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                    if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
+                        //annotationsArray = this.annotoriousResponse[i].annotation;
+                        this.commentArrayIssue = this.issueMarkerServiceResponse[i].comments;
+                        this.commentArrayInspectionFindingIssue = this.issueMarkerServiceResponse[i].description;
+                        this.annoArray = this.issueMarkerServiceResponse[i].annotation;
+                         if (this.issueMarkerServiceResponse[i].width != "" && this.issueMarkerServiceResponse[i].width != undefined) {
+                            expand.style.width = this.issueMarkerServiceResponse[i].width + "px";
+                        } else {
+                            expand.style.width = 814.5 + "px";
+                        }
+                        if (this.issueMarkerServiceResponse[i].height != "" && this.issueMarkerServiceResponse[i].height != undefined) {
+                            expand.style.height = this.issueMarkerServiceResponse[i].height + "px";
+                        } else {
+                            expand.style.height = 450 + "px";
+                        }
+                        break;
+
+                    }
+                    else{
+                        this.commentArray = [];
+                        this.commentArrayInspectionFinding = [];
+                        this.annoArray = [];
+                        expand.style.width = 814.5+"px";
+                        expand.style.height = 450+"px";
+                    }
+                }
+                if(this.commentArrayIssue != undefined){
+                for (var i = 0; i < this.commentArrayIssue.length; i++) {
+                    var CurrentDate = this.commentArrayIssue[i].date;
+                    var message = this.commentArrayIssue[i].message;
+                    //console.log(commentArrayIssue[i]);
+                    var mainDiv = document.createElement('div');
+                    //mainDiv.id="main"+i;
+                    var dateDiv = document.createElement('div');
+                    dateDiv.class = "date";
+                    dateDiv.innerHTML = CurrentDate;
+                    var commentDiv = document.createElement('div');
+                    commentDiv.class = "comments";
+                    commentDiv.innerHTML = message;
+                    mainDiv.appendChild(dateDiv);
+                    mainDiv.appendChild(commentDiv);
+                    var aDiv = document.getElementById('appendMsg');
+                    aDiv.appendChild(mainDiv);
+
+                }
+            }else{
+                this.commentArrayIssue = [];
+            }   
+            if(this.commentArrayInspectionFindingIssue != undefined){
+                for (var i = 0; i < this.commentArrayInspectionFindingIssue.length; i++) {
+                    var CurrentDate = this.commentArrayInspectionFindingIssue[i].date;
+                    var message = this.commentArrayInspectionFindingIssue[i].message;
+                    //console.log(commentArrayIssue[i]);
+                    var mainDiv = document.createElement('div');
+                    //mainDiv.id="main"+i;
+                    var dateDiv = document.createElement('div');
+                    dateDiv.class = "date";
+                    dateDiv.innerHTML = CurrentDate;
+                    var commentDiv = document.createElement('div');
+                    commentDiv.class = "comments";
+                    commentDiv.innerHTML = message;
+                    mainDiv.appendChild(dateDiv);
+                    mainDiv.appendChild(commentDiv);
+                    var aDiv = document.getElementById('appendMsgInspectionFinding');
+                    aDiv.appendChild(mainDiv);
+
+                }
+            }else{
+                this.commentArrayInspectionFindingIssue = [];
+            }
+
+                // for(var i=0;i<this.annoArray.length;i++){
+                //     var src = this.annoArray[i].src;
+                //     var s1 = src.substring(0,5);
+                //     var s2 = src.substring(5,src.length);
+                //     var srcNew = s1+s2;
+                //     alert(srcNew);
+                //     this.annoArray.src=srcNew; 
+                // }
+                anno.setProperties({
+                    stroke: 'red',
+                    stroke_width: 5,
+                    hi_stroke: '#3e87e8',
+                    hi_stroke_width: 5
+                });
+                var a = this.annoArray;
+                anno.makeAnnotatable(document.getElementById('expandImgIssue'));
+                document.getElementById("expandImgIssue").onload = function() {
+                    //alert("The image has loaded!");
+                    //debugger;
+                    var obj;
+                    if (a.length > 0) {
+                        for (var i = 0; i < a.length; i++) {
+                            obj = a[i];
+                            this.annoSpanId = obj.id;
+                            localStorage.setItem("annoSpanId", this.annoSpanId);
+                            anno.addAnnotation(obj);
+                            var coordArr = [];
+                            coordArr = localStorage.getItem("coordArr");
+                            var parsed = JSON.parse(coordArr);
+
+                            var arr = [];
+
+                            for (var x in parsed) {
+                                arr.push(parsed[x]);
+                            }
+                            var span = document.createElement('span');
+
+                            span.id = "anno" + obj.id;
+                            span.width = 300;
+                            span.height = 300;
+                            span.style.zIndex = 8;
+                            span.style.position = "absolute";
+                            //span.style.border = "1px solid red";
+                            span.style.paddingLeft = "8px";
+                            span.style.paddingTop = "4px";
+                            span.style.color = "white";
+                            span.style.top = arr[1] + "px";
+                            span.style.left = arr[0] + "px";
+                            span.innerHTML = obj.id;
+
+                            var body = document.getElementsByClassName("annotorious-annotationlayer");
+                            body[0].appendChild(span);
+                            //initJS();
+                            // anno.addHandler('onMouseOverAnnotation', function(event) {
+                            //     anno.highlightAnnotation(obj);
+                            // });
+
+
+                            // anno.addHandler('onMouseOverItem', function(event) {
+                            //     debugger;
+                            //     var x = anno.getAvailableSelectors();
+                            //     console.log(event);
+                            //     alert('a');
+                            // });
+                            // anno.addHandler('onSelectionStarted', function(event) {
+                            //     alert('anno updated');
+                            //     console.log(anno);
+                            // });
+
+                            // anno.activateSelector(a[i].src);
+                        }
+                    }else{
+                        localStorage.setItem("annoSpanId", "0");
+                    }
+                    anno.addHandler('beforeAnnotationRemoved', function(event) {
+                        if (localStorage.getItem("deleteCount") == "1") {
+                            // debugger;
+                            // alert('vish');
+                            console.log(event);
+                            var x = anno.getAnnotations();
+                            // var id = null;
+                            // for (var i = 0; i < x.length; i++) {
+                            //     if (x[i].text == event.text) {
+                            //         id = x[i].text;
+                            //         break;
+                            //     }
+                            // }
+                            var id = event.id;
+                            var span = document.getElementById("anno" + id);
+                            span.parentNode.removeChild(span);
+                            localStorage.setItem("deleteCount", "0");
+                        }
+                    });
+
+                    anno.addHandler('onAnnotationCreated', function(event) {
+                        if (localStorage.getItem("saveCount") == "1") {
+                            //alert('vish');
+                            debugger;
+
+                            var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
+                            event.id=spanId;
+                            console.log(event);
+                            localStorage.setItem("annoSpanId", spanId);
+                            var x = anno.getAnnotations();
+                            var sc = localStorage.getItem("sc");
+                            var parsed = JSON.parse(sc);
+
+                            var arr = [];
+
+                            for (var x in parsed) {
+                                arr.push(parsed[x]);
+                            }
+                            var span = document.createElement('span');
+
+                            span.id = "anno" + spanId;
+                            span.width = 300;
+                            span.height = 300;
+                            span.style.zIndex = 8;
+                            span.style.position = "absolute";
+                            //span.style.border = "1px solid red";
+                            span.style.paddingLeft = "8px";
+                            span.style.paddingTop = "4px";
+                            span.style.color = "white";
+                            span.style.top = arr[2] + "px";
+                            span.style.left = arr[1] + "px";
+                            span.innerHTML = spanId;
+
+                            var body = document.getElementsByClassName("annotorious-annotationlayer");
+                            body[0].appendChild(span);
+
+
+                            this.targetIssue = null;
+                            this.targetCommentIssue = document.querySelector('#inputCommentIssue');
+                            var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
+                            while (myNodeInspectionFinding.firstChild) {
+                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            }
+                            if(localStorage.getItem("target") == "issue"){
+                                var d = new Date();
+                            var month = d.getMonth() + 1;
+                            var day = d.getDate();
+
+                            var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                d.getFullYear();
+                                debugger;
+                            var CurrentDate = output;
+                            var comments = spanId+"."+event.text;
+                            var obj = {
+                                "date": CurrentDate,
+                                "message": comments
+                            }
+                            polymerThis.commentArrayInspectionFindingIssue.push(obj);
+                            var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
+                            while (myNodeInspectionFinding.firstChild) {
+                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            }
+                            var count = polymerThis.commentArrayInspectionFindingIssue.length;
+                            for (var i = 0; i < count; i++) {
+                                debugger;
+                                console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
+                                var mainDivInspectionFinding = document.createElement('div');
+                                //mainDiv.id="main"+i;
+                                var dateDivInspectionFinding = document.createElement('div');
+                                dateDivInspectionFinding.class = "date";
+                                dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].date;
+                                var commentDivInspectionFinding = document.createElement('div');
+                                commentDivInspectionFinding.class = "comments";
+                                commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].message;
+                                mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                var aDivInspectionFinding = document.getElementById('appendMsgInspectionFindingIssue');
+                                aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                            }
+                            }else{
+                                var d = new Date();
+                            var month = d.getMonth() + 1;
+                            var day = d.getDate();
+
+                            var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                d.getFullYear();
+                            debugger;
+                            var CurrentDate = output;
+                            var comments = spanId+"."+event.text;
+                            var obj = {
+                                "date": CurrentDate,
+                                "message": comments
+                            }
+                            polymerThis.commentArrayInspectionFindingIssue.push(obj);
+                            var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                            while (myNodeInspectionFinding.firstChild) {
+                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            }
+                            var count = polymerThis.commentArrayInspectionFindingIssue.length;
+                            for (var i = 0; i < count; i++) {
+                                debugger;
+                                console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
+                                var mainDivInspectionFinding = document.createElement('div');
+                                //mainDiv.id="main"+i;
+                                var dateDivInspectionFinding = document.createElement('div');
+                                dateDivInspectionFinding.class = "date";
+                                dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
+                                var commentDivInspectionFinding = document.createElement('div');
+                                commentDivInspectionFinding.class = "comments";
+                                commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
+                                mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
+                                aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                            }
+                            }
+                            
+                            
+                            localStorage.setItem("saveCount", "0");
+
+
+                        }
+                    });
+
+
+                    //anno.showAnnotations(document.getElementById('expandImg'));
+
+
+                };
+                // dialog.toggle();
+                /*var a = [];
+                var id = null;
+                id = e.model.item.id;
+                for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                    if(id == this.issueMarkerServiceResponse[i].id){
+
+                        a = this.issueMarkerServiceResponse[i].metaData;
+                        break;
+                    }
+                         altitude = (a[0].altitude);
+                    }*/
+            },
+            onEnterCommentIssue: function(e) {
+                debugger;
+                if (e.keyCode === 13) {
+                    console.log(this.userInputIssue);
+                    console.log(this.userInputCommentIssue);
+                    var d = new Date();
+                    var month = d.getMonth() + 1;
+                    var day = d.getDate();
+
+                    var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                        (('' + month).length < 2 ? '0' : '') + month + '/' +
+                        d.getFullYear();
+                    var CurrentDate = output;
+                    console.log(CurrentDate);
+
+
+                    var comments = null;
+                    //var commentArrayIssue = this.commentArrayIssue;
+                    var id = null;
+                    id = this.currentIdIssue;
+                    for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
+                        if (id == this.issueMarkerServiceResponse[i].id) {
+                            if (this.targetIssue != null) {
+                                comments = this.userInputIssue;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments
+                                }
+                                this.commentArrayIssue.push(obj);
+                                var myNode = document.getElementById("appendMsgIssue");
+                                while (myNode.firstChild) {
+                                    myNode.removeChild(myNode.firstChild);
+                                }
+                                var count = this.commentArrayIssue.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(this.commentArrayIssue[i]);
+                                    var mainDiv = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDiv = document.createElement('div');
+                                    dateDiv.class = "date";
+                                    dateDiv.innerHTML = this.commentArrayIssue[i].date;
+                                    var commentDiv = document.createElement('div');
+                                    commentDiv.class = "comments";
+                                    commentDiv.innerHTML = this.commentArrayIssue[i].message;
+                                    mainDiv.appendChild(dateDiv);
+                                    mainDiv.appendChild(commentDiv);
+                                    var aDiv = document.getElementById('appendMsgIssue');
+                                    aDiv.appendChild(mainDiv);
+                                }
+                                break;
+                            } else {
+                                comments = this.userInputCommentIssue;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments
+                                }
+                                this.commentArrayInspectionFindingIssue.push(obj);
+                                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = this.commentArrayInspectionFindingIssue.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(this.commentArrayInspectionFindingIssue[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.innerHTML = this.commentArrayInspectionFindingIssue[i].date;
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.innerHTML = this.commentArrayInspectionFindingIssue[i].message;
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    var aDivInspectionFinding = document.getElementById('appendMsgInspectionFindingIssue');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
+                                break;
+                            }
+                            // comments = this.userInputComment;
+
+                        } else {
+
+                            comments = "";
+                            // document.querySelector('#appendMsgIssue').innerHTML = comments;
+                            // document.querySelector('#appendMsgInspectionFindingIssue').innerHTML = comments;
+
+                        }
+                    }
+                    document.getElementById("inputReqIssue").value="";
+                     document.getElementById("inputCommentIssue").value="";
+                }
+            },
+            setTargetIssue: function() {
+                // alert('inside set target');
+                this.targetIssue = document.getElementById('inputReqIssue');
+                this.targetCommentIssue = null;
+            },
+            setTargetCommentIssue: function() {
+                //alert('inside set target comment');
+                this.targetIssue = null;
+                this.targetCommentIssue = document.querySelector('#inputCommentIssue');
+            },
+            saveDialog: function() {
+                // var div = document.getElementById("dialog-box-issue");
+                // div.style.display = "none";
+                 var el=document.getElementById('expandImgIssue');
+                 var viewportOffset = el.getBoundingClientRect();
+               
+
+                
+                
+                // these are relative to the viewport, i.e. the window
+
+               // alert(viewportOffset.x+"---"+viewportOffset.left);
+               // alert(viewportOffset.y+"---"+viewportOffset.top);
+                
+                
+                var xposition = viewportOffset.left;
+                var yposition = viewportOffset.top;
+               // var getAbsPosition = getPosition(el);
+               // var abc = getAbsoluteOffsetFromBody(el);
+               // var abc = getAbsoluteOffsetFromRelative(divNeww);
+               // var xposition = abc.left;
+               // var yposition = abc.top;
+                var width = viewportOffset.width;
+                var height = viewportOffset.height;
+
+               
+
+                var id=this.megaPath;
+                               
+                var div = document.getElementById("dialog-box-issue");
+                var inspectorId=localStorage.getItem('inspectorId');
+                var defectType=getDefectName(document.getElementById("defectType").selected);
+
+              //  alert(document.getElementById('requirementMsg'));
+               // alert(document.getElementById('appendMsg'));
+               // var comment;
+               // var desc;
+               // for(var i=0;i<this.issueMarkerServiceResponse.length;i++){
+               //  if(this.currentIdIssue == this.issueMarkerServiceResponse[i].id){
+               //      comment = this.issueMarkerServiceResponse[i].comments;
+               //      desc = this.issueMarkerServiceResponse[i].description;
+               //      break;
+               //  }
+               // }
+               // if(comment == 'undefined'){
+               //  comment = [];
+               // }
+               // if(desc == 'undefined'){
+               //  desc = [];
+               // }
+                var comments= this.commentArrayIssue;//document.getElementById('requirementMsg').innerHTML;
+                var desc= this.commentArrayInspectionFindingIssue;//document.getElementById('inputCommentIssue').value;
+
+                var statusType=getStatusName(document.getElementById("statusType").selected);
+               
+                var assetId=localStorage.getItem("assetTitle");
+                var inspectionId=localStorage.getItem("inspectionId");
+                var annotatedMetadata=anno.getAnnotations();
+                  
+
+
+                 console.log("id : "+id+ "defectType: "+defectType+", comments: "+comments+", statusType : "+statusType+" , assetId : "+assetId+" , inspectionId: "+inspectionId+" , annotatedMetadata: "+annotatedMetadata+" , desc: "+desc+ " :"+", viewportOffset: "+viewportOffset);
+
+
+                this.$.AjaxPost.body = [{
+                                        "id": id,
+                                        "inspectorId": inspectorId,
+                                        "annotation": annotatedMetadata,
+                                        "comments": comments,
+                                        "defectType": defectType,
+                                        "statusType": statusType,
+                                        "assetId": assetId,
+                                        "inspectionId": inspectionId,
+                                        "description": desc,
+                                        "viewportOffset":[xposition,yposition,width,height]
+                                    }
+                                    ];
+
+                               console.log(this.$.AjaxPost.body);     
+                
+                this.$.AjaxPost.body = {"id":"/Polymer/images/0001.jpg"};
+                this.$.AjaxPost.generateRequest();
+                this.$.issueAjax.generateRequest();
+                var div = document.getElementById("dialog-box-issue");
+                div.style.display = "none";
+                var obj = {
+                    "id": this.currentId,
+                    "annotation": anno.getAnnotations()
+                };
+                //anno.destroy(document.getElementById('expandImg'));
+                if(this.annoArray.length>0){
+                for (var i = 0; i < this.annoArray.length; i++) {
+                    anno.removeAnnotation(this.annoArray[i]);
+                }
+                }
+                var img = document.getElementById("expandImgIssue");
+                img.style.width = 0 + "px";
+                img.style.height = 0 + "px";
+                //document.getElementById('appendMsg').innerHTML = "";
+                // for (var i = 0; i < this.commentArrayIssue.length; i++) {
+                //     document.getElementById('appendMsg').innerHTML = "";
+                // }
+
+                this.commentArrayIssue = [];
+                this.commentArrayInspectionFindingIssue = [];
+                var myNode = document.getElementById("appendMsgIssue");
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
+                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
+                while (myNodeInspectionFinding.firstChild) {
+                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                }
+                document.getElementById('appendMsgIssue').innerHTML = "";
+                document.getElementById('appendMsgInspectionFindingIssue').innerHTML = "";
+                document.getElementById('inputReqIssue').value = "";
+                document.getElementById('inputCommentIssue').value = "";
+
+            },
+            closeDialog: function() {
+                var div = document.getElementById("dialog-box-issue");
+                div.style.display = "none";
+                 if(this.annoArray.length>0){
+                for (var i = 0; i < this.annoArray.length; i++) {
+                    anno.removeAnnotation(this.annoArray[i]);
+                }
+            }
+                // for (var i = 0; i < this.commentArrayIssue.length; i++) {
+                //     document.getElementById('appendMsg').innerHTML = "";
+                // }
+                debugger;
+                //document.getElementById('appendMsg').innerHTML = "";
+                this.commentArrayIssue = [];
+                this.commentArrayInspectionFindingIssue = [];
+                var myNode = document.getElementById("appendMsgIssue");
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
+                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
+                while (myNodeInspectionFinding.firstChild) {
+                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                }
+                document.getElementById('appendMsgIssue').innerHTML = "";
+                document.getElementById('appendMsgInspectionFindingIssue').innerHTML = "";
+                document.getElementById('inputReqIssue').value = "";
+                document.getElementById('inputCommentIssue').value = "";
+            },
+            toggleDialogGenerate: function(e) {
+                var dialog = document.querySelector('#reportToggle');
+                dialog.toggle();
+            },
+            saveDialog: function(e){
+                debugger;
+                summary = document.querySelector('#executiveSummary');
+                console.log(summary.value);
+            },
+            ready: function() {
+                // debugger;
+                title = localStorage.getItem('assetTitle');
+                inspectorId = localStorage.getItem('inspectorId');
+                // alert("title in issue : "+title);
+                if (title == null || title == 'null') {
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssues/inspectorId=" + inspectorId;
+                } else {
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueDate/inspectorId=" + inspectorId + "&assetId=" + title;
+                }
+                //  alert(this.url);
+
+                var a = JSON.parse(localStorage.getItem('dronesServiceResponse'));
+                if (localStorage.getItem('issueUrl') != '' && localStorage.getItem('issueUrl') != null) {
+                    document.getElementById('ajax').generateRequest();
+                }
+                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId
+
+
+                var a = JSON.parse(localStorage.getItem('dronesServiceResponse'));
+                console.log('hi');
+                console.log(a);
+            }
+        });
+    })();
+    </script>
+</dom-module>
