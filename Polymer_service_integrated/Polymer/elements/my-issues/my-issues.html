@@ -43,7 +43,7 @@
         </iron-ajax>
          <iron-ajax
             id="webTicketGet"
-            url="http://35.162.2.176/QvAJAXZfc/GetWebTicket.aspx?cmd=<Global method='GetWebTicket'><UserId>CUSTOM\amahajan</UserId></Global>"
+            url="https://qlikreport.infocepts.com/QvAJAXZfc/GetWebTicket.aspx?cmd=%3CGlobal%20method=%27GetWebTicket%27%3E%3CUserId%3ECUSTOM\amahajan%3C/UserId%3E%3C/Global%3E"
             method="GET"
             handle-as="xml"
             on-response="_handleWebTicketResponse"
@@ -52,7 +52,7 @@
         </iron-ajax>
          <iron-ajax
             id="qlikReport"
-            url="http://35.162.2.176/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket=<WebTicket>"
+            url="https://35.162.2.176/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket=<WebTicket>"
             method="GET"
             handle-as="doc"
             on-response="_handleQlikResponse"
@@ -217,7 +217,7 @@
             <span class="dialogTitle">Enter Executive Summary:</span>
               <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
               <div class="modal-footer ">
-                <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" on-click="saveSummary" class="btn-default" style="text-decoration: none;">Generate</a>
+                <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</a>
                 <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
                 <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
             </div>
@@ -1216,19 +1216,24 @@
                 
             },
             _handleReportSave:function(e){
-               alert("saved succesfully");
+              // alert("saved succesfully");
               this.$.webTicketGet.generateRequest();
             },
             _handleWebTicketResponse:function(e){
-                alert("token received");
+                //alert("token received");
                 debugger;
+                var x = this.$.webTicketGet.lastResponse;
+                var y = x.getElementsByTagName("_retval_");
+                var z = y[0].textContent;
                 console.log(this.$.webTicketGet.lastResponse);
+                this.$.qlikReport.url = "https://qlikreport.infocepts.com/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket="+z;
+                this.$.qlikReport.generateRequest();
             },
             _handleWebTicketError:function(e){
                alert('error response for token');
             },
             _handleQlikResponse:function(e){
-               alert('qlik response ');
+              // alert('qlik response ');
             },
             _handleQlikError:function(e){
               alert('error response for qlik report');
