@@ -243,6 +243,28 @@
                 localStorage.setItem('assetTitle',this.dronesServiceResponse[0].title );
                } 
               }
+               if(localStorage.getItem('phaseSelected')!=true)
+              {
+               for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                 debugger;
+                    inspection = null;
+                    phaseTitle = null;
+                    phase = null;
+                    metadata = [];
+                    inspection = this.dronesServiceResponse[i].inspection;
+                    if(inspection!=undefined){
+                    for (var j = 0; j < inspection.length; j++) {
+                        phase = inspection[j].phase;
+
+                         debugger;
+                        if(i==0&&j==0){
+                          //  alert("phase in asset response : "+phase[j].title);
+                         localStorage.setItem('phaseId',phase[j].title);
+                        }
+                    }
+                }
+                }
+             }
             },
            handleAssetsClick: function(e) {
                 var id = e.model.item.id;
@@ -271,13 +293,39 @@
               //  alert("title in drone: "+title);
 
                 localStorage.removeItem('inspectionId');
-                inspectorId= localStorage.getItem('inspectorId')
+                inspectorId= localStorage.getItem('inspectorId');
+                var title=e.model.item.title;
+                phaseId=localStorage.getItem('phaseId');
+                console.log(title);
+                 for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                    inspection = null;
+                    phaseTitle = null;
+                    phase = null;
 
-             
-                this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId="+inspectorId+"&assetId="+title;    
+                    debugger;
+                    assetTitleSelected=this.dronesServiceResponse[i].title;
+
+                    if(assetTitleSelected==title){
+                        inspection = this.dronesServiceResponse[i].inspection;
+                        if(inspection!=undefined){
+                            for (var j = 0; j < inspection.length; j++) {
+                            phase = inspection[j].phase;
+                            /*
+                            phaseId= phase[0].title;
+                            alert("in asset click phase : "+phaseId);
+                            localStorage.setItem('phaseId',phaseId);*/
+                        } 
+                        }
+                       
+                    }
+                    
+                }
+
+              
+                 this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId + "&assetId=" + title+"&userId="+userId+"&phaseId="+phaseId;  
                // alert(this.url);
-                 this.$.ajaxDrone.url = this.url;
-                this.$.ajaxDrone.generateRequest();
+               //  this.$.ajaxDrone.url = this.url;
+               // this.$.ajaxDrone.generateRequest();
             },
             zoomIn: function() {
                 // debugger;
@@ -330,7 +378,9 @@
                 debugger;
                 a = this.dronesServiceResponse;
                 var title=e.model.item.title;
-                console.log(title)
+                console.log(title);
+                 localStorage.setItem('phaseId',title);
+                 localStorage.setItem('phaseSelected',true);
 
                 for (var i = 0; i < this.dronesServiceResponse.length; i++) {
                     inspection = null;
@@ -338,6 +388,7 @@
                     phase = null;
                     metadata = [];
                     inspection = this.dronesServiceResponse[i].inspection;
+                    if(inspection!=undefined){
                     for (var j = 0; j < inspection.length; j++) {
                         phase = inspection[j].phase;
                         for (var k = 0; k < phase.length; k++) {
@@ -353,6 +404,7 @@
                             }
                         }
                     }
+                 }
                 }
 
 
@@ -384,11 +436,12 @@
                 var xx=document.getElementById("basic1");
      xx.style.display="none"
                 localStorage.setItem('assetId', "0");
-                 localStorage.setItem('assetId', "0");
+                localStorage.setItem('assetId', "0");
                 inspectorId=localStorage.getItem('inspectorId');
+                userId=localStorage.getItem('username');
                  
-                 this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId="+inspectorId;   
-                 this.userName = localStorage.getItem("username");
+                this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId="+inspectorId+"&userId="+userId;    
+                this.userName = localStorage.getItem("username");
             },
             urlState: function(urlPath) {
                 //  debugger;

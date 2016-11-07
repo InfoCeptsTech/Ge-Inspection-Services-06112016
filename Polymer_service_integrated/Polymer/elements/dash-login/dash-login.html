@@ -197,24 +197,22 @@ input:focus ~ label, input.used ~ label {
          //debugger;
         var urlPost="https://dashboard.immuta.io/ia-0.0.1/oauth/token?grant_type=password";
         var url=document.getElementById('loginEndpoint').url;
-        username=document.getElementById('username').value;
-        password=document.getElementById('password').value;
 
-       
-        document.getElementById('loginEndpoint').url=urlPost+"&username="+username+"&password="+password;
-        /*document.getElementById('loginEndpoint').generateRequest();*/
+      	username=document.getElementById('username').value;
+      	password=document.getElementById('password').value;
+        localStorage.setItem("username",username);
+        localStorage.setItem('inspectorId', "user");
+      	document.getElementById('loginEndpoint').url=urlPost+"&username="+username+"&password="+password;
+        document.getElementById('loginEndpoint').generateRequest();
         document.getElementById('loginEndpoint').url=urlPost;
         sleep(500);
-        var xx=document.getElementById("basic1");
-      xx.style.display="none";
-      localStorage.setItem('inspectorId', "user");
-      document.querySelector('app-router').go('/my-drone');
-        localStorage.setItem("username",username);
+       
+       
 
-        var xx=document.getElementById("basic1");
-      xx.style.display="none";
-      localStorage.setItem('inspectorId', "user");
-      document.querySelector('app-router').go('/my-drone');
+      //   var xx=document.getElementById("basic1");
+      // xx.style.display="none";
+      // localStorage.setItem('inspectorId', "user");
+      // document.querySelector('app-router').go('/my-drone');
       }
     
      })
