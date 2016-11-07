@@ -1135,8 +1135,11 @@
                 }
                 }
                 var img = document.getElementById("expandImgIssue");
+                var canvas = document.getElementById("myCanvas");
                 img.style.width = 0 + "px";
                 img.style.height = 0 + "px";
+                canvas.style.width = 0 + "px";
+                canvas.style.height = 0 + "px";
                 //document.getElementById('appendMsg').innerHTML = "";
                 // for (var i = 0; i < this.commentArrayIssue.length; i++) {
                 //     document.getElementById('appendMsg').innerHTML = "";
@@ -1185,6 +1188,12 @@
                 document.getElementById('appendMsgInspectionFindingIssue').innerHTML = "";
                 document.getElementById('inputReqIssue').value = "";
                 document.getElementById('inputCommentIssue').value = "";
+                var img = document.getElementById("expandImgIssue");
+                var canvas = document.getElementById("myCanvas");
+                img.style.width = 0 + "px";
+                img.style.height = 0 + "px";
+                canvas.style.width = 0 + "px";
+                canvas.style.height = 0 + "px";
             },
             toggleDialogGenerate: function(e) {
                 var dialog = document.querySelector('#reportToggle');
