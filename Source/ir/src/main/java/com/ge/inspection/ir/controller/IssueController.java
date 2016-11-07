@@ -182,7 +182,7 @@ public class IssueController {
 	}
 	@CrossOrigin
 	@RequestMapping(value = "/inspection/getIssues/inspectorId={inspectorId}&inspectionId={inspectionId}&assetId={assetId}&userId={userId}", method = RequestMethod.GET)
-	public String getIssue(@PathVariable String inspectorId,@PathVariable String inspectionId,@PathVariable String assetId,String userId){
+	public String getIssue(@PathVariable String inspectorId,@PathVariable String inspectionId,@PathVariable String assetId,@PathVariable String userId){
 		List<String> assetList=inspectionDao.getAsset(inspectorId);
 		int assetIndex=assetList.indexOf(assetId);
 		List<IssueInspection> issueInspectionList=issueDaoImpl.getIssueDate(inspectorId,assetId,userId);
@@ -233,7 +233,8 @@ public class IssueController {
 					}*/
 					 
 					 File file=new File(inspectionMedia.getBlobId());
-					IssueDtlModel issueDtlModel=new IssueDtlModel(file.getName().split("\\.")[0],inspectionMedia.getDefectType(), "/Polymer/temp/"+file.getName(), inspectionMedia.getBlobId(), "/Polymer/images/marker2.png", inspectionMedia.getStatusType(), "tooltip","");
+					 String megaPath=inspectionMedia.getBlobId().replace("/Polymer/temp", "/Polymer/images");
+					IssueDtlModel issueDtlModel=new IssueDtlModel(file.getName().split("\\.")[0],inspectionMedia.getDefectType(), "/Polymer/temp/"+file.getName(), megaPath, "/Polymer/images/marker2.png", inspectionMedia.getStatusType(), "tooltip","");
 					set.add(issueDtlModel);
 				}
 				issueInspection.setIssueDtlModel(set);

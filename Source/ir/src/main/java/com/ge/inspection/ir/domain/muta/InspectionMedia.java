@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 @Entity
 @Table(name="inspection_media", uniqueConstraints=
-@UniqueConstraint(columnNames={"blobId", "userId"}))
+@UniqueConstraint(columnNames={"blobId", "user"}))
 public class InspectionMedia {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class InspectionMedia {
 	private String annotedComments;
 	@Column(name = "commentjson",length = 4000) 
 	private String commentJson;
-	@Column(name = "userId",length = 400) 
+	@Column(name = "user",length = 400) 
 	private String userId;
 	
 	@Column(name = "issueimage")
