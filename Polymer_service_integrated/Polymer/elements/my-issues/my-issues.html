@@ -52,7 +52,7 @@
         </iron-ajax>
          <iron-ajax
             id="qlikReport"
-            url="http://35.162.2.176/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket="
+            url="http://35.162.2.176/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket=<WebTicket>"
             method="GET"
             handle-as="doc"
             on-response="_handleQlikResponse"
@@ -93,7 +93,7 @@
                             <div class="issues">
                                 <span class="issue-title"><img src="https://dashboard.immuta.io{{item.issues-markers}}" width="20" height="20">{{item.defectType}}</span>
                                 <!-- <img id="img-tooltip" src="{{item.mini-path}}" class="img-tooltip"> -->
-                                <paper-icon-button raised on-dblclick="toggleDialogIssue" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.megaPath}}" class="img-tooltip" id="img-tooltip-{{index}}">
+                                <paper-icon-button raised on-dblclick="toggleDialogIssue" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.miniPath}}" class="img-tooltip" id="img-tooltip-{{index}}">
                                 </paper-icon-button>
                                 <paper-tooltip for="img-tooltip-{{index}}">{{item.tooltip}}</paper-tooltip>
                                <div class="dailog-box" id="dialog-box-issue">
@@ -492,11 +492,12 @@
             },
             zoomOut: function() {
                 //debugger;
-                var zm = 0.9;
+                var zm = 1.1;
                 var zoomLevel = 100;
                 var maxZoomLevel = 105;
                 var minZoomLevel = 95;
                 var img = document.getElementById("expandImgIssue");
+                var canvas = document.getElementById("myCanvas");
                 if (zoomLevel > minZoomLevel) {
                     zoomLevel--;
                 } else {
@@ -504,18 +505,32 @@
                 }
                 wid = img.width;
                 ht = img.height;
-                img.style.width = (wid * zm) + "px";
-                img.style.height = (ht * zm) + "px";
+                img.style.width = (wid / zm) + "px";
+                img.style.height = (ht / zm) + "px";
+                canvas.style.width = (wid / zm) + "px";
+                canvas.style.height = (ht / zm) + "px";
+                var annotationArray = anno.getAnnotations();
+                for(var i=0;i<annotationArray.length;i++){
+                var span = document.getElementById("anno"+annotationArray[i].id);
+                var t = span.style.top;
+                t = t.replace('px', '');
+                var l = span.style.left;
+                l = l.replace('px', '');
+                span.style.top = (Number(t) / zm) + "px";
+                span.style.left = (Number(l) / zm) + "px";
+                }
                 // img.style.marginLeft = -(img.width / 2) + "px";
                 // img.style.marginTop = -(img.height / 2) + "px";
             },
             zoomIn: function() {
                 //debugger;
-                var zm = 1.1;
+                 var zm = 1.1;
                 var zoomLevel = 100;
                 var maxZoomLevel = 105;
                 var minZoomLevel = 95;
                 var img = document.getElementById("expandImgIssue");
+                var canvas = document.getElementById("myCanvas");
+                var annoNumber = anno.getAnnotations();
                 if (zoomLevel < maxZoomLevel) {
                     zoomLevel++;
                 } else {
@@ -525,6 +540,18 @@
                 ht = img.height;
                 img.style.width = (wid * zm) + "px";
                 img.style.height = (ht * zm) + "px";
+                canvas.style.width = (wid * zm) + "px";
+                canvas.style.height = (ht * zm) + "px";
+                var annotationArray = anno.getAnnotations();
+                for(var i=0;i<annotationArray.length;i++){
+                var span = document.getElementById("anno"+annotationArray[i].id);
+                var t = span.style.top;
+                t = t.replace('px', '');
+                var l = span.style.left;
+                l = l.replace('px', '');
+                span.style.top = (Number(t) * zm) + "px";
+                span.style.left = (Number(l) * zm) + "px";
+                }
                 // alert(img.style.width);
                 // alert(img.style.height);
                 // img.style.marginLeft = -(img.width / 2) + "px";
@@ -984,6 +1011,37 @@
                 // var div = document.getElementById("dialog-box-issue");
                 // div.style.display = "none";
                  var el=document.getElementById('expandImgIssue');
+
+                 var p;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                var img1 = document.createElement("img");
+                img1.width = el.width;
+                img1.height = el.height;
+                var sourceCanvas = document.getElementById('myCanvas')
+                var sourceCtx = sourceCanvas.getContext("2d");
+                sourceCtx.font="30px Verdana";
+                sourceCtx.fillStyle = "white";
+                var annotationArray = anno.getAnnotations();
+                for(var i=0;i<annotationArray.length;i++){
+                   var spanId = document.getElementById("anno"+annotationArray[i].id);
+                   var top = spanId.style.top;
+                   top = top.replace("px","");
+                   var left = spanId.style.left;
+                    left = left.replace("px","");
+                   sourceCtx.fillText(annotationArray[i].id,Number(left),Number(top));
+                }
+
+
+                // p = document.getElementById("fileUpload").value;
+                img1.setAttribute('src', el.src);
+                canvas.width = el.width;
+                canvas.height = el.height;
+                ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+                ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
+                var dataURL = canvas.toDataURL("image/jpeg");
+                window.open(dataURL);
+
                  var viewportOffset = el.getBoundingClientRect();
                
 
@@ -1054,7 +1112,8 @@
                                         "assetId": assetId,
                                         "inspectionId": inspectionId,
                                         "description": desc,
-                                        "viewportOffset":[xposition,yposition,width,height]
+                                        "userId":userId,
+                                        "dataURL": dataURL
                                     }
                                     ];
 
@@ -1153,6 +1212,8 @@
             },
             _handleWebTicketResponse:function(e){
                 alert("token received");
+                debugger;
+                console.log(this.$.webTicketGet.lastResponse);
             },
             _handleWebTicketError:function(e){
                alert('error response for token');
