@@ -1116,7 +1116,7 @@ input[type=range]:focus::-ms-fill-upper {
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-top: 15px;
-    width: 207px;
+    width:87%;
     clear: both;
 }
 #imageDetailIssue {
@@ -1191,7 +1191,7 @@ paper-input#inputReqIssue, #inputCommentIssue {
     font-size: 14px!important;
 }
 #appendMsg, #appendMsgIssue {
-    max-height: 100px;
+    max-height: 50px;
     min-height: 0px;
     box-shadow: none;
     font-size: 13px;
@@ -1200,7 +1200,7 @@ paper-input#inputReqIssue, #inputCommentIssue {
     padding: 0px;
 }
 #appendMsgInspectionFinding, #appendMsgInspectionFindingIssue {
-    max-height: 100px;
+    max-height: 50px;
     min-height: 0px;
     box-shadow: none;
     font-size: 13px;
