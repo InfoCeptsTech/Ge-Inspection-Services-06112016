@@ -114,7 +114,7 @@
                             <div class="modal-body">
                                 <template is="dom-repeat" items="{{item.img}}">
                                     <div class="abc" id="abc">
-                                        <paper-icon-button raised on-dblclick="toggleDialog" on-tap="addQuantity" src="localhost:8080{{item.miniPath}}" class="phases-img" id="{{item.id}}">
+                                        <paper-icon-button raised on-dblclick="toggleDialog" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.miniPath}}" class="phases-img" id="{{item.id}}">
                                             <!--  <img id="{{item.id}}" on-tap="addQuantity" raised class="phases-img" src="{{item.src}}"> -->
                                         </paper-icon-button>
                                         <!--  <img class$="{{item.class}}" src="{{item.issuePath}}"> -->
@@ -980,15 +980,16 @@
 
                 document.getElementById("expandImg").onload = function() {
                     //alert("The image has loaded!");
-                    //debugger;
+                    debugger;
                     var obj;
+                    var a = polymerThis.annoArray;
                     if (a.length > 0) {
                         for (var i = 0; i < a.length; i++) {
                             obj = a[i];
                             this.annoSpanId = obj.id;
                             localStorage.setItem("annoSpanId", this.annoSpanId);
                             anno.addAnnotation(obj);
-                            var coordArr = [];
+                           var coordArr = [];
                             coordArr = localStorage.getItem("coordArr");
                             var parsed = JSON.parse(coordArr);
 
@@ -997,23 +998,23 @@
                             for (var x in parsed) {
                                 arr.push(parsed[x]);
                             }
-                            //var span = document.createElement('span');
+                            var span = document.createElement('span');
 
-                            // span.id = "anno" + obj.id;
-                            // span.width = 300;
-                            // span.height = 300;
-                            // span.style.zIndex = 8;
-                            // span.style.position = "absolute";
-                            // //span.style.border = "1px solid red";
-                            // span.style.paddingLeft = "8px";
-                            // span.style.paddingTop = "4px";
-                            // span.style.color = "white";
-                            // span.style.top = arr[1] + "px";
-                            // span.style.left = arr[0] + "px";
-                            // span.innerHTML = obj.id;
+                            span.id = "anno" + obj.id;
+                            span.width = 300;
+                            span.height = 300;
+                            span.style.zIndex = 8;
+                            span.style.position = "absolute";
+                            //span.style.border = "1px solid red";
+                            span.style.paddingLeft = "8px";
+                            span.style.paddingTop = "4px";
+                            span.style.color = "white";
+                            span.style.top = arr[1] + "px";
+                            span.style.left = arr[0] + "px";
+                            span.innerHTML = obj.id;
 
-                            // var body = document.getElementsByClassName("annotorious-item annotorious-opacity-fade annotorious-item-unfocus");
-                            // body[0].appendChild(span);
+                            var body = document.getElementsByClassName("annotorious-annotationlayer");
+                            body[0].appendChild(span);
                             
                             // ctx.fillText(spanId,arr[0],arr[1]);
 
@@ -1307,7 +1308,7 @@
                    top = top.replace("px","");
                    var left = spanId.style.left;
                     left = left.replace("px","");
-                   sourceCtx.fillText(annotationArray[i].id,left,top);
+                   sourceCtx.fillText(annotationArray[i].id,Number(left),Number(top));
                 }
 
 
@@ -1316,7 +1317,7 @@
                 canvas.width = el.width;
                 canvas.height = el.height;
                 ctx.drawImage(img1, 0, 0, img1.width, img1.height);
-                ctx.drawImage(sourceCanvas, 0, 0);
+                ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
                 var dataURL = canvas.toDataURL("image/jpeg");
                 //alert("from getbase64 function" + dataURL);
                 //window.open(dataURL);
@@ -1657,8 +1658,8 @@
                 return JSON.stringify(obj);
             },
             zoomOut: function() {
-                debugger;
-                var zm = 0.9;
+                //debugger;
+                var zm = 1.1;
                 var zoomLevel = 100;
                 var maxZoomLevel = 105;
                 var minZoomLevel = 95;
@@ -1672,28 +1673,31 @@
                 }
                 wid = img.width;
                 ht = img.height;
-                img.style.width = (wid * zm) + "px";
-                img.style.height = (ht * zm) + "px";
-                canvas.style.width = (wid * zm) + "px";
-                canvas.style.height = (ht * zm) + "px";
+                img.style.width = (wid / zm) + "px";
+                img.style.height = (ht / zm) + "px";
+                canvas.style.width = (wid / zm) + "px";
+                canvas.style.height = (ht / zm) + "px";
+                var annotationArray = anno.getAnnotations();
+                for(var i=0;i<annotationArray.length;i++){
+                var span = document.getElementById("anno"+annotationArray[i].id);
                 var t = span.style.top;
                 t = t.replace('px', '');
                 var l = span.style.left;
                 l = l.replace('px', '');
-                span.style.top = (Number(t) * zm) + "px";
-                span.style.left = (Number(l) * zm) + "px";
+                span.style.top = (Number(t) / zm) + "px";
+                span.style.left = (Number(l) / zm) + "px";
+                }
                 // img.style.marginLeft = -(img.width / 2) + "px";
                 // img.style.marginTop = -(img.height / 2) + "px";
             },
             zoomIn: function() {
-                debugger;
+                //debugger;
                 var zm = 1.1;
                 var zoomLevel = 100;
                 var maxZoomLevel = 105;
                 var minZoomLevel = 95;
                 var img = document.getElementById("expandImg");
                 var canvas = document.getElementById("myCanvas");
-                var span = document.getElementById("anno1");
                 var annoNumber = anno.getAnnotations();
                 if (zoomLevel < maxZoomLevel) {
                     zoomLevel++;
@@ -1706,12 +1710,16 @@
                 img.style.height = (ht * zm) + "px";
                 canvas.style.width = (wid * zm) + "px";
                 canvas.style.height = (ht * zm) + "px";
+                var annotationArray = anno.getAnnotations();
+                for(var i=0;i<annotationArray.length;i++){
+                var span = document.getElementById("anno"+annotationArray[i].id);
                 var t = span.style.top;
                 t = t.replace('px', '');
                 var l = span.style.left;
                 l = l.replace('px', '');
                 span.style.top = (Number(t) * zm) + "px";
                 span.style.left = (Number(l) * zm) + "px";
+                }
                 // alert(img.style.width);
                 // alert(img.style.height);
                 // img.style.marginLeft = -(img.width / 2) + "px";
