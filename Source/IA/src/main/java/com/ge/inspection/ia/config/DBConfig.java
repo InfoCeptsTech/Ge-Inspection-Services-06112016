@@ -28,7 +28,7 @@ public class DBConfig{
 	    @Value("${spring.datasource.url}")
 	    private String databaseUrl;
 
-	    @Value("${spring.datasource.username1}")
+	    @Value("${spring.datasource.username}")
 	    private String username;
 
 	    @Value("${spring.datasource.password}")
