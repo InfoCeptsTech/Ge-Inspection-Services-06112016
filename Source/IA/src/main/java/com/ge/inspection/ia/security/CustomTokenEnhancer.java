@@ -24,7 +24,6 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         additionalInfo.put("inspectorId", "inspectorId");
       
         Users loginUser=userRepository.findByUsernameCaseInsensitive(user.getUsername());
-        System.out.println("my role is >>>>>>>>>>>>>"+user.getUsername()+" inspector id: "+loginUser.getInspectorId());
         additionalInfo.put("inspectorId",  loginUser.getInspectorId());
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);

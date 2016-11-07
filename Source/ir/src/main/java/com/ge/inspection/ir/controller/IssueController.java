@@ -3,6 +3,7 @@ package com.ge.inspection.ir.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,27 +39,44 @@ public class IssueController {
 	@Autowired
 	private InspectionDao inspectionDao;
 	
-	@Value("${media.temp.location}")
-	private String compMediaLocation;
-	
 	@Value("${media.location}")
  	private String mediaLocation;
 	@Autowired
 	private ImageUtil imageUtil;
 	
+	
+	private String getValue(Object descObject,Object commentObj) {
+		StringBuilder commentString=new StringBuilder();
+		StringBuilder descString=new StringBuilder();
+		String comment="";
+		
+		ArrayList<Object> descList= (ArrayList<Object>) descObject;
+		ArrayList<Object> commentList=(ArrayList<Object>) commentObj;
+		
+		for(Object c:descList){
+			Map<String,String> map=(Map<String, String>) c;
+			commentString=commentString.append(map.get("date")+":"+map.get("message")+"\n");
+		}
+		for(Object c:commentList){
+			Map<String,String> map=(Map<String, String>) c;
+			descString=descString.append(map.get("date")+":"+map.get("message")+"\n");
+		}
+		
+		comment=commentString.toString()+"\n  "+descString.toString();
+		return comment;
+	}
 	@CrossOrigin
 	@RequestMapping(value = "/inspection/addIssue", method = RequestMethod.POST)
 	public String addIssue(@RequestBody String inspectionMedia){
 		
 		List<Object> reqObject=(List<Object>) JSONUtil.toObject(inspectionMedia, List.class);
-		//issueDaoImpl.addIssue(inspectionMedia);
 		List<InspectionMedia> inspectionMediaList=new ArrayList<InspectionMedia>();
 		for(Object object:reqObject){
 			
 			Map<String,Object> reqMap=(Map<String, Object>) object;
 			String annotation=JSONUtil.toJson(reqMap.get("annotation"));
 			String blobId=(String)reqMap.get("id");
-			
+			blobId=blobId.replace("images", "temp");
 			String comment=JSONUtil.toJson(reqMap.get("comments"));
 			String description=JSONUtil.toJson(reqMap.get("description"));
 			//String comment=(String)reqMap.get("comments");
@@ -67,19 +86,21 @@ public class IssueController {
 			String statusType=String.valueOf(reqMap.get("statusType"));
 			String inspectionId=(String)reqMap.get("inspectionId");
 			String assetId=(String)reqMap.get("assetId");
-			Object viewportOffset=reqMap.get("viewportOffset");
+			String userId=(String) reqMap.get("userId");
+			String base64Img=(String)reqMap.get("dataURL");
 			byte[] imgByte=null;
 			try{
-				if(viewportOffset!=null){
-					imgByte=imageUtil.captureImage(blobId,  (List<Double>) viewportOffset);
-				}
+				 if(base64Img!=null){
+					 imgByte = Base64.decodeBase64(base64Img);
+					 imageUtil.storeImage(base64Img,blobId,mediaLocation); 
+				 }
 			}catch(Exception e){
-				e.printStackTrace();
+				//e.printStackTrace();
+			}finally{
+				InspectionMedia media=new InspectionMedia(getValue(reqMap.get("comments"),reqMap.get("description")), blobId, inspectorId, new Date(), statusType, defectType,  annotation,description,assetId,inspectionId,imgByte,getAnnotatedComments(reqMap.get("annotation")),comment,userId);
+				inspectionMediaList.add(media);
 			}
 			
-			
-			InspectionMedia media=new InspectionMedia(comment, blobId, inspectorId, new Date(), statusType, defectType,  annotation,description,assetId,inspectionId,imgByte,getAnnotatedComments(reqMap.get("annotation")));
-			inspectionMediaList.add(media);
 		}
 		issueDaoImpl.addIssue(inspectionMediaList);
 		return "success";
@@ -108,12 +129,18 @@ public class IssueController {
 			Map<String,Object> reqMap= (Map<String, Object>) object;
 			String blobId=(String)reqMap.get("id");
 			String comment=JSONUtil.toJson(reqMap.get("comments"));
+			List<Map> list=new ArrayList<Map>();
+			Map<String,String> commentMap=new HashMap<String, String>();
+			commentMap.put("date", String.valueOf(new Date()));
+			commentMap.put("message", comment);
+			list.add(commentMap);
 			String inspectorId=(String)reqMap.get("inspectorId");
 			String defectType=String.valueOf(reqMap.get("defectType"));
 			String statusType=String.valueOf(reqMap.get("statusType"));
 			String inspectionId=(String)reqMap.get("inspectionId");
 			String assetId=(String)reqMap.get("assetId");
-			InspectionMedia media=new InspectionMedia(comment,blobId,inspectorId,new Date(),assetId,statusType,defectType,inspectionId);
+			String userId=(String)reqMap.get("userId");
+			InspectionMedia media=new InspectionMedia(comment,blobId,inspectorId,new Date(),assetId,statusType,defectType,inspectionId,userId);
 			inspectionMediaList.add(media);
 			
 			
@@ -137,16 +164,16 @@ public class IssueController {
 		return "success";
 	}
 	@CrossOrigin
-	@RequestMapping(value = "/inspection/getIssueDate/inspectorId={inspectorId}&assetId={assetId}", method = RequestMethod.GET)
-	public String getIssueDate(@PathVariable String inspectorId,@PathVariable String assetId){
+	@RequestMapping(value = "/inspection/getIssueDate/inspectorId={inspectorId}&assetId={assetId}&userId={userId}", method = RequestMethod.GET)
+	public String getIssueDate(@PathVariable String inspectorId,@PathVariable String assetId,@PathVariable String userId){
 		
 		List<String> assetList=inspectionDao.getAsset(inspectorId);
 		int assetIndex=assetList.indexOf(assetId);
-		List<IssueInspection> issueInspectionList=issueDaoImpl.getIssueDate(inspectorId,assetId);
+		List<IssueInspection> issueInspectionList=issueDaoImpl.getIssueDate(inspectorId,assetId,userId);
 		String issueDateJson="";
 		
 		if(issueInspectionList.size()>0){
-			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,issueInspectionList.get(0).getInspectionId(),assetId);
+			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,issueInspectionList.get(0).getInspectionId(),assetId,userId);
 			IssueModel[] issueModelArray=getIssueJson(assetList,issueInspectionList,inspectionMediaList,assetIndex);
 			issueDateJson=JSONUtil.toJson(issueModelArray);
 		}
@@ -154,11 +181,11 @@ public class IssueController {
 		return issueDateJson;
 	}
 	@CrossOrigin
-	@RequestMapping(value = "/inspection/getIssues/inspectorId={inspectorId}&inspectionId={inspectionId}&assetId={assetId}", method = RequestMethod.GET)
-	public String getIssue(@PathVariable String inspectorId,@PathVariable String inspectionId,@PathVariable String assetId){
+	@RequestMapping(value = "/inspection/getIssues/inspectorId={inspectorId}&inspectionId={inspectionId}&assetId={assetId}&userId={userId}", method = RequestMethod.GET)
+	public String getIssue(@PathVariable String inspectorId,@PathVariable String inspectionId,@PathVariable String assetId,String userId){
 		List<String> assetList=inspectionDao.getAsset(inspectorId);
 		int assetIndex=assetList.indexOf(assetId);
-		List<IssueInspection> issueInspectionList=issueDaoImpl.getIssueDate(inspectorId,assetId);
+		List<IssueInspection> issueInspectionList=issueDaoImpl.getIssueDate(inspectorId,assetId,userId);
 		String issueDateJson="";
 		int inspectionIndex=0;
 		
@@ -170,7 +197,7 @@ public class IssueController {
 		}
 		
 		if(issueInspectionList.size()>0){
-			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,issueInspectionList.get(inspectionIndex).getInspectionId(),assetId);
+			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,issueInspectionList.get(inspectionIndex).getInspectionId(),assetId,userId);
 			IssueModel[] issueModelArray=getIssueJson(assetList,issueInspectionList,inspectionMediaList,assetIndex);
 			issueDateJson=JSONUtil.toJson(issueModelArray);
 		}
@@ -178,9 +205,9 @@ public class IssueController {
 		return issueDateJson;
 	}
 	@CrossOrigin
-	@RequestMapping(value = "/inspection/getIssueMarker/inspectorId={inspectorId}", method = RequestMethod.GET)
-	public String getIssueMarker(@PathVariable String inspectorId){
-		List<IssueMarkerModel> inspectionMediaList= issueDaoImpl.getIssueMarker(inspectorId);
+	@RequestMapping(value = "/inspection/getIssueMarker/inspectorId={inspectorId}&userId={userId}", method = RequestMethod.GET)
+	public String getIssueMarker(@PathVariable String inspectorId,@PathVariable String userId){
+		List<IssueMarkerModel> inspectionMediaList= issueDaoImpl.getIssueMarker(inspectorId,userId);
 		String issueMarker=JSONUtil.toJson(inspectionMediaList);
 		return issueMarker;
 	}
@@ -195,17 +222,18 @@ public class IssueController {
 				Set<IssueDtlModel> set=new HashSet<IssueDtlModel>();
 				for(InspectionMedia inspectionMedia:inspectionMediaList){
 					String compFilePath="";
-					//File file=new File(mediaLocation+inspectionMedia.getBlobId());
-					//if(!ImageUtil.isCompressedFilePresent(compMediaLocation+file.getName())){
-					//	compFilePath=ImageUtil.storeAndCompressedFile(mediaLocation+inspectionMedia.getBlobId(), compMediaLocation);
-					//}
+					/*
+					File file=new File(mediaLocation+inspectionMedia.getBlobId());
+					if(!ImageUtil.isCompressedFilePresent(compMediaLocation+file.getName())){
+						compFilePath=ImageUtil.storeAndCompressedFile(mediaLocation+inspectionMedia.getBlobId(), compMediaLocation);
+					}
 					String base64EncodedImg =null;
 					if(inspectionMedia.getIssueImage()!=null){
 						 base64EncodedImg = DatatypeConverter.printBase64Binary(inspectionMedia.getIssueImage());
-					}
+					}*/
 					 
 					 File file=new File(inspectionMedia.getBlobId());
-					IssueDtlModel issueDtlModel=new IssueDtlModel(file.getName().split("\\.")[0],inspectionMedia.getDefectType(), "/Polymer/temp/"+compFilePath, inspectionMedia.getBlobId(), "/Polymer/images/marker2.png", inspectionMedia.getStatusType(), "tooltip",base64EncodedImg);
+					IssueDtlModel issueDtlModel=new IssueDtlModel(file.getName().split("\\.")[0],inspectionMedia.getDefectType(), "/Polymer/temp/"+file.getName(), inspectionMedia.getBlobId(), "/Polymer/images/marker2.png", inspectionMedia.getStatusType(), "tooltip","");
 					set.add(issueDtlModel);
 				}
 				issueInspection.setIssueDtlModel(set);

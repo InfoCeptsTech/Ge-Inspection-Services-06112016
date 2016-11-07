@@ -1,12 +1,12 @@
 package com.ge.inspection.ir.util;
 
-import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +23,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Component;
 
 @Component("imageUtil")
@@ -38,7 +39,8 @@ public class ImageUtil {
             String format = "jpg";
             String fileName = "PartialScreenshot." + format;
             System.out.println(viewportOffset);
-            
+            File filename=new File(path);
+            filename.getName();
             
             Double top=Double.valueOf(String.valueOf(viewportOffset.get(0)));
             Double bottom=Double.valueOf(String.valueOf(viewportOffset.get(1)));
@@ -51,20 +53,38 @@ public class ImageUtil {
             WritableRaster raster = screenFullImage .getRaster();
             DataBuffer data   =  raster.getDataBuffer();
             */
-            ImageIO.write(screenFullImage, format, new File(fileName));
+          //  ImageIO.write(screenFullImage, format, new File());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            System.out.println(screenFullImage);
+            //System.out.println(screenFullImage);
             
             ImageIO.write(screenFullImage, format, baos);
             imgByte= baos.toByteArray();
              
             System.out.println("A partial screenshot saved!");
-        } catch (AWTException | IOException ex) {
-            System.err.println(ex);
+        } catch (Exception ex) {
+        	ex.printStackTrace();
         }
         return imgByte;
     }
 	
+	public void storeImage(String base64String,String blobId,String mediaLocation){
+		byte imgbyteArray[]=null;
+		FileOutputStream fos = null;
+		try {
+			String parts[] = base64String.split(",");
+		   imgbyteArray = Base64.decodeBase64(parts[1]);
+		   File file=new File(blobId);
+		   File outF = new File(mediaLocation+"/Polymer/temp/"+file.getName());
+		   fos = new FileOutputStream(outF);
+	   fos.write(imgbyteArray); 
+			fos.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		
+		
+		}
+	}
 	
 	
 	public static void compress(String orgFilePath,BufferedImage image,String compFilePath) throws IOException {

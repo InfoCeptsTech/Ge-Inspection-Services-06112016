@@ -4,20 +4,27 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 @Entity
-@Table(name="inspection_media")
+@Table(name="inspection_media", uniqueConstraints=
+@UniqueConstraint(columnNames={"blobId", "userId"}))
 public class InspectionMedia {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
+	private Long id;
 	@Column(length = 4000) 
 	private String comment; 
-	@Id 
 	private String blobId; 
 	private String inspectorId; 
 	@Temporal(TemporalType.TIMESTAMP) 
@@ -32,9 +39,13 @@ public class InspectionMedia {
 	private String description; 
 	@Column(length = 4000)
 	private String annotedComments;
+	@Column(name = "commentjson",length = 4000) 
+	private String commentJson;
+	@Column(name = "userId",length = 400) 
+	private String userId;
+	
 	@Column(name = "issueimage")
 	private byte[] issueImage;
-	
 	
 	public InspectionMedia() {
 		super();
@@ -42,7 +53,7 @@ public class InspectionMedia {
 
 	public InspectionMedia(String comment, String blobId,
 			String inspectorId, Date inspectionDate, String statusType,
-			String defectType, String annotatedMetadata, String description) {
+			String defectType, String annotatedMetadata, String description,String userId) {
 		this.comment=comment;
 		this.blobId=blobId;
 		this.inspectorId=inspectorId;
@@ -51,13 +62,13 @@ public class InspectionMedia {
 		this.defectType=defectType;
 		this.annotatedMetadata=annotatedMetadata;
 		this.description=description;
-		
+		this.userId=userId;
 	}
 	
 	public InspectionMedia(String comment, String blobId,
 			String inspectorId, Date inspectionDate, String statusType,
 			String defectType, String annotatedMetadata, String description,
-			String assetId, String inspectionId,byte[] issueImage,String annotedComments) {
+			String assetId, String inspectionId,byte[] issueImage,String annotedComments,String commentJson,String userId) {
 		this.comment=comment;
 		this.blobId=blobId;
 		this.inspectorId=inspectorId;
@@ -70,6 +81,8 @@ public class InspectionMedia {
 		this.inspectionId=inspectionId;
 		this.issueImage=issueImage;
 		this.annotedComments=annotedComments;
+		this.commentJson=commentJson;
+		this.userId=userId;
 	}
 	public InspectionMedia(String blobId, Date inspectionDate, String statusType) {
 		this.blobId=blobId;
@@ -150,6 +163,29 @@ public class InspectionMedia {
 
 	public void setIssueImage(byte[] issueImage) {
 		this.issueImage = issueImage;
-	} 
-	
+	}
+
+	public String getCommentJson() {
+		return commentJson;
+	}
+
+	public void setCommentJson(String commentJson) {
+		this.commentJson = commentJson;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }

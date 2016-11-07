@@ -27,40 +27,49 @@ public class InspectionController {
 	
 	@Autowired
 	private IssueDao issueDao;
-	
+	/*
 	@CrossOrigin
 	@RequestMapping(value = "/inspection/getInspection/inspectorId={inspectorId}", method = RequestMethod.GET)
 	public String getAssets(@PathVariable String inspectorId){
 		AssetModel[] assetModel=inspectionDao.getInspectionDtls(inspectorId);
 		String inspectionJson=JSONUtil.toJson(assetModel);
 		return inspectionJson;
-	}
+	}*/
 	
 	@CrossOrigin
-	@RequestMapping(value = "/inspection/getAsset/inspectorId={inspectorId}", method = RequestMethod.GET)
-	public String getAsset(@PathVariable String inspectorId){
+	@RequestMapping(value = "/inspection/getAsset/inspectorId={inspectorId}&userId={userId}", method = RequestMethod.GET)
+	public String getAsset(@PathVariable String inspectorId,@PathVariable String userId){
 		List<String> assetList=inspectionDao.getAsset(inspectorId);
 		String assetJson="";
 		if(assetList.size()>0){
 			String assetId=assetList.get(0);
-			List<InspectionModel> inspectionList=inspectionDao.getMediaDate(inspectorId,assetId);
-			
-			Set<MediaModel> mediaList=inspectionDao.getMedia(inspectorId,assetId,inspectionList.get(0).getInspectionId());
-			AssetModel[] assetModel=createJson(inspectorId,assetList,inspectionList,mediaList,0,0);
-			assetJson=JSONUtil.toJson(assetModel);	
+			List<String> phaseList=inspectionDao.getPhase(inspectorId, assetId);
+			if(phaseList!=null && phaseList.size()>0){
+				List<InspectionModel> inspectionList=inspectionDao.getMediaDate(inspectorId,assetId);
+				if(inspectionList.size()>0){
+					Set<MediaModel> mediaList=inspectionDao.getMedia(inspectorId,assetId,inspectionList.get(0).getInspectionId(),phaseList.get(0));
+					AssetModel[] assetModel=createJson(userId,inspectorId,assetList,inspectionList,mediaList,0,0);
+					assetJson=JSONUtil.toJson(assetModel);	
+				}
+			}
 		}
 		
 		return assetJson;
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "/inspection/getMediaDate/inspectorId={inspectorId}&assetId={assetId}", method = RequestMethod.GET)
-	public String getMediaDate(@PathVariable String inspectorId,@PathVariable String assetId){
-		
+	@RequestMapping(value = "/inspection/getMediaDate/inspectorId={inspectorId}&assetId={assetId}&userId={userId}&phaseId={inspectionPhaseId}", method = RequestMethod.GET)
+	public String getMediaDate(@PathVariable String inspectorId,@PathVariable String assetId,@PathVariable String userId,@PathVariable String inspectionPhaseId){
+		String assetJson="";
 		List<String> assetList=inspectionDao.getAsset(inspectorId);
 		int assetIndex=assetList.indexOf(assetId);
 		
-		List<InspectionModel> inspectionList=inspectionDao.getMediaDate(inspectorId,assetId);
+		if(inspectionPhaseId==null||inspectionPhaseId.equals("null")){
+			List<String> phaseList=inspectionDao.getPhase(inspectorId, assetId);
+			inspectionPhaseId=phaseList.get(0);
+		}
+		
+		List<InspectionModel> inspectionList=inspectionDao.getMediaDate(inspectorId,assetId,inspectionPhaseId);
 		int mediaIndex=0;
 		for(InspectionModel inspectionModel:inspectionList){
 			if(inspectionModel.getInspectionId().equals(inspectionList.get(0).getInspectionId())){
@@ -69,21 +78,23 @@ public class InspectionController {
 			mediaIndex++;
 		}
 		
-		Set<MediaModel> mediaList=inspectionDao.getMedia(inspectorId,assetId,inspectionList.get(0).getInspectionId());
-		AssetModel[] assetModel=createJson(inspectorId,assetList,inspectionList,mediaList,assetIndex,mediaIndex);
-		String assetJson=JSONUtil.toJson(assetModel);
-		
+		if(inspectionList.size()>0){
+			Set<MediaModel> mediaList=inspectionDao.getMedia(inspectorId,assetId,inspectionList.get(0).getInspectionId(),inspectionPhaseId);
+			AssetModel[] assetModel=createJson(userId,inspectorId,assetList,inspectionList,mediaList,assetIndex,mediaIndex);
+			assetJson=JSONUtil.toJson(assetModel);
+		}
+			
 		return assetJson;
 	}
 	@CrossOrigin
-	@RequestMapping(value = "/inspection/getMedia/inspectorId={inspectorId}&assetId={assetId}&inspectionId={inspectionId}", method = RequestMethod.GET)
-	public String getMedia(@PathVariable String inspectorId,@PathVariable String assetId,@PathVariable String inspectionId){
+	@RequestMapping(value = "/inspection/getMedia/inspectorId={inspectorId}&assetId={assetId}&inspectionId={inspectionId}&pId={phaseId}&userId={userId}", method = RequestMethod.GET)
+	public String getMedia(@PathVariable String inspectorId,@PathVariable String assetId,@PathVariable String inspectionId,@PathVariable String phaseId,@PathVariable String userId){
 		//Set<MediaModel> assetList=inspectionDao.getMedia(inspectorId,assetId,inspectionStart);
 		
 		List<String> assetList=inspectionDao.getAsset(inspectorId);
 		int assetIndex=assetList.indexOf(assetId);
 		
-		List<InspectionModel> inspectionList=inspectionDao.getMediaDate(inspectorId,assetId);
+		List<InspectionModel> inspectionList=inspectionDao.getMediaDate(inspectorId,assetId,phaseId);
 		int mediaIndex=0;
 		for(InspectionModel inspectionModel:inspectionList){
 			if(inspectionModel.getInspectionId().equals(inspectionId)){
@@ -92,19 +103,25 @@ public class InspectionController {
 			mediaIndex++;
 		}
 		
-		Set<MediaModel> mediaList=inspectionDao.getMedia(inspectorId,assetId,inspectionId);
-		AssetModel[] assetModel=createJson(inspectorId,assetList,inspectionList,mediaList,assetIndex,mediaIndex);
+		Set<MediaModel> mediaList=inspectionDao.getMedia(inspectorId,assetId,inspectionId,phaseId);
+		AssetModel[] assetModel=createJson(userId,inspectorId,assetList,inspectionList,mediaList,assetIndex,mediaIndex);
 		String assetJson=JSONUtil.toJson(assetModel);
 		
 		return assetJson;
 	}
 	
 	@CrossOrigin
-	private AssetModel[] createJson(String inspectorId,List<String> assetList,List<InspectionModel> inspectionModelList,Set<MediaModel> mediaList,int assetIndex,int mediaIndex){
+	@RequestMapping(value = "/inspection/getMedia/inspectorId={inspectorId}&assetId={assetId}&phaseId={inspectionPhaseId}", method = RequestMethod.GET)
+	public String getPhaseDtls(@PathVariable String inspectorId,@PathVariable String assetId,@PathVariable String inspectionPhaseId){
+		
+		return null;
+	}
+	
+	private AssetModel[] createJson(String userId,String inspectorId,List<String> assetList,List<InspectionModel> inspectionModelList,Set<MediaModel> mediaList,int assetIndex,int mediaIndex){
 		
 		AssetModel[] assetModelArray = new AssetModel[assetList.size()];
 		int assetIndexLocal=0;
-		List<Object[]>  issueCountObj=issueDao.getIssueCount(inspectorId);
+		List<Object[]>  issueCountObj=issueDao.getIssueCount(inspectorId,userId);
 		for(String asset:assetList){
 			AssetModel assetModel=null;
 			 int mediaIndexLocal=0;

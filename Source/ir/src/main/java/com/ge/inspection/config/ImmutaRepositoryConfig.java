@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,11 +49,9 @@ public class ImmutaRepositoryConfig extends DataSourceAutoConfiguration  {
     @Value("${immuta.datasource.hibernate.dialect}")
     private String dialect;
     
-    @Value("${spring.jpa.hibernate.ddl-auto}")
-    private String ddlauto;
-
     public DriverManagerDataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource(databaseUrl, username, password);
+    	String decodedPassword = new String(DatatypeConverter.parseBase64Binary(password));
+        DriverManagerDataSource dataSource = new DriverManagerDataSource(databaseUrl, username, decodedPassword);
         dataSource.setDriverClassName(driverClassName);
         return dataSource;
     }

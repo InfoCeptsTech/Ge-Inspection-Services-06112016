@@ -13,10 +13,10 @@ public class PostgreSQLJDBC {
             .getConnection("jdbc:postgresql://db1.immuta.io:5432/immuta?sslmode=require&sslfactory=org.postgresql.ssl.NonValidatingFactory",
             "infocepts", "dv7hQRJmBCNqYxha");
          */
-         String url = "jdbc:postgresql://db1.immuta.io:5432/immuta?user=infocepts&password=dv7hQRJmBCNqYxha&ssl=require";
+         String url = "jdbc:postgresql://db1.immuta.io:5432/immuta?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
          Properties props = new Properties();
          props.setProperty("user","infocepts");
-         props.setProperty("password","dv7hQRJmBCNqYxha");
+         props.setProperty("password","sgf5q!$wQklMXt6$");
          props.setProperty("ssl","require");
          c = DriverManager.getConnection(url, props);
 

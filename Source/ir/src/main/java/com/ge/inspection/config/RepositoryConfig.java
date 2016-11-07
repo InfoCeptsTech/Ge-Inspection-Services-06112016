@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,29 +34,28 @@ public class RepositoryConfig extends DataSourceAutoConfiguration{
     @Autowired
     JpaVendorAdapter jpaVendorAdapter;
     
-    @Value("${spring.database}")
+    @Value("${muta.spring.database}")
     private String database;
 
-    @Value("${spring.datasource.url}")
+    @Value("${muta.spring.datasource.url}")
     private String databaseUrl;
 
-    @Value("${spring.datasource.username}")
+    @Value("${muta.spring.datasource.username}")
     private String username;
 
-    @Value("${spring.datasource.password}")
+    @Value("${muta.spring.datasource.password}")
     private String password;
 
-    @Value("${spring.datasource.driverClassName}")
+    @Value("${muta.spring.datasource.driverClassName}")
     private String driverClassName;
 
-    @Value("${spring.datasource.hibernate.dialect}")
+    @Value("${muta.spring.datasource.hibernate.dialect}")
     private String dialect;
-    
-    @Value("${spring.jpa.hibernate.ddl-auto}")
-    private String ddlauto;
 
     public DriverManagerDataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource(databaseUrl, username, password);
+    	
+    	String decodedPassword = new String(DatatypeConverter.parseBase64Binary(password));
+        DriverManagerDataSource dataSource = new DriverManagerDataSource(databaseUrl, username, decodedPassword);
         dataSource.setDriverClassName(driverClassName);
         return dataSource;
     }
@@ -70,6 +70,7 @@ public class RepositoryConfig extends DataSourceAutoConfiguration{
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", dialect);
         properties.setProperty("hibernate.database", database);
+       // properties.setProperty("hibernate.hbm2ddl.auto", "create");
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource());
         emf.setJpaVendorAdapter(jpaVendorAdapter);

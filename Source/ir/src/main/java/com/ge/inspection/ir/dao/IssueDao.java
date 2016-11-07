@@ -7,11 +7,11 @@ import com.ge.inspection.ir.model.IssueInspection;
 import com.ge.inspection.ir.model.IssueMarkerModel;
 
 public interface IssueDao {
-  public List<InspectionMedia>  getIssueDtls(String inspectorId,String inspectionId,String assetId);
+  public List<InspectionMedia>  getIssueDtls(String inspectorId,String inspectionId,String assetId,String userId);
   public void addIssue(List<InspectionMedia> inspectionMediaList);
   public void addUpdateIssue(List<InspectionMedia> inspectionMediaList);
   public void updateIssue(InspectionMedia inspectionMedia);
-  public List<IssueInspection> getIssueDate(String inspectorId,String assetId);
-  public List<IssueMarkerModel>  getIssueMarker(String inspectorId);
-  public List<Object[]> getIssueCount(String inspectorId);
+  public List<IssueInspection> getIssueDate(String inspectorId,String assetId,String userId);
+  public List<IssueMarkerModel>  getIssueMarker(String inspectorId,String userId);
+  public List<Object[]> getIssueCount(String inspectorId,String userId);
 }

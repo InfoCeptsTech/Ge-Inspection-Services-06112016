@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

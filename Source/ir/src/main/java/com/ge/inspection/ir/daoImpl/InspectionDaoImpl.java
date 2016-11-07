@@ -2,7 +2,6 @@ package com.ge.inspection.ir.daoImpl;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,13 +10,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ge.inspection.ir.dao.InspectionDao;
 import com.ge.inspection.ir.domain.immuta.InspectionDtls;
-import com.ge.inspection.ir.model.AssetModel;
 import com.ge.inspection.ir.model.DurationModel;
 import com.ge.inspection.ir.model.ImageModel;
 import com.ge.inspection.ir.model.InspectionModel;
@@ -32,8 +32,6 @@ public class InspectionDaoImpl implements InspectionDao {
 
     @Autowired
     private InspectionDtlRepository inspectionDtlRepository;
-    @Value("${media.temp.location}")
-	private String compMediaLocation;
     
     @Value("${media.location}")
    	private String mediaLocation;
@@ -48,11 +46,6 @@ public class InspectionDaoImpl implements InspectionDao {
     private String password;
     
     
-	@Override
-	public AssetModel[] getInspectionDtls(String inspectorId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<String> getAsset(String inspectorId) {
@@ -61,12 +54,18 @@ public class InspectionDaoImpl implements InspectionDao {
 	}
 
 	@Override
+	public List<InspectionModel> getMediaDate(String inspectorId, String assetId,String inspectionPhaseId) {
+		List<InspectionDtls> dateList=inspectionDtlRepository.getMediaDate(inspectorId, assetId,inspectionPhaseId);
+		List<InspectionModel> inspectionModelList=getMediaDatebyInspection(dateList);
+		return inspectionModelList;
+	}
+	
+	@Override
 	public List<InspectionModel> getMediaDate(String inspectorId, String assetId) {
 		List<InspectionDtls> dateList=inspectionDtlRepository.getMediaDate(inspectorId, assetId);
 		List<InspectionModel> inspectionModelList=getMediaDatebyInspection(dateList);
 		return inspectionModelList;
 	}
-	
 	
 	
 	private List<InspectionModel> getMediaDatebyInspection(List<InspectionDtls> inspectionList){
@@ -108,18 +107,19 @@ public class InspectionDaoImpl implements InspectionDao {
 
 	@Override
 	public Set<MediaModel> getMedia(String inspectorId, String assetId,
-			String inspectionId) {
+			String inspectionId,String inspectionPhaseId) {
 		Set<MediaModel> mediaModel=null;
 		List<InspectionDtls> inspectionDtlsList=null;
 			//Date inspectionDate = formatter.parse(inspectionStart);
 			inspectionDtlsList=inspectionDtlRepository.getMedia(inspectorId, assetId, inspectionId);
-	 mediaModel=getMedia(inspectionDtlsList);
+	 mediaModel=getMedia(inspectionDtlsList,inspectionPhaseId);
 			
 		return mediaModel;
 	}
 
+
 	
-	private Set<MediaModel> getMedia(List<InspectionDtls> inspectionDtlsList){
+	private Set<MediaModel> getMedia(List<InspectionDtls> inspectionDtlsList,String inspectionPhaseId){
 		Set<MediaModel> phaseSet=new HashSet<MediaModel>();
 		ExecutorService executor = Executors.newFixedThreadPool(10);
     	List<Future<Map<String,String>>> list = new ArrayList<Future<Map<String,String>>>();
@@ -133,7 +133,7 @@ public class InspectionDaoImpl implements InspectionDao {
 					List<ImageModel> imageModelList=new ArrayList<ImageModel>();
 					//int index=0;
 					for(InspectionDtls inspectionDtls:inspectionDtlsList){
-						if(inspectionDtls.getInspectionPhaseId().equalsIgnoreCase(phase.getTitle())){
+						if(inspectionDtls.getInspectionPhaseId().equalsIgnoreCase(phase.getTitle()) && (inspectionDtls.getInspectionPhaseId().equals(inspectionPhaseId))){
 							
 							//String compPath=ImageUtil.storeAndCompressedFile(mediaLocation+inspectionDtls.getBlobId(), compMediaLocation);
 							File file=new File(inspectionDtls.getBlobId());
@@ -148,7 +148,8 @@ public class InspectionDaoImpl implements InspectionDao {
 									!ImageUtil.isFilePresent(mediaLocation+"/Polymer/compressed/"+file.getName())){
 							
 								String imgPath=inspectionDtls.getBlobId();
-					    		ImageCallable callable =new ImageCallable(imgPath,authenticateUrl,imageUrl,username,password,mediaLocation);
+								String decodedPassword = new String(DatatypeConverter.parseBase64Binary(password));
+					    		ImageCallable callable =new ImageCallable(imgPath,authenticateUrl,imageUrl,username,decodedPassword,mediaLocation);
 					    		Future<Map<String,String>> future = executor.submit(callable);
 					    		list.add(future);
 							}
@@ -176,97 +177,17 @@ public class InspectionDaoImpl implements InspectionDao {
    	 }
 	//	System.out.println("---------------before executor shutdown------------------");
    	 executor.shutdown();
-   	/*
-   	for(MediaModel phase:phaseSet){
-   		for(InspectionDtls inspectionDtls:inspectionDtlsList){
-			if(inspectionDtls.getInspectionPhaseId().equalsIgnoreCase(phase.getTitle())){
-		   		List<ImageModel> imageModelList=phase.getImageModel();
-		   		
-		   		//for(int i=0;i<imageModelList.size();i++){
-		   		//	ImageModel imageModel=imageModelList.get(i);
-		   		//	System.out.println("<<<<<<<<<<<<<<<<<<<<<<setting image binary>>>>>"+imageModel.getMegaPath()+">>>>>>>>>>>>>>>>>>>>>>>>"+imageModel.getMegaPath().length());
-		   		  
-		   			//System.out.println("BINARY ::::::::::::::"+allImgMap.get(imageModel.getId()));
-		   			//imageModelList.get(i).setImgBinary(allImgMap.get(imageModel.getId()));
-		   		//}
-		   		//phase.setImageModel(imageModelList);
-			}
-			
-   		}
-   		
-   	    phaseSet.add(phase);
-     }
-   	  */
+   
 		return phaseSet;
 	}
-	
-	
-	
-	
-	
+  
+	@Override
+	public List<String> getPhase(String inspectorId, String assetId) {
+		 List<String> phaseList=inspectionDtlRepository.getPhase(inspectorId, assetId);
+		 return phaseList;
+	}
+
 	
 
-	/*
-	@Autowired
-	private InspectionDtlRepository inspectionDtlRepository;
-	 
-	@Transactional
-	public AssetModel[]  getInspectionDtls(String inspectorId) {
-		List<InspectionDtl> inspectionList=inspectionDtlRepository.findByInspectorId(inspectorId);
-		AssetModel[] assetModel=getAssets(inspectionList);
-		return assetModel;
-	}
-	
-	private AssetModel[] getAssets(List<InspectionDtl> inspectionList){
-		Set<AssetModel> assetSet=new HashSet<AssetModel>();
-		for(InspectionDtl inspectionDtl:inspectionList){
-			assetSet.add(new AssetModel(inspectionDtl.getAsset().getAssetId(),inspectionDtl.getAsset().getAssetName(),null));
-		}
-		
-		for(AssetModel assetModel:assetSet){
-			List<MediaModel> mediaList=new ArrayList<MediaModel>();
-			for(InspectionDtl inspectionDtl:inspectionList){
-				
-				if(assetModel.getId().equals(inspectionDtl.getAsset().getAssetId())){
-					mediaList.add(new MediaModel(String.valueOf(inspectionDtl.getInspectionStart()),"duration",null));
-				}
-			}
-			assetModel.setInspection(mediaList);
-		}
-	
-	
-	
-	for(AssetModel assetModel:assetSet){
-		for(MediaModel mediaModel:assetModel.getInspection()){
-			List<PhaseModel> phaseModelList=new ArrayList<PhaseModel>(); 
-			for(InspectionDtl inspectionDtl:inspectionList){
-				if(mediaModel.getDate().equals(inspectionDtl.getInspectionStart())){
-					phaseModelList.add(new PhaseModel(inspectionDtl.getPhase().getPhaseName(),null));
-				}
-			}
-			mediaModel.setPhase(phaseModelList);
-		}
-	}
-	
-	for(AssetModel assetModel:assetSet){
-		for(MediaModel mediaModel:assetModel.getInspection()){
-			for(PhaseModel phaseModel:mediaModel.getPhase()){
-				List<ImageModel> imgModelList=new ArrayList<ImageModel>();
-				for(InspectionDtl inspectionDtl:inspectionList){
-				  if(inspectionDtl.getPhase().getPhaseName().equals(phaseModel.getTitle())){
-					ImageModel imageModel=new ImageModel(inspectionDtl.getMedia().getMediaId(),"minipath","megapath");
-					//code for image compression and temp path
-					imgModelList.add(imageModel); 
-				  }
-				}
-				phaseModel.setImageModel(imgModelList);
-			}
-			
-			
-		}
-	}
-  return (AssetModel[]) assetSet.toArray();
-}
-*/
 }
 
