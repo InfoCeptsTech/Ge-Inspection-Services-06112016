@@ -32,6 +32,34 @@
         }
         </style>
          <iron-ajax
+            id="saveSummaryPost"
+            url="https://dashboard.immuta.io/ir-0.0.1/inspection/addReport"
+            method="POST"
+            content-type="application/json"
+            handle-as="json"
+            on-response="_handleReportSave"
+            on-error="_handleReportError"
+            >
+        </iron-ajax>
+         <iron-ajax
+            id="webTicketGet"
+            url="http://35.162.2.176/QvAJAXZfc/GetWebTicket.aspx?cmd=<Global method='GetWebTicket'><UserId>CUSTOM\amahajan</UserId></Global>"
+            method="GET"
+            handle-as="xml"
+            on-response="_handleWebTicketResponse"
+            on-error="_handleWebTicketError"
+            >
+        </iron-ajax>
+         <iron-ajax
+            id="qlikReport"
+            url="http://35.162.2.176/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket="
+            method="GET"
+            handle-as="doc"
+            on-response="_handleQlikResponse"
+            on-error="_handleQlikError"
+            >
+        </iron-ajax>
+         <iron-ajax
             id="AjaxPost"
             url="https://dashboard.immuta.io/ir-0.0.1/inspection/addIssue"
             method="POST"
@@ -187,7 +215,7 @@
             <span class="dialogTitle">Enter Executive Summary:</span>
               <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
               <div class="modal-footer ">
-                <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" on-click="saveDialog" class="btn-default" style="text-decoration: none;">Generate</a>
+                <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" on-click="saveSummary" class="btn-default" style="text-decoration: none;">Generate</a>
                 <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
                 <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
             </div>
@@ -1081,20 +1109,48 @@
                 var dialog = document.querySelector('#reportToggle');
                 dialog.toggle();
             },
-            saveDialog: function(e){
+            saveSummary: function(e){
                 debugger;
                 summary = document.querySelector('#executiveSummary');
                 console.log(summary.value);
+                userId=localStorage.getItem('username');
+                this.$.saveSummaryPost.body = {
+                                        "userId":userId,
+                                        "comment": summary.value
+                                        };
+
+                console.log(this.$.saveSummaryPost.body);     
+                
+                this.$.saveSummaryPost.generateRequest();
+               
+                
+            },
+            _handleReportSave:function(e){
+               alert("saved succesfully");
+              this.$.webTicketGet.generateRequest();
+            },
+            _handleWebTicketResponse:function(e){
+                alert("token received");
+            },
+            _handleWebTicketError:function(e){
+               alert('error response for token');
+            },
+            _handleQlikResponse:function(e){
+               alert('qlik response ');
+            },
+            _handleQlikError:function(e){
+              alert('error response for qlik report');
             },
             ready: function() {
                 // debugger;
                 title = localStorage.getItem('assetTitle');
                 inspectorId = localStorage.getItem('inspectorId');
+                userId=localStorage.getItem('username');
                 // alert("title in issue : "+title);
                 if (title == null || title == 'null') {
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssues/inspectorId=" + inspectorId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssues/inspectorId=" + inspectorId+"assetId="+title+"&userId="+userId;
                 } else {
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueDate/inspectorId=" + inspectorId + "&assetId=" + title;
+                    this.url="https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueDate/inspectorId="+inspectorId+"&assetId="+title+"&userId="+userId;
                 }
                 //  alert(this.url);
 
@@ -1102,7 +1158,7 @@
                 if (localStorage.getItem('issueUrl') != '' && localStorage.getItem('issueUrl') != null) {
                     document.getElementById('ajax').generateRequest();
                 }
-                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId
+                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
 
 
                 var a = JSON.parse(localStorage.getItem('dronesServiceResponse'));

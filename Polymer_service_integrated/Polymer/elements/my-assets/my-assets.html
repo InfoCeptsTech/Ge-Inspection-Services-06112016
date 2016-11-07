@@ -75,9 +75,12 @@
                if (typeof(this.dronesServiceResponse[localStorage.getItem('assetId')]) != 'undefined') {
 
                     this.inspection = this.dronesServiceResponse[localStorage.getItem('assetId')].inspection;
-                    this.path = this.inspection[0].url;
+                    if(this.inspection!=undefined){
+                      this.path = this.inspection[0].url;
                     this.path = '/' + this.path;
                     this.urlState(this.path);
+                    }
+                    
                 }
                 for(i=0;i<this.dronesServiceResponse.length;i++){
                     this.inspection=this.dronesServiceResponse[i].inspection;
@@ -137,13 +140,33 @@
                     document.getElementById('ajaxAsset').url = this.url;
                 }*/
                 title=localStorage.getItem('assetTitle');
+                 phaseId=localStorage.getItem('phaseId');
                 inspectorId=localStorage.getItem('inspectorId');
+                userId=localStorage.getItem('username');
                  //    alert("title in asset: "+title);
                      if(title==null || title=='null'){
-                        this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId="+inspectorId;
+                        this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId="+inspectorId+"&userId="+userId;;
                      }else{
-                         this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId="+inspectorId+"&assetId="+title;   
+                         this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId="+inspectorId+"&assetId="+title+"&userId="+userId+"&phaseId="+phaseId;   
                      }
+
+                   for(i=0;i<this.dronesServiceResponse.length;i++){
+                    this.inspection=this.dronesServiceResponse[i].inspection;
+                    if(this.inspection!=undefined){
+                      for(j=0;j<this.dronesServiceResponse[i].inspection.length;j++){
+                        if(this.inspection[j].inspectionId!=null){
+                            inspectionId=this.inspection[0].inspectionId;
+                          
+                           if(!localStorage.getItem('inspectionId')){
+                            localStorage.setItem('inspectionId',inspectionId);
+                            break;
+                           }
+                           
+                        }
+                      }
+                    }
+                     
+                 }
                      
                   // alert(this.url); 
                   // document.getElementById('ajaxAsset').url = this.url;

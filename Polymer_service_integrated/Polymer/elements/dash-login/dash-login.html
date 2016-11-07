@@ -202,9 +202,13 @@ input:focus ~ label, input.used ~ label {
 
        
       	document.getElementById('loginEndpoint').url=urlPost+"&username="+username+"&password="+password;
-        //document.getElementById('loginEndpoint').generateRequest();
+       // document.getElementById('loginEndpoint').generateRequest();
         document.getElementById('loginEndpoint').url=urlPost;
         sleep(500);
+        var xx=document.getElementById("basic1");
+      xx.style.display="none";
+      localStorage.setItem('inspectorId', "user");
+      document.querySelector('app-router').go('/my-drone');
         localStorage.setItem("username",username);
       //   var xx=document.getElementById("basic1");
       // xx.style.display="none";

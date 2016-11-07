@@ -114,7 +114,7 @@
                             <div class="modal-body">
                                 <template is="dom-repeat" items="{{item.img}}">
                                     <div class="abc" id="abc">
-                                        <paper-icon-button raised on-dblclick="toggleDialog" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.miniPath}}" class="phases-img" id="{{item.id}}">
+                                        <paper-icon-button raised on-dblclick="toggleDialog" on-tap="addQuantity" src="localhost:8080{{item.miniPath}}" class="phases-img" id="{{item.id}}">
                                             <!--  <img id="{{item.id}}" on-tap="addQuantity" raised class="phases-img" src="{{item.src}}"> -->
                                         </paper-icon-button>
                                         <!--  <img class$="{{item.class}}" src="{{item.issuePath}}"> -->
@@ -132,8 +132,8 @@
                                 <br/>
                             </span>
                 <span>
-                                 <paper-dropdown-menu>
-                                <paper-listbox class="dropdown-content" id="defectType"  selected="0">
+                                 <paper-dropdown-menu  >
+                                <paper-listbox class="dropdown-content" id="defectType" selected="0">
                                     <paper-item>Corrosion</paper-item>
                                     <paper-item>Thinning</paper-item>
                                     <paper-item>Stress cracking</paper-item>
@@ -149,7 +149,7 @@
                                 <br/>
                             </span>
                 <span>
-                                  <paper-dropdown-menu>
+                                  <paper-dropdown-menu  >
                                 <paper-listbox class="dropdown-content" id="statusType" selected="0">
                                     <paper-item>Fix</paper-item>
                                     <paper-item>Continue to monitor</paper-item>
@@ -196,8 +196,8 @@
                         <div class="metadataSet">
                             <div class="defectDrop">
                                 <span>Defect Type:</span>
-                                <paper-dropdown-menu>
-                                    <paper-listbox class="dropdown-content" selected="0" id="popdefectType">
+                                <paper-dropdown-menu >
+                                    <paper-listbox class="dropdown-content" id="popdefectType" selected="0" >
                                         <paper-item>Corrosion</paper-item>
                                         <paper-item>Thinning</paper-item>
                                         <paper-item>Stress cracking</paper-item>
@@ -206,8 +206,8 @@
                                     </paper-listbox>
                                 </paper-dropdown-menu>
                                 <span>Status:</span>
-                                <paper-dropdown-menu>
-                                    <paper-listbox class="dropdown-content" selected="0" id="popstatusType">
+                                <paper-dropdown-menu >
+                                    <paper-listbox class="dropdown-content" id="popstatusType" selected="0" >
                                         <paper-item>Fix</paper-item>
                                         <paper-item>Continue to monitor</paper-item>
                                         <paper-item>Manual Inspection</paper-item>
@@ -458,14 +458,15 @@
                 if (title == null || title == 'null') {
                     this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId=" + inspectorId;
                 } else if (inspectionId == null || inspectionId == 'undefined') {
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId + "&assetId=" + title;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId + "&assetId=" + title+"&userId="+userId+"&phaseId="+phaseId;
                 } else {
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/inspectorId=" + inspectorId + "&assetId=" + title + "&inspectionId=" + inspectionId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/inspectorId=" + inspectorId + "&assetId=" + title + "&inspectionId=" + inspectionId+"&pId="+phaseId+"&userId="+userId;
 
                     var inspectionId = localStorage.getItem("inspectionId");
                     var assetId = localStorage.getItem("assetId");
                 }
-                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId
+                 userId=localStorage.getItem('username');
+                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId
                     //  alert(this.url);
 
 
@@ -486,8 +487,9 @@
                     this.dronesServiceResponse = JSON.parse(localStorage.getItem('dronesServiceResponse'));
                     this.url = localStorage.getItem('url');
                     inspectorId = localStorage.getItem('inspectorId');
+                    userId=localStorage.getItem('username');
                     //  alert("inspectorId::::"+inspectorId);
-                    document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId;
+                    document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
 
                     document.getElementById('issueAjax').generateRequest();
                     //       alert("marker url:: "+document.getElementById('issueAjax').url);
@@ -579,8 +581,8 @@
                 var assetId = localStorage.getItem("assetId");
                 // alert("success");
                 var inspectorId = localStorage.getItem("inspectorId");
-
-                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId;
+                var userId=localStorage.getItem("username");
+                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
 
                 document.getElementById('issueAjax').generateRequest();
                 var div = document.getElementById("dialog-box");
@@ -705,7 +707,7 @@
                 var statusType;
                 var inspectionId;
                 var assetId;
-                debugger;
+               
                 if (this.idArr.length > 0) {
 
                     var objectArray = [];
@@ -726,9 +728,12 @@
                                                     console.log("mega path: " + imgList[x].megaPath);
                                                     console.log("phase : " + phaseArr[k].title);
                                                     console.log("inspection Id: " + inspection[j].inspectionId);
+                                                     debugger;
                                                     console.log("defect type: " + getDefectName(document.getElementById('popdefectType').selected));
                                                     console.log("status type: " + getStatusName(document.getElementById('popstatusType').selected));
                                                     console.log("inspectorId: " + localStorage.getItem('inspectorId'));
+
+                                                    userId=localStorage.getItem('username');
 
                                                     objectArray.push({
                                                         "id": imgList[x].megaPath,
@@ -737,7 +742,8 @@
                                                         "defectType": getDefectName(document.getElementById('popdefectType').selected),
                                                         "statusType": getStatusName(document.getElementById('popstatusType').selected),
                                                         "assetId": this.dronesServiceResponse[i].title,
-                                                        "inspectionId": inspection[j].inspectionId
+                                                        "inspectionId": inspection[j].inspectionId,
+                                                        "userId":userId
 
                                                     });
 
@@ -751,8 +757,8 @@
                         }
 
                         console.log(objectArray);
-                        this.$.AjaxPost.body = objectArray;
-                        this.$.AjaxPost.generateRequest();
+                        this.$.ajaxAddUpdatePost.body = objectArray;
+                        this.$.ajaxAddUpdatePost.generateRequest();
 
 
 
@@ -825,8 +831,10 @@
                     //console.log('hi');
                     // console.log(this.dronesServiceResponse);
                     //debugger;
+                     var userId=localStorage.getItem('username');
+                    var phaseId=localStorage.getItem('phaseId');
                     inspectorId = localStorage.getItem('inspectorId');
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId+"&userId="+userId+"&phaseId="+phaseId;
                     localStorage.setItem('url', this.url);
                     //localStorage.setItem('issueUrl', '/Polymer/issues1.json');
                     document.getElementById('ajax').url = this.url;
@@ -1311,7 +1319,7 @@
                 ctx.drawImage(sourceCanvas, 0, 0);
                 var dataURL = canvas.toDataURL("image/jpeg");
                 //alert("from getbase64 function" + dataURL);
-                window.open(dataURL);
+                //window.open(dataURL);
                 // return dataURL;
 
 
@@ -1365,7 +1373,7 @@
                 // }
                 var comments = this.commentArray; //document.getElementById('requirementMsg').innerHTML;
                 var desc = this.commentArrayInspectionFinding; //document.getElementById('inputCommentIssue').value;
-
+ var userId=localStorage.getItem('username');
 
                 var statusType = getStatusName(document.getElementById("statusType").selected);
 
@@ -1375,7 +1383,7 @@
 
 
 
-                console.log("id : " + id + "defectType: " + defectType + ", comments: " + comments + ", statusType : " + statusType + " , assetId : " + assetId + " , inspectionId: " + inspectionId + " , annotatedMetadata: " + annotatedMetadata + " , desc: " + desc + " :" + ", viewportOffset: " + viewportOffset);
+                console.log("id : " + id + "defectType: " + defectType + ", comments: " + comments + ", statusType : " + statusType + " , assetId : " + assetId + " , inspectionId: " + inspectionId + " , annotatedMetadata: " + annotatedMetadata + " , desc: " + desc + " :" + ", userId: " + userId);
 
 
                 this.$.AjaxPost.body = [{
@@ -1388,7 +1396,8 @@
                     "assetId": assetId,
                     "inspectionId": inspectionId,
                     "description": desc,
-                    "viewportOffset": [xposition, yposition, width, height]
+                    "userId":userId,
+                    "dataURL": dataURL
                 }];
 
                 console.log(this.$.AjaxPost.body);
@@ -1929,6 +1938,7 @@
     })();
 
     function getStatusName(statusId) {
+        debugger;
         if (statusId == 0) {
             return "Fix";
         } else if (statusId == 1) {
@@ -1939,6 +1949,7 @@
     }
 
     function getDefectName(statusId) {
+        debugger;
         if (statusId == 0) {
             return "Corrosion";
         } else if (statusId == 1) {
