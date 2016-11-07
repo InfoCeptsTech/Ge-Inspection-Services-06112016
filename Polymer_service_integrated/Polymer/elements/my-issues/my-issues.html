@@ -119,23 +119,25 @@
                                                           </div>
                                                         </iron-collapse> -->
                                 <span>Inspection Requirement :</span>
+                                
+                                <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+                                <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                <div id="requirementMsg"></div>
                                 <div id="appendMsgIssue" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
-                                <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
-                                <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
-                                <div id="requirementMsg"></div>
                                 <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
                                 <!-- <paper-button class="submit addComment">Add</paper-button> -->
                                 <hr class="divider">
                                 <span>Inspection Findings :</span>
+                                
+                                <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
+                                <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
                                 <div id="appendMsgInspectionFindingIssue" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
-                                <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
-                                <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
                                 <!--  <input type="text" id="commentSection">
                                                         <paper-textarea label="" id="commentSection"></paper-textarea>
                                                         <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
@@ -264,6 +266,10 @@
                 },
                 megaPath:{
                     type: String,
+                    value:''
+                },
+                userName:{
+                    type:String,
                     value:''
                 }
             },
@@ -827,6 +833,8 @@
             },
             onEnterCommentIssue: function(e) {
                 debugger;
+                this.userName = localStorage.getItem("username");
+                var user = this.userName;
                 if (e.keyCode === 13) {
                     console.log(this.userInputIssue);
                     console.log(this.userInputCommentIssue);
@@ -851,7 +859,8 @@
                                 comments = this.userInputIssue;
                                 var obj = {
                                     "date": CurrentDate,
-                                    "message": comments
+                                    "message": comments,
+                                    "user": user
                                 }
                                 this.commentArrayIssue.push(obj);
                                 var myNode = document.getElementById("appendMsgIssue");
@@ -862,16 +871,20 @@
                                 for (var i = 0; i < count; i++) {
                                     debugger;
                                     console.log(this.commentArrayIssue[i]);
-                                    var mainDiv = document.createElement('div');
-                                    //mainDiv.id="main"+i;
                                     var dateDiv = document.createElement('div');
-                                    dateDiv.class = "date";
-                                    dateDiv.innerHTML = this.commentArrayIssue[i].date;
+                                    dateDiv.classList.add("date");
+                                    dateDiv.innerHTML = this.commentArray[i].date;
                                     var commentDiv = document.createElement('div');
-                                    commentDiv.class = "comments";
-                                    commentDiv.innerHTML = this.commentArrayIssue[i].message;
-                                    mainDiv.appendChild(dateDiv);
+                                    commentDiv.classList.add("comments");
+                                    commentDiv.innerHTML = this.commentArray[i].message;
+                                    var userDiv = document.createElement('div');
+                                    userDiv.classList.add("users");
+                                    userDiv.innerHTML = user;
+
+                                    mainDiv.appendChild(userDiv);
                                     mainDiv.appendChild(commentDiv);
+                                    mainDiv.appendChild(dateDiv);
+
                                     var aDiv = document.getElementById('appendMsgIssue');
                                     aDiv.appendChild(mainDiv);
                                 }
@@ -880,7 +893,8 @@
                                 comments = this.userInputCommentIssue;
                                 var obj = {
                                     "date": CurrentDate,
-                                    "message": comments
+                                    "message": comments,
+                                    "user": user
                                 }
                                 this.commentArrayInspectionFindingIssue.push(obj);
                                 var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
@@ -893,11 +907,19 @@
                                     console.log(this.commentArrayInspectionFindingIssue[i]);
                                     var mainDivInspectionFinding = document.createElement('div');
                                     //mainDiv.id="main"+i;
+
+                                    var userDivInspectionFinding = document.createElement('div');
+                                    userDivInspectionFinding.classList.add("users");
+                                    userDivInspectionFinding.innerHTML = this.userName;
+
+
                                     var dateDivInspectionFinding = document.createElement('div');
                                     dateDivInspectionFinding.class = "date";
                                     dateDivInspectionFinding.innerHTML = this.commentArrayInspectionFindingIssue[i].date;
                                     var commentDivInspectionFinding = document.createElement('div');
                                     commentDivInspectionFinding.class = "comments";
+
+                                     mainDivInspectionFinding.appendChild(userDivInspectionFinding);
                                     commentDivInspectionFinding.innerHTML = this.commentArrayInspectionFindingIssue[i].message;
                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
