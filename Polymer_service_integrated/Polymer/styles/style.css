@@ -1368,6 +1368,7 @@ a.sub-menu.iron-selected, a.sub-menu.style-scope.my-drone:hover {
     display: inline-block;
     float: left;
     width: 65%;
+    font-size: 13px;
 }
 canvas#myCanvas {
     min-width: 100%;

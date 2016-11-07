@@ -250,6 +250,14 @@
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
+
+                                <hr class="divider">
+                                <span>Annotation Comments :</span>
+                                <div id="appendAnnotations" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div>
+
                                 <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
                                 
                                 <!--  <input type="text" id="commentSection">
@@ -850,6 +858,7 @@
                 debugger;
 				var assetId = localStorage.getItem("assetId");
                 this.userName = localStorage.getItem("username");
+                var user = this.userName;
 				
 				anno.reset();
                 localStorage.setItem("target", "media");
@@ -1131,89 +1140,109 @@
                             //ctx.fillText(spanId,arr[1],arr[2]);
 
 
+                            debugger;
+                            this.target = null;
+                            this.targetComment = document.querySelector('#inputComment');
+                            var myNodeInspectionFinding = document.getElementById("appendAnnotations");
+                            while (myNodeInspectionFinding.firstChild) {
+                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            }
+                            if (localStorage.getItem("target") == "media") {
+                                var d = new Date();
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
 
-                            // this.target = null;
-                            // this.targetComment = document.querySelector('#inputComment');
-                            // var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
-                            // while (myNodeInspectionFinding.firstChild) {
-                            //     myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            // }
-                            // if (localStorage.getItem("target") == "media") {
-                            //     var d = new Date();
-                            //     var month = d.getMonth() + 1;
-                            //     var day = d.getDate();
+                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                    d.getFullYear();
+                                
+                                var CurrentDate = output;
+                                var comments = spanId + "." + event.text;
+                                this.userName = localStorage.getItem("username");
+                                var user = this.userName;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments,
+                                    "user": user
+                                }
+                                polymerThis.commentArrayInspectionFinding.push(obj);
+                                var myNodeInspectionFinding = document.getElementById("appendAnnotations");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = polymerThis.commentArrayInspectionFinding.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(polymerThis.commentArrayInspectionFinding[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.classList.add("date");
+                                    dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.classList.add("comments");
+                                    commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
 
-                            //     var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
-                            //         (('' + month).length < 2 ? '0' : '') + month + '/' +
-                            //         d.getFullYear();
-                            //     debugger;
-                            //     var CurrentDate = output;
-                            //     var comments = spanId + "." + event.text;
-                            //     var obj = {
-                            //         "date": CurrentDate,
-                            //         "message": comments
-                            //     }
-                            //     polymerThis.commentArrayInspectionFinding.push(obj);
-                            //     var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
-                            //     while (myNodeInspectionFinding.firstChild) {
-                            //         myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            //     }
-                            //     var count = polymerThis.commentArrayInspectionFinding.length;
-                            //     for (var i = 0; i < count; i++) {
-                            //         debugger;
-                            //         console.log(polymerThis.commentArrayInspectionFinding[i]);
-                            //         var mainDivInspectionFinding = document.createElement('div');
-                            //         //mainDiv.id="main"+i;
-                            //         var dateDivInspectionFinding = document.createElement('div');
-                            //         dateDivInspectionFinding.class = "date";
-                            //         dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
-                            //         var commentDivInspectionFinding = document.createElement('div');
-                            //         commentDivInspectionFinding.class = "comments";
-                            //         commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
-                            //         mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
-                            //         mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                            //         var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
-                            //         aDivInspectionFinding.appendChild(mainDivInspectionFinding);
-                            //     }
-                            // } else {
-                            //     var d = new Date();
-                            //     var month = d.getMonth() + 1;
-                            //     var day = d.getDate();
+                                    var userDivInspectionFinding = document.createElement('div');
+                                    userDivInspectionFinding.classList.add("users");
+                                    userDivInspectionFinding.innerHTML = this.userName;
 
-                            //     var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
-                            //         (('' + month).length < 2 ? '0' : '') + month + '/' +
-                            //         d.getFullYear();
-                            //     debugger;
-                            //     var CurrentDate = output;
-                            //     var comments = spanId + "." + event.text;
-                            //     var obj = {
-                            //         "date": CurrentDate,
-                            //         "message": comments
-                            //     }
-                            //     polymerThis.commentArrayInspectionFinding.push(obj);
-                            //     var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
-                            //     while (myNodeInspectionFinding.firstChild) {
-                            //         myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            //     }
-                            //     var count = polymerThis.commentArrayInspectionFinding.length;
-                            //     for (var i = 0; i < count; i++) {
-                            //         debugger;
-                            //         console.log(polymerThis.commentArrayInspectionFinding[i]);
-                            //         var mainDivInspectionFinding = document.createElement('div');
-                            //         //mainDiv.id="main"+i;
-                            //         var dateDivInspectionFinding = document.createElement('div');
-                            //         dateDivInspectionFinding.class = "date";
-                            //         dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
-                            //         var commentDivInspectionFinding = document.createElement('div');
-                            //         commentDivInspectionFinding.class = "comments";
-                            //         commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
-                            //         mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
-                            //         mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                            //         var aDivInspectionFinding = document.getElementById('appendMsgInspectionFindingIssue');
-                            //         aDivInspectionFinding.appendChild(mainDivInspectionFinding);
-                            //     }
+                                     mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
 
-                            // }
+                                    var aDivInspectionFinding = document.getElementById('appendAnnotations');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
+                            } else {
+                                var d = new Date();
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
+
+                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                    d.getFullYear();
+                                debugger;
+                                var CurrentDate = output;
+                                var comments = spanId + "." + event.text;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments,
+                                    "user": user
+                                }
+                                polymerThis.commentArrayInspectionFinding.push(obj);
+                                var myNodeInspectionFinding = document.getElementById("appendAnnotations");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = polymerThis.commentArrayInspectionFinding.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(polymerThis.commentArrayInspectionFinding[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
+
+                                    var userDivInspectionFinding = document.createElement('div');
+                                    userDivInspectionFinding.classList.add("users");
+                                    userDivInspectionFinding.innerHTML = this.userName;
+
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
+
+
+                                    mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    var aDivInspectionFinding = document.getElementById('appendAnnotations');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
+
+                            }
 
 
                             localStorage.setItem("saveCount", "0");

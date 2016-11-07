@@ -3,7 +3,7 @@
     "issuePath": "/Polymer/images/marker.png",
     "annotation": [{
         "id": "1",
-        "src": "http://localhost:8080/Polymer/images/0013.jpg",
+        "src": "https://dashboard.immuta.io/Polymer/images/0013.jpg",
         "text": "need attention",
         "shapes": [{
             "type": "rect",
@@ -15,7 +15,7 @@
             },
             "style": {}
         }],
-        "context": "http://localhost:8080/my-media"
+        "context": "https://dashboard.immuta.io/my-media"
     }],
     "comments": "",
     "defectType": "Corrosion",
@@ -85,7 +85,7 @@
     "issuePath": "/Polymer/images/marker.png",
     "annotation": [{
         "id": "1",
-        "src": "http://localhost:8080/Polymer/images/0007.jpg",
+        "src": "https://dashboard.immuta.io/Polymer/images/0007.jpg",
         "text": "Not proper need attention",
         "shapes": [{
             "type": "rect",
@@ -97,7 +97,7 @@
             },
             "style": {}
         }],
-        "context": "http://localhost:8080/my-media"
+        "context": "https://dashboard.immuta.io/my-media"
     }],
     "comments": "",
     "defectType": "Corrosion",
@@ -109,7 +109,7 @@
     "issuePath": "/Polymer/images/marker.png",
     "annotation": [{
         "id": "2",
-        "src": "http://localhost:8080/Polymer/images/0011.jpg",
+        "src": "https://dashboard.immuta.io/Polymer/images/0011.jpg",
         "text": "my annotated comment",
         "shapes": [{
             "type": "rect",
@@ -121,10 +121,10 @@
             },
             "style": {}
         }],
-        "context": "http://localhost:8080/my-media"
+        "context": "https://dashboard.immuta.io/my-media"
     }, {
         "id": "3",
-        "src": "http://localhost:8080/Polymer/images/0011.jpg",
+        "src": "https://dashboard.immuta.io/Polymer/images/0011.jpg",
         "text": "my first",
         "shapes": [{
             "type": "rect",
@@ -136,7 +136,7 @@
             },
             "style": {}
         }],
-        "context": "http://localhost:8080/my-media"
+        "context": "https://dashboard.immuta.io/my-media"
     }],
     "comments": "",
     "defectType": "Corrosion",
