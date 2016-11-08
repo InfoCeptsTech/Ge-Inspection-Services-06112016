@@ -1337,6 +1337,7 @@
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
                 var img1 = document.createElement("img");
+                img1.setAttribute('crossOrigin', 'anonymous');
                 img1.width = el.width;
                 img1.height = el.height;
                 var sourceCanvas = document.getElementById('myCanvas')
