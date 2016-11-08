@@ -78,12 +78,12 @@
         <iron-ajax auto id="issueAjax" url="{{markerurl}}" handle-as="json" on-response="handleResponseIssueMarker"></iron-ajax>
         <!-- <iron-ajax auto id="annotoriousAjax" url="/Polymer/annotorious.json" handle-as="json" on-response="handleResponseAnnotorious"></iron-ajax> -->
         <div class="filters">
-        <span style="font-size:15px;">Filter By &#8758;</span>
-            <paper-dropdown-menu id="filters" on-iron-select="_itemSelected" >
+        <span style="font-size:15px; font-weight:bold">Filter By Altitude &#8758;</span>
+            <!-- <paper-dropdown-menu id="filters" on-iron-select="_itemSelected" >
                 <paper-listbox class="dropdown-content" selected="0">
                     <paper-item>Altitude</paper-item>
                  </paper-listbox>
-            </paper-dropdown-menu>
+            </paper-dropdown-menu> -->
          
             <paper-dropdown-menu id="filtersValue" on-iron-select="_valueSelected"  on-change="report">
                 <paper-listbox class="dropdown-content" selected="0" >
@@ -219,7 +219,7 @@
                                 <iron-collapse style="width:219px" id="collapse">
                                     <div class="deco-collpase">
                                         <div class="Imgtitle">Altitude</div>
-                                        <div class="ImgValue" id="Altitude">{{altitude}}</div>
+                                        <div class="ImgValue" id="AltiValue">{{altitude}}</div>
                                        
                                     </div>
                                 </iron-collapse>
@@ -1887,31 +1887,24 @@
                 //     console.log('hi');
                 // }
             },
-            _valueSelected: function(e) {
-               debugger;
-                
-
-                var selectedItem = e.target.selectedItem;
+             _valueSelected: function(e) {
+              // debugger;
+                 var selectedItem = e.target.selectedItem;
                 console.log('vish');
                 console.log(selectedItem.innerText);
-                //alert(selectedItem);
+                // alert(selectedItem);
                 if (selectedItem.innerText == "All") {
-                 //alert('All');
+                 
                  //this.dronesServiceResponse = this.droneServiceResponse;
                  this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
 
                 }
                 else if (selectedItem.innerText == "0-40") {
-                //alert('0-40');
+             
                 this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
                 var arr = [];
                 debugger;
                  for(var i=0;i<this.dronesServiceResponse.length;i++){
-
-
-
-
-
                     var inspection = this.dronesServiceResponse[i].inspection;
                     for(var j=0;j<inspection.length;j++){
                          if(localStorage.getItem("inspectionId") == inspection[i].inspectionId){
@@ -1921,7 +1914,7 @@
 
                                 for(var l=0;l<img.length;l++){
                                     var metadata = img[l].metadata;
-                                    if(metadata[0].value >= 0 && metadata[0].value <=40){
+                                    if(metadata[0].value >=0  && metadata[0].value <40){
                                         // arr.push(metadata[0]);
                                         // this.dronesServiceResponse
                                      }else{
@@ -1936,12 +1929,10 @@
                     }
                    
 
-
-
                  }
                }
                 else if (selectedItem.innerText == "40-80") {
-                   // alert('heys');
+                   
                   this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
                     for(var i=0;i<this.dronesServiceResponse.length;i++){
                     var inspection = this.dronesServiceResponse[i].inspection;
@@ -1953,7 +1944,7 @@
                             var img = phase[k].img;
                             for(var l=0;l<img.length;l++){
                                 var metadata = img[l].metadata;
-                                if(metadata[0].value > 40 && metadata[0].value <=80){
+                                if(metadata[0].value >=40 && metadata[0].value <80){
                                  
                                 }else{
                                     img.splice(l, 1);
@@ -1962,45 +1953,22 @@
                                     //   var cc= document.getElementsByClassName(image-gallery);
                                     //   cc.style.display="none";
 
-
-
-
-
-
-
-
-
                                     // }
-
-
                                 }
                             }
                          }
-
 
                         }
                     }
                    
 
                  }
-
-
                 }
             },
 
 
-
-
-
-
-
-
-
-
-
         });
     })();
-
     function getStatusName(statusId) {
         debugger;
         if (statusId == 0) {

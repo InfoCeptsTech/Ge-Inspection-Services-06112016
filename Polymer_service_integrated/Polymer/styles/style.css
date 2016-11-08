@@ -720,14 +720,13 @@ paper-tooltip.my-issues.paper-tooltip-0 {
 #filters dropdown-content{max-width: 134px!important;}
 
 #filtersValue dropdown-content {max-width:100Px!important;}
-#filters iron-dropdown{  left: 1043.27px!important;
+/*#filters iron-dropdown{  left: 1043.27px!important;
     top: 130px!important;
-width:128px!important;}
+width:128px!important;}*/
 
-#filtersValue iron-dropdown {left: 1148.27px!important;
-    top: 128px!important;
-    width:128px!important;
-}
+#filtersValue iron-dropdown{ left: 90%!important;
+    top: 134px!important;
+    width: 128px!important;}
 
  #filters paper-menu-button{ width: 100px!important;}
  #filtersValue paper-menu-button{width: 100px!important}
