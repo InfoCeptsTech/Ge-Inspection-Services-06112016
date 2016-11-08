@@ -687,54 +687,50 @@ paper-tooltip.my-issues.paper-tooltip-0 {
     overflow-x: auto;
 }
 #filters .input-content.label-is-floating.style-scope.paper-input-container {
-    background: #f0f0f0;
-    border: 1px solid #ccc;
+    background: #ffffff;
+    border: none !important;
     padding: 0 5px;
     border-radius: 3px;
-    margin-top: 10px;
-    height: 30px;
-    overflow-x: auto;
+    width: 100%;
 }
+#filtersValue .input-content.label-is-floating.style-scope.paper-input-container {
+    background: #ffffff;
+    border: none !important;
+    padding: 0 5px;
+    border-radius: 3px;
+    width: 100%;
+}
+
 .paper-listbox {
     display: block;
     padding: 0px 0;
     background: #ffffff;
     color: #212121;
 }
-.filters paper-dropdown-menu {
-    top: 5px!important;
+.filters paper-dropdown-menu{
+ text-align:right!important;
+ top: 7px!important;
 }
-.filters .input-content {
-    float: right!important;
-}
-#filters paper-listbox {
-    padding: 0px!important;
-}
-#filtersValue paper-listbox {
-    padding: 0px!important;
-}
-#filters dropdown-content {
-    max-width: 134px!important;
-}
-#filtersValue dropdown-content {
-    max-width: 100Px!important;
-}
-#filters iron-dropdown {
-    left: 1043.27px!important;
+.filters .input-content{float: right!important;}
+
+#filters paper-listbox{padding:0px!important;}
+
+#filtersValue paper-listbox {padding:0px!important;}
+
+#filters dropdown-content{max-width: 134px!important;}
+
+#filtersValue dropdown-content {max-width:100Px!important;}
+#filters iron-dropdown{  left: 1043.27px!important;
     top: 130px!important;
-    width: 128px!important;
-}
-#filtersValue iron-dropdown {
-    left: 1148.27px!important;
+width:128px!important;}
+
+#filtersValue iron-dropdown {left: 1148.27px!important;
     top: 128px!important;
-    width: 128px!important;
+    width:128px!important;
 }
-#filters paper-menu-button {
-    width: 100px!important;
-}
-#filtersValue paper-menu-button {
-    width: 100px!important
-}
+
+ #filters paper-menu-button{ width: 100px!important;}
+ #filtersValue paper-menu-button{width: 100px!important}
 .paper-input-container-1 .floated-label-placeholder.paper-input-container, .paper-input-container-2 .floated-label-placeholder.paper-input-container {
     line-height: 0;
 }
@@ -1116,8 +1112,8 @@ input[type=range]:focus::-ms-fill-upper {
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-top: 15px;
-    width:87%;
-    clear: both;
+    width: 207px;
+    clear:both;
 }
 #imageDetailIssue {
     background: #f0f0f0;
