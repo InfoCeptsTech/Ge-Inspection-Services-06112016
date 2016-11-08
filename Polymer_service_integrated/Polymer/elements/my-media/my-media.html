@@ -19,7 +19,10 @@
             float: left;
             margin-top: 10px;
         }
-		.hi{font-size: 10px}
+        
+        .hi {
+            font-size: 10px
+        }
         
         #progressContainer {
             background: #fff;
@@ -78,21 +81,20 @@
         <iron-ajax auto id="issueAjax" url="{{markerurl}}" handle-as="json" on-response="handleResponseIssueMarker"></iron-ajax>
         <!-- <iron-ajax auto id="annotoriousAjax" url="/Polymer/annotorious.json" handle-as="json" on-response="handleResponseAnnotorious"></iron-ajax> -->
         <div class="filters">
-        <span style="font-size:15px;">Filter By &#8758;</span>
-            <paper-dropdown-menu id="filters" on-iron-select="_itemSelected" >
+            <span style="font-size:15px;">Filter By &#8758;</span>
+            <paper-dropdown-menu id="filters" on-iron-select="_itemSelected">
                 <paper-listbox class="dropdown-content" selected="0">
                     <paper-item>Altitude</paper-item>
-                 </paper-listbox>
+                </paper-listbox>
             </paper-dropdown-menu>
-         
-            <paper-dropdown-menu id="filtersValue" on-iron-select="_valueSelected"  on-change="report">
-                <paper-listbox class="dropdown-content" selected="0" >
+            <paper-dropdown-menu id="filtersValue" on-iron-select="_valueSelected" on-change="report">
+                <paper-listbox class="dropdown-content" selected="0">
                     <paper-item>All</paper-item>
                     <paper-item>0-40</paper-item>
                     <paper-item>40-80</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu>
-         <!-- <span class="drop-span">Filter By :</span>
+            <!-- <span class="drop-span">Filter By :</span>
          <select  class="dropdown-style" >
             <option>Altitude</option>
          </select>
@@ -108,21 +110,21 @@
                     <div class="image-gall">
                         <template is="dom-repeat" items="{{item.phase}}">
                             <template is="dom-if" if="[[show(item)]]">
-                            <!--  <span class="phase-title" id="{{item.title}}">{{item.title}}<label class="phase-title">0 issues</label><paper-checkbox class="paper-checkbox">NEED REVIEW</paper-checkbox></span> -->
-                            <span class="phase-title">{{item.title}}<label class="phase-title" id="{{item.title}}">0 issues</label><paper-checkbox class="checkit paper-checkbox" id="check{{index}}"  on-click="_yesno" /></paper-checkbox>
+                                <!--  <span class="phase-title" id="{{item.title}}">{{item.title}}<label class="phase-title">0 issues</label><paper-checkbox class="paper-checkbox">NEED REVIEW</paper-checkbox></span> -->
+                                <span class="phase-title">{{item.title}}<label class="phase-title" id="{{item.title}}">0 issues</label><paper-checkbox class="checkit paper-checkbox" id="check{{index}}"  on-click="_yesno" /></paper-checkbox>
                            <label for="smoking" name="yesnos" id="lable{{index}}">NEED REVIEW</label></span>
-                            <br/>
-                            <div class="modal-body">
-                                <template is="dom-repeat" items="{{item.img}}">
-                                    <div class="abc" id="abc">
-                                        <paper-icon-button raised on-dblclick="toggleDialog" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.miniPath}}" class="phases-img" id="{{item.id}}">
-                                            <!--  <img id="{{item.id}}" on-tap="addQuantity" raised class="phases-img" src="{{item.src}}"> -->
-                                        </paper-icon-button>
-                                        <!--  <img class$="{{item.class}}" src="{{item.issuePath}}"> -->
-                                    </div>
-                                    <!--  <paper-dialog heading="" id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop> -->
-                                    <!--     </paper-dialog> -->
-                            </div>
+                                <br/>
+                                <div class="modal-body">
+                                    <template is="dom-repeat" items="{{item.img}}">
+                                        <div class="abc" id="abc">
+                                            <paper-icon-button raised on-dblclick="toggleDialog" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.miniPath}}" class="phases-img" id="{{item.id}}">
+                                                <!--  <img id="{{item.id}}" on-tap="addQuantity" raised class="phases-img" src="{{item.src}}"> -->
+                                            </paper-icon-button>
+                                            <!--  <img class$="{{item.class}}" src="{{item.issuePath}}"> -->
+                                        </div>
+                                        <!--  <paper-dialog heading="" id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop> -->
+                                        <!--     </paper-dialog> -->
+                                </div>
                     </div>
                     </template>
         </div>
@@ -197,8 +199,8 @@
                         <div class="metadataSet">
                             <div class="defectDrop">
                                 <span>Defect Type:</span>
-                                <paper-dropdown-menu >
-                                    <paper-listbox class="dropdown-content" id="popdefectType" selected="0" >
+                                <paper-dropdown-menu>
+                                    <paper-listbox class="dropdown-content" id="popdefectType" selected="0">
                                         <paper-item>Corrosion</paper-item>
                                         <paper-item>Thinning</paper-item>
                                         <paper-item>Stress cracking</paper-item>
@@ -207,8 +209,8 @@
                                     </paper-listbox>
                                 </paper-dropdown-menu>
                                 <span>Status:</span>
-                                <paper-dropdown-menu >
-                                    <paper-listbox class="dropdown-content" id="popstatusType" selected="0" >
+                                <paper-dropdown-menu>
+                                    <paper-listbox class="dropdown-content" id="popstatusType" selected="0">
                                         <paper-item>Fix</paper-item>
                                         <paper-item>Continue to monitor</paper-item>
                                         <paper-item>Manual Inspection</paper-item>
@@ -219,9 +221,8 @@
                                 <iron-collapse style="width:219px" id="collapse">
                                     <div class="deco-collpase">
                                         <div class="Imgtitle">Altitude</div>
-                                        <div class="ImgValue">87.5465</div>
-                                        <div class="Imgtitle">Latitude &amp; Longitude</div>
-                                        <div class="ImgValue">(3.414725, -122.167969)</div>
+                                        <div class="ImgValue" id="Altitude">{{altitude}}</div>
+                                       
                                     </div>
                                 </iron-collapse>
                                 </paper-dropdown-menu>
@@ -235,7 +236,7 @@
                                                           </div>
                                                         </iron-collapse> -->
                                 <span>Inspection Requirement :</span>
-								<!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+                                <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
                                 <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
                                 <div id="appendMsg" class="hii">
                                     <div class="issue-date" id="issue-date">
@@ -246,21 +247,18 @@
                                 <!-- <paper-button class="submit addComment">Add</paper-button> -->
                                 <hr class="divider">
                                 <span>Inspection Findings :</span>
-								<paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+                                <paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
                                 <div id="appendMsgInspectionFinding" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
-
                                 <hr class="divider">
                                 <span>Annotation Comments :</span>
                                 <div id="appendAnnotations" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
-
                                 <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
-                                
                                 <!--  <input type="text" id="commentSection">
                                                         <paper-textarea label="" id="commentSection"></paper-textarea>
                                                         <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
@@ -288,7 +286,7 @@
         </div>
         <!-- <paper-slider id="ratings" pin snaps min="0" max="18" max-markers="18" step="1" value="4.15" editable></paper-slider> -->
         <paper-button id="reviewBtn" class="reviewbtn pull-right reviewMargin">Review Issue</paper-button>
-    </template>
+        </template>
         <!--  <paper-dialog id="modal" modal>
             <template is="dom-repeat " items="{{dronesServiceResponse}} ">
                 <template is="dom-repeat " items="{{item.inspection}} ">
@@ -424,14 +422,14 @@
                 commentArrayInspectionFinding: {
                     type: Array,
                     value: []
-				},
-                altitude:{
-                      type: String,
+                },
+                altitude: {
+                    type: String,
                     value: ''
                 },
-                userName:{
-                    type:String,
-                    value:''
+                userName: {
+                    type: String,
+                    value: ''
                 }
 
             },
@@ -457,17 +455,17 @@
                     Polymer.dom(button).setAttribute('icon', 'add')
                 }
             },
-              show:function(e){
+            show: function(e) {
                 debugger;
-              console.log(e);
-              console.log("length for  phase: "+e.img.length);
-              if(e.img.length>0){
-               return true;
-              }else{
-                return false;
-              }
+                console.log(e);
+                console.log("length for  phase: " + e.img.length);
+                if (e.img.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
 
-                         },
+            },
             ready: function() {
                 //  alert(" in ready-----------");
                 title = localStorage.getItem('assetTitle');
@@ -479,15 +477,15 @@
                 if (title == null || title == 'null') {
                     this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId=" + inspectorId;
                 } else if (inspectionId == null || inspectionId == 'undefined') {
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId + "&assetId=" + title+"&userId="+userId+"&phaseId="+phaseId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId + "&assetId=" + title + "&userId=" + userId + "&phaseId=" + phaseId;
                 } else {
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/inspectorId=" + inspectorId + "&assetId=" + title + "&inspectionId=" + inspectionId+"&pId="+phaseId+"&userId="+userId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/inspectorId=" + inspectorId + "&assetId=" + title + "&inspectionId=" + inspectionId + "&pId=" + phaseId + "&userId=" + userId;
 
                     var inspectionId = localStorage.getItem("inspectionId");
                     var assetId = localStorage.getItem("assetId");
                 }
-                 userId=localStorage.getItem('username');
-                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId
+                userId = localStorage.getItem('username');
+                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId + "&userId=" + userId
                     //  alert(this.url);
 
 
@@ -498,7 +496,7 @@
             },
             handleResponse: function() {
                 // debugger;
-				this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
                 //this.dronesServiceResponse = this.droneServiceResponse;
                 //alert("response :::: "+this.dronesServiceResponse);
                 //console.log(this.dronesServiceResponse);
@@ -508,9 +506,9 @@
                     this.dronesServiceResponse = JSON.parse(localStorage.getItem('dronesServiceResponse'));
                     this.url = localStorage.getItem('url');
                     inspectorId = localStorage.getItem('inspectorId');
-                    userId=localStorage.getItem('username');
+                    userId = localStorage.getItem('username');
                     //  alert("inspectorId::::"+inspectorId);
-                    document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
+                    document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId + "&userId=" + userId;
 
                     document.getElementById('issueAjax').generateRequest();
                     //       alert("marker url:: "+document.getElementById('issueAjax').url);
@@ -560,31 +558,20 @@
                     for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                         var elem = document.createElement("img");
                         var defectType = this.issueMarkerServiceResponse[i].defectType;
-                        if(defectType == 'Mechanical Fatigue')
-                        {
+                        if (defectType == 'Mechanical Fatigue') {
                             elem.setAttribute("src", "/images/marker3.png");
-                        }
-                        else if(defectType == 'Corrosion')
-                        {
+                        } else if (defectType == 'Corrosion') {
                             elem.setAttribute("src", "/images/marker.png");
-                        }
-                        else if(defectType == 'Thinning')
-                        {
+                        } else if (defectType == 'Thinning') {
                             elem.setAttribute("src", "/images/marker1.png");
-                        }
-                        else if(defectType == 'Stress cracking')
-                        {
+                        } else if (defectType == 'Stress cracking') {
                             elem.setAttribute("src", "/images/marker2.png");
-                        }
-                        else if(defectType == 'Thermal Fatigue')
-                        {
+                        } else if (defectType == 'Thermal Fatigue') {
                             elem.setAttribute("src", "/images/marker4.png");
+                        } else {
+                            elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath);
                         }
-                        else
-                        {
-                           elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath); 
-                        }
-						//elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath);
+                        //elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath);
                         elem.setAttribute("class", this.issueMarkerServiceResponse[i].class);
                         console.log(this.issueMarkerServiceResponse[i]);
                         if (document.getElementById(this.issueMarkerServiceResponse[i].id) != null) {
@@ -602,8 +589,8 @@
                 var assetId = localStorage.getItem("assetId");
                 // alert("success");
                 var inspectorId = localStorage.getItem("inspectorId");
-                var userId=localStorage.getItem("username");
-                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
+                var userId = localStorage.getItem("username");
+                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId + "&userId=" + userId;
 
                 document.getElementById('issueAjax').generateRequest();
                 var div = document.getElementById("dialog-box");
@@ -728,7 +715,7 @@
                 var statusType;
                 var inspectionId;
                 var assetId;
-               
+
                 if (this.idArr.length > 0) {
 
                     var objectArray = [];
@@ -749,12 +736,12 @@
                                                     console.log("mega path: " + imgList[x].megaPath);
                                                     console.log("phase : " + phaseArr[k].title);
                                                     console.log("inspection Id: " + inspection[j].inspectionId);
-                                                     debugger;
+                                                    debugger;
                                                     console.log("defect type: " + getDefectName(document.getElementById('popdefectType').selected));
                                                     console.log("status type: " + getStatusName(document.getElementById('popstatusType').selected));
                                                     console.log("inspectorId: " + localStorage.getItem('inspectorId'));
 
-                                                    userId=localStorage.getItem('username');
+                                                    userId = localStorage.getItem('username');
 
                                                     objectArray.push({
                                                         "id": imgList[x].megaPath,
@@ -764,7 +751,7 @@
                                                         "statusType": getStatusName(document.getElementById('popstatusType').selected),
                                                         "assetId": this.dronesServiceResponse[i].title,
                                                         "inspectionId": inspection[j].inspectionId,
-                                                        "userId":userId
+                                                        "userId": userId
 
                                                     });
 
@@ -852,10 +839,10 @@
                     //console.log('hi');
                     // console.log(this.dronesServiceResponse);
                     //debugger;
-                     var userId=localStorage.getItem('username');
-                    var phaseId=localStorage.getItem('phaseId');
+                    var userId = localStorage.getItem('username');
+                    var phaseId = localStorage.getItem('phaseId');
                     inspectorId = localStorage.getItem('inspectorId');
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId+"&userId="+userId+"&phaseId="+phaseId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId=" + inspectorId + "&userId=" + userId + "&phaseId=" + phaseId;
                     localStorage.setItem('url', this.url);
                     //localStorage.setItem('issueUrl', '/Polymer/issues1.json');
                     document.getElementById('ajax').url = this.url;
@@ -877,11 +864,11 @@
             toggleDialog: function(e) {
 
                 debugger;
-				var assetId = localStorage.getItem("assetId");
+                var assetId = localStorage.getItem("assetId");
                 this.userName = localStorage.getItem("username");
                 var user = this.userName;
-				
-				anno.reset();
+
+                anno.reset();
                 localStorage.setItem("target", "media");
                 // anno.destroy("http://localhost:8000/images/0002.jpg");
                 // if(this.annoArray.length > 0){
@@ -908,11 +895,30 @@
                 });
                 var a = this.annoArray;
                 anno.makeAnnotatable(document.getElementById('expandImg'));
+                 for(var i=0;i<this.dronesServiceResponse.length;i++){
+                    var inspection = this.dronesServiceResponse[i].inspection;
+                    for(var j=0;j<inspection.length;j++){
+                        var phase = inspection[j].phase;
+                        for(var k=0;k<phase.length;k++){
+                            var img = phase[k].img;
+                            for(var l=0;l<img.length;l++){
+                                if(this.currentId == img[l].id){
+                                    var metadata = img[l].metadata;
+                                    this.altitude = metadata[0].value;
+                                }
+                            }
+                        }
+                    }
+                  }
                 var canvas = document.getElementById('myCanvas');
                 var ctx = canvas.getContext("2d");
                 ctx.font = "20px Verdana";
                 ctx.fillStyle = 'white';
                 //var annotationsArray = [];
+                expand.style.width = 814.5 + "px";
+                expand.style.height = 450 + "px";
+                canvas.style.width = 814.5 + "px";
+                canvas.style.height = 450 + "px";
                 for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                     if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
                         //annotationsArray = this.annotoriousResponse[i].annotation;
@@ -1011,7 +1017,7 @@
                             this.annoSpanId = obj.id;
                             localStorage.setItem("annoSpanId", this.annoSpanId);
                             anno.addAnnotation(obj);
-                           var coordArr = [];
+                            var coordArr = [];
                             coordArr = localStorage.getItem("coordArr");
                             var parsed = JSON.parse(coordArr);
 
@@ -1037,7 +1043,7 @@
 
                             var body = document.getElementsByClassName("annotorious-annotationlayer");
                             body[0].appendChild(span);
-                            
+
                             // ctx.fillText(spanId,arr[0],arr[1]);
 
                             //initJS();
@@ -1106,20 +1112,20 @@
                     // });
                     anno.addHandler('onSelectionCompleted', function(event) {
                         debugger;
-                       var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
-                            event.id = spanId;
-                            console.log(event);
-                            localStorage.setItem("annoSpanId", spanId);
-                            var x = anno.getAnnotations();
-                            var sc = localStorage.getItem("sc");
-                            var parsed = JSON.parse(sc);
+                        var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
+                        event.id = spanId;
+                        console.log(event);
+                        localStorage.setItem("annoSpanId", spanId);
+                        var x = anno.getAnnotations();
+                        var sc = localStorage.getItem("sc");
+                        var parsed = JSON.parse(sc);
 
-                            var arr = [];
+                        var arr = [];
 
-                            for (var x in parsed) {
-                                arr.push(parsed[x]);
-                            }
-                            ctx.fillText(spanId,arr[1],arr[2]);
+                        for (var x in parsed) {
+                            arr.push(parsed[x]);
+                        }
+                        ctx.fillText(spanId, arr[1], arr[2]);
                     });
                     anno.addHandler('onAnnotationCreated', function(event) {
                         if (localStorage.getItem("saveCount") == "1") {
@@ -1158,7 +1164,7 @@
                             body[0].appendChild(span);
                             //var body = document.getElementById('myCanvas');
                             //body.appendChild(span);
-                            
+
                             //ctx.fillText(spanId,arr[1],arr[2]);
 
 
@@ -1177,7 +1183,7 @@
                                 var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
                                     (('' + month).length < 2 ? '0' : '') + month + '/' +
                                     d.getFullYear();
-                                
+
                                 var CurrentDate = output;
                                 var comments = spanId + "." + event.text;
                                 this.userName = localStorage.getItem("username");
@@ -1209,7 +1215,7 @@
                                     userDivInspectionFinding.classList.add("users");
                                     userDivInspectionFinding.innerHTML = this.userName;
 
-                                     mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(userDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
 
@@ -1243,7 +1249,7 @@
                                     console.log(polymerThis.commentArrayInspectionFinding[i]);
                                     var mainDivInspectionFinding = document.createElement('div');
                                     //mainDiv.id="main"+i;
-                                    
+
                                     var commentDivInspectionFinding = document.createElement('div');
                                     commentDivInspectionFinding.class = "comments";
                                     commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
@@ -1327,6 +1333,7 @@
                 img.style.height = 0 + "px";
                 canvas.style.width = 0 + "px";
                 canvas.style.height = 0 + "px";
+                img.src="";
 
             },
             saveDialog: function(e) {
@@ -1341,16 +1348,16 @@
                 img1.height = el.height;
                 var sourceCanvas = document.getElementById('myCanvas')
                 var sourceCtx = sourceCanvas.getContext("2d");
-                sourceCtx.font="30px Verdana";
+                sourceCtx.font = "30px Verdana";
                 sourceCtx.fillStyle = "white";
                 var annotationArray = anno.getAnnotations();
-                for(var i=0;i<annotationArray.length;i++){
-                   var spanId = document.getElementById("anno"+annotationArray[i].id);
-                   var top = spanId.style.top;
-                   top = top.replace("px","");
-                   var left = spanId.style.left;
-                    left = left.replace("px","");
-                   sourceCtx.fillText(annotationArray[i].id,Number(left),Number(top));
+                for (var i = 0; i < annotationArray.length; i++) {
+                    var spanId = document.getElementById("anno" + annotationArray[i].id);
+                    var top = spanId.style.top;
+                    top = top.replace("px", "");
+                    var left = spanId.style.left;
+                    left = left.replace("px", "");
+                    sourceCtx.fillText(annotationArray[i].id, Number(left), Number(top));
                 }
 
 
@@ -1359,8 +1366,9 @@
                 canvas.width = el.width;
                 canvas.height = el.height;
                 ctx.drawImage(img1, 0, 0, img1.width, img1.height);
-                ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
+                ctx.drawImage(sourceCanvas, 0, 0, img1.width, img1.height);
                 var dataURL = canvas.toDataURL("image/jpeg");
+                el.src = "";
                 //alert("from getbase64 function" + dataURL);
                 //window.open(dataURL);
                 // return dataURL;
@@ -1416,7 +1424,7 @@
                 // }
                 var comments = this.commentArray; //document.getElementById('requirementMsg').innerHTML;
                 var desc = this.commentArrayInspectionFinding; //document.getElementById('inputCommentIssue').value;
- var userId=localStorage.getItem('username');
+                var userId = localStorage.getItem('username');
 
                 var statusType = getStatusName(document.getElementById("statusType").selected);
 
@@ -1439,7 +1447,7 @@
                     "assetId": assetId,
                     "inspectionId": inspectionId,
                     "description": desc,
-                    "userId":userId,
+                    "userId": userId,
                     "dataURL": dataURL
                 }];
 
@@ -1546,86 +1554,86 @@
                     id = this.currentId;
                     var user = this.userName;
                     for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
-                       // if (id == this.issueMarkerServiceResponse[i].id) {
-                            if (this.target != null) {
-                                comments = this.userInput;
-                                var obj = {
-                                    "date": CurrentDate,
-                                    "message": comments,
-                                    "user": user
-                                }
-                                this.commentArray.push(obj);
-                                var myNode = document.getElementById("appendMsg");
-                                while (myNode.firstChild) {
-                                    myNode.removeChild(myNode.firstChild);
-                                }
-                                var count = this.commentArray.length;
-                                for (var i = 0; i < count; i++) {
-                                    debugger;
-                                    console.log(this.commentArray[i]);
-                                    var mainDiv = document.createElement('div');
-                                    //mainDiv.id="main"+i;
-                                    var dateDiv = document.createElement('div');
-                                    dateDiv.classList.add("date");
-                                    dateDiv.innerHTML = this.commentArray[i].date;
-                                    var commentDiv = document.createElement('div');
-                                    commentDiv.classList.add("comments");
-                                    commentDiv.innerHTML = this.commentArray[i].message;
-                                    var userDiv = document.createElement('div');
-                                    userDiv.classList.add("users");
-                                    userDiv.innerHTML = user;
+                        // if (id == this.issueMarkerServiceResponse[i].id) {
+                        if (this.target != null) {
+                            comments = this.userInput;
+                            var obj = {
+                                "date": CurrentDate,
+                                "message": comments,
+                                "user": user
+                            }
+                            this.commentArray.push(obj);
+                            var myNode = document.getElementById("appendMsg");
+                            while (myNode.firstChild) {
+                                myNode.removeChild(myNode.firstChild);
+                            }
+                            var count = this.commentArray.length;
+                            for (var i = 0; i < count; i++) {
+                                debugger;
+                                console.log(this.commentArray[i]);
+                                var mainDiv = document.createElement('div');
+                                //mainDiv.id="main"+i;
+                                var dateDiv = document.createElement('div');
+                                dateDiv.classList.add("date");
+                                dateDiv.innerHTML = this.commentArray[i].date;
+                                var commentDiv = document.createElement('div');
+                                commentDiv.classList.add("comments");
+                                commentDiv.innerHTML = this.commentArray[i].message;
+                                var userDiv = document.createElement('div');
+                                userDiv.classList.add("users");
+                                userDiv.innerHTML = user;
 
-                                    mainDiv.appendChild(userDiv);
-                                    mainDiv.appendChild(commentDiv);
-                                    mainDiv.appendChild(dateDiv);
-                                    
-                                    
-                                    var aDiv = document.getElementById('appendMsg');
-                                    aDiv.appendChild(mainDiv);
-                                }
-                                break;
-                            } else {
-                                comments = this.userInputComment;
-                                var obj = {
+                                mainDiv.appendChild(userDiv);
+                                mainDiv.appendChild(commentDiv);
+                                mainDiv.appendChild(dateDiv);
 
-                                    "date": CurrentDate,
-                                    "message": comments,
-                                    "user": user
 
-                                }
-                                this.commentArrayInspectionFinding.push(obj);
-                                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
-                                while (myNodeInspectionFinding.firstChild) {
-                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                                }
-                                var count = this.commentArrayInspectionFinding.length;
-                                for (var i = 0; i < count; i++) {
-                                    debugger;
-                                    console.log(this.commentArrayInspectionFinding[i]);
-                                    var mainDivInspectionFinding = document.createElement('div');
-                                    //mainDiv.id="main"+i;
-                                    var dateDivInspectionFinding = document.createElement('div');
-                                    dateDivInspectionFinding.classList.add("date");
-                                    dateDivInspectionFinding.innerHTML = this.commentArrayInspectionFinding[i].date;
-                                    var commentDivInspectionFinding = document.createElement('div');
-                                    commentDivInspectionFinding.classList.add("comments");
-                                    commentDivInspectionFinding.innerHTML = this.commentArrayInspectionFinding[i].message;
+                                var aDiv = document.getElementById('appendMsg');
+                                aDiv.appendChild(mainDiv);
+                            }
+                            break;
+                        } else {
+                            comments = this.userInputComment;
+                            var obj = {
 
-                                    var userDivInspectionFinding = document.createElement('div');
-                                    userDivInspectionFinding.classList.add("users");
-                                    userDivInspectionFinding.innerHTML = this.userName;
-
-                                    mainDivInspectionFinding.appendChild(userDivInspectionFinding);
-                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
-                                    
-
-                                    var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
-                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
-                                }
-                                break;
+                                "date": CurrentDate,
+                                "message": comments,
+                                "user": user
 
                             }
+                            this.commentArrayInspectionFinding.push(obj);
+                            var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                            while (myNodeInspectionFinding.firstChild) {
+                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            }
+                            var count = this.commentArrayInspectionFinding.length;
+                            for (var i = 0; i < count; i++) {
+                                debugger;
+                                console.log(this.commentArrayInspectionFinding[i]);
+                                var mainDivInspectionFinding = document.createElement('div');
+                                //mainDiv.id="main"+i;
+                                var dateDivInspectionFinding = document.createElement('div');
+                                dateDivInspectionFinding.classList.add("date");
+                                dateDivInspectionFinding.innerHTML = this.commentArrayInspectionFinding[i].date;
+                                var commentDivInspectionFinding = document.createElement('div');
+                                commentDivInspectionFinding.classList.add("comments");
+                                commentDivInspectionFinding.innerHTML = this.commentArrayInspectionFinding[i].message;
+
+                                var userDivInspectionFinding = document.createElement('div');
+                                userDivInspectionFinding.classList.add("users");
+                                userDivInspectionFinding.innerHTML = this.userName;
+
+                                mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+
+
+                                var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
+                                aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                            }
+                            break;
+
+                        }
 
 
 
@@ -1679,21 +1687,21 @@
 
 
 
-                            // comments = this.userInputComment;
+                        // comments = this.userInputComment;
 
-                       // } //else {
+                        // } //else {
 
 
-                            //comments = "";
+                        //comments = "";
 
-                            // document.querySelector('#appendMsg').innerHTML = comments;
-                            // document.querySelector('#appendMsgInspectionFinding').innerHTML = comments;
+                        // document.querySelector('#appendMsg').innerHTML = comments;
+                        // document.querySelector('#appendMsgInspectionFinding').innerHTML = comments;
 
-                       // }
+                        // }
 
                     }
-                    document.getElementById("inputReq").value="";
-                     document.getElementById("inputComment").value="";
+                    document.getElementById("inputReq").value = "";
+                    document.getElementById("inputComment").value = "";
                 }
             },
             stringify: function(obj) {
@@ -1720,14 +1728,14 @@
                 canvas.style.width = (wid / zm) + "px";
                 canvas.style.height = (ht / zm) + "px";
                 var annotationArray = anno.getAnnotations();
-                for(var i=0;i<annotationArray.length;i++){
-                var span = document.getElementById("anno"+annotationArray[i].id);
-                var t = span.style.top;
-                t = t.replace('px', '');
-                var l = span.style.left;
-                l = l.replace('px', '');
-                span.style.top = (Number(t) / zm) + "px";
-                span.style.left = (Number(l) / zm) + "px";
+                for (var i = 0; i < annotationArray.length; i++) {
+                    var span = document.getElementById("anno" + annotationArray[i].id);
+                    var t = span.style.top;
+                    t = t.replace('px', '');
+                    var l = span.style.left;
+                    l = l.replace('px', '');
+                    span.style.top = (Number(t) / zm) + "px";
+                    span.style.left = (Number(l) / zm) + "px";
                 }
                 // img.style.marginLeft = -(img.width / 2) + "px";
                 // img.style.marginTop = -(img.height / 2) + "px";
@@ -1753,14 +1761,14 @@
                 canvas.style.width = (wid * zm) + "px";
                 canvas.style.height = (ht * zm) + "px";
                 var annotationArray = anno.getAnnotations();
-                for(var i=0;i<annotationArray.length;i++){
-                var span = document.getElementById("anno"+annotationArray[i].id);
-                var t = span.style.top;
-                t = t.replace('px', '');
-                var l = span.style.left;
-                l = l.replace('px', '');
-                span.style.top = (Number(t) * zm) + "px";
-                span.style.left = (Number(l) * zm) + "px";
+                for (var i = 0; i < annotationArray.length; i++) {
+                    var span = document.getElementById("anno" + annotationArray[i].id);
+                    var t = span.style.top;
+                    t = t.replace('px', '');
+                    var l = span.style.left;
+                    l = l.replace('px', '');
+                    span.style.top = (Number(t) * zm) + "px";
+                    span.style.left = (Number(l) * zm) + "px";
                 }
                 // alert(img.style.width);
                 // alert(img.style.height);
@@ -1830,7 +1838,7 @@
                     /*}*/
                 }
             },
-             _itemSelected: function(e) {
+            _itemSelected: function(e) {
                 //debugger;
                 // var alt = [];
                 // var img = [];
@@ -1874,101 +1882,99 @@
                 // }
             },
             _valueSelected: function(e) {
-               debugger;
-                
+                debugger;
+
 
                 var selectedItem = e.target.selectedItem;
                 console.log('vish');
                 console.log(selectedItem.innerText);
                 //alert(selectedItem);
                 if (selectedItem.innerText == "All") {
-                 //alert('All');
-                 //this.dronesServiceResponse = this.droneServiceResponse;
-                 this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                    //alert('All');
+                    //this.dronesServiceResponse = this.droneServiceResponse;
+                    this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
 
-                }
-                else if (selectedItem.innerText == "0-40") {
-                //alert('0-40');
-                this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
-                var arr = [];
-                debugger;
-                 for(var i=0;i<this.dronesServiceResponse.length;i++){
-
+                } else if (selectedItem.innerText == "0-40") {
+                    //alert('0-40');
+                    this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                    var arr = [];
+                    debugger;
+                    for (var i = 0; i < this.dronesServiceResponse.length; i++) {
 
 
 
 
-                    var inspection = this.dronesServiceResponse[i].inspection;
-                    for(var j=0;j<inspection.length;j++){
-                         if(localStorage.getItem("inspectionId") == inspection[i].inspectionId){
-                             var phase = inspection[j].phase;
-                             for(var k=0;k<phase.length;k++){
-                                var img = phase[k].img;
 
-                                for(var l=0;l<img.length;l++){
-                                    var metadata = img[l].metadata;
-                                    if(metadata[0].value >= 0 && metadata[0].value <=40){
-                                        // arr.push(metadata[0]);
-                                        // this.dronesServiceResponse
-                                     }else{
-                                        //img[l] = [];
-                                        img.splice(l, 1);
-                                        l--;
-                                     }
+                        var inspection = this.dronesServiceResponse[i].inspection;
+                        for (var j = 0; j < inspection.length; j++) {
+                            if (localStorage.getItem("inspectionId") == inspection[i].inspectionId) {
+                                var phase = inspection[j].phase;
+                                for (var k = 0; k < phase.length; k++) {
+                                    var img = phase[k].img;
+
+                                    for (var l = 0; l < img.length; l++) {
+                                        var metadata = img[l].metadata;
+                                        if (metadata[0].value >= 0 && metadata[0].value <= 40) {
+                                            // arr.push(metadata[0]);
+                                            // this.dronesServiceResponse
+                                        } else {
+                                            //img[l] = [];
+                                            img.splice(l, 1);
+                                            l--;
+                                        }
+                                    }
                                 }
-                         }
 
-                        }
-                    }
-                   
-
-
-
-                 }
-               }
-                else if (selectedItem.innerText == "40-80") {
-                   // alert('heys');
-                  this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
-                    for(var i=0;i<this.dronesServiceResponse.length;i++){
-                    var inspection = this.dronesServiceResponse[i].inspection;
-                    for(var j=0;j<inspection.length;j++){
-                         if(localStorage.getItem("inspectionId") == inspection[i].inspectionId){
-                             var phase = inspection[j].phase;
-                             for(var k=0;k<phase.length;k++){
-
-                            var img = phase[k].img;
-                            for(var l=0;l<img.length;l++){
-                                var metadata = img[l].metadata;
-                                if(metadata[0].value > 40 && metadata[0].value <=80){
-                                 
-                                }else{
-                                    img.splice(l, 1);
-                                    l--;
-                                    // if(img[l]==""){
-                                    //   var cc= document.getElementsByClassName(image-gallery);
-                                    //   cc.style.display="none";
-
-
-
-
-
-
-
-
-
-                                    // }
-
-
-                                }
                             }
-                         }
-
-
                         }
-                    }
-                   
 
-                 }
+
+
+
+                    }
+                } else if (selectedItem.innerText == "40-80") {
+                    // alert('heys');
+                    this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                    for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                        var inspection = this.dronesServiceResponse[i].inspection;
+                        for (var j = 0; j < inspection.length; j++) {
+                            if (localStorage.getItem("inspectionId") == inspection[i].inspectionId) {
+                                var phase = inspection[j].phase;
+                                for (var k = 0; k < phase.length; k++) {
+
+                                    var img = phase[k].img;
+                                    for (var l = 0; l < img.length; l++) {
+                                        var metadata = img[l].metadata;
+                                        if (metadata[0].value > 40 && metadata[0].value <= 80) {
+
+                                        } else {
+                                            img.splice(l, 1);
+                                            l--;
+                                            // if(img[l]==""){
+                                            //   var cc= document.getElementsByClassName(image-gallery);
+                                            //   cc.style.display="none";
+
+
+
+
+
+
+
+
+
+                                            // }
+
+
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        }
+
+
+                    }
 
 
                 }
