@@ -219,9 +219,8 @@
                                 <iron-collapse style="width:219px" id="collapse">
                                     <div class="deco-collpase">
                                         <div class="Imgtitle">Altitude</div>
-                                        <div class="ImgValue">87.5465</div>
-                                        <div class="Imgtitle">Latitude &amp; Longitude</div>
-                                        <div class="ImgValue">(3.414725, -122.167969)</div>
+                                        <div class="ImgValue" id="Altitude">{{altitude}}</div>
+                                       
                                     </div>
                                 </iron-collapse>
                                 </paper-dropdown-menu>
@@ -908,6 +907,21 @@
                 });
                 var a = this.annoArray;
                 anno.makeAnnotatable(document.getElementById('expandImg'));
+                 for(var i=0;i<this.dronesServiceResponse.length;i++){
+                    var inspection = this.dronesServiceResponse[i].inspection;
+                    for(var j=0;j<inspection.length;j++){
+                        var phase = inspection[j].phase;
+                        for(var k=0;k<phase.length;k++){
+                            var img = phase[k].img;
+                            for(var l=0;l<img.length;l++){
+                                if(this.currentId == img[l].id){
+                                    var metadata = img[l].metadata;
+                                    this.altitude = metadata[0].value;
+                                }
+                            }
+                        }
+                    }
+                  }
                 var canvas = document.getElementById('myCanvas');
                 var ctx = canvas.getContext("2d");
                 ctx.font = "20px Verdana";
@@ -1337,7 +1351,6 @@
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
                 var img1 = document.createElement("img");
-                img1.setAttribute('crossOrigin', 'anonymous');
                 img1.width = el.width;
                 img1.height = el.height;
                 var sourceCanvas = document.getElementById('myCanvas')
