@@ -187,7 +187,7 @@ span.inspections-title {
     height: 100%;
     cursor: pointer;
     padding: 0px;
-    border: none;
+    border: 2px inset rgb(255, 255, 255);
     position: relative;
 }
 paper-toolbar.head-toolbar {
@@ -1159,15 +1159,19 @@ paper-input#inputReqIssue, #inputCommentIssue {
 }
 #inputReqIssue paper-input-container {
     border: none!important;
+    width: 80%;
 }
 #inputCommentIssue paper-input-container {
     border: none!important;
+    width: 80%;
 }
 #inputReq paper-input-container {
     border: none!important;
+    width: 80%;
 }
 #inputComment paper-input-container {
     border: none!important;
+    width: 80%;
 }
 .deco-collpase {
     padding: 18px 5px;
