@@ -222,7 +222,6 @@
                                     <div class="deco-collpase">
                                         <div class="Imgtitle">Altitude</div>
                                         <div class="ImgValue" id="Altitude">{{altitude}}</div>
-                                       
                                     </div>
                                 </iron-collapse>
                                 </paper-dropdown-menu>
@@ -895,21 +894,21 @@
                 });
                 var a = this.annoArray;
                 anno.makeAnnotatable(document.getElementById('expandImg'));
-                 for(var i=0;i<this.dronesServiceResponse.length;i++){
+                for (var i = 0; i < this.dronesServiceResponse.length; i++) {
                     var inspection = this.dronesServiceResponse[i].inspection;
-                    for(var j=0;j<inspection.length;j++){
+                    for (var j = 0; j < inspection.length; j++) {
                         var phase = inspection[j].phase;
-                        for(var k=0;k<phase.length;k++){
+                        for (var k = 0; k < phase.length; k++) {
                             var img = phase[k].img;
-                            for(var l=0;l<img.length;l++){
-                                if(this.currentId == img[l].id){
+                            for (var l = 0; l < img.length; l++) {
+                                if (this.currentId == img[l].id) {
                                     var metadata = img[l].metadata;
                                     this.altitude = metadata[0].value;
                                 }
                             }
                         }
                     }
-                  }
+                }
                 var canvas = document.getElementById('myCanvas');
                 var ctx = canvas.getContext("2d");
                 ctx.font = "20px Verdana";
@@ -1333,7 +1332,7 @@
                 img.style.height = 0 + "px";
                 canvas.style.width = 0 + "px";
                 canvas.style.height = 0 + "px";
-                img.src="";
+                img.src = "";
 
             },
             saveDialog: function(e) {
@@ -1344,6 +1343,7 @@
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
                 var img1 = document.createElement("img");
+                img1.setAttribute('crossOrigin', 'anonymous');
                 img1.width = el.width;
                 img1.height = el.height;
                 var sourceCanvas = document.getElementById('myCanvas')
@@ -1365,12 +1365,13 @@
                 img1.setAttribute('src', el.src);
                 canvas.width = el.width;
                 canvas.height = el.height;
-                ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+                ctx.drawImage(el, 0, 0, el.width, el.height);
                 ctx.drawImage(sourceCanvas, 0, 0, img1.width, img1.height);
-                var dataURL = canvas.toDataURL("image/jpeg");
+
+                var dataURL = canvas.toDataURL("image/jpeg", 1);
                 el.src = "";
                 //alert("from getbase64 function" + dataURL);
-                //window.open(dataURL);
+               // window.open(dataURL);
                 // return dataURL;
 
 
