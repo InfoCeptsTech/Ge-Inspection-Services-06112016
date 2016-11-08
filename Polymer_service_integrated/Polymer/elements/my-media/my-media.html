@@ -78,12 +78,12 @@
         <iron-ajax auto id="issueAjax" url="{{markerurl}}" handle-as="json" on-response="handleResponseIssueMarker"></iron-ajax>
         <!-- <iron-ajax auto id="annotoriousAjax" url="/Polymer/annotorious.json" handle-as="json" on-response="handleResponseAnnotorious"></iron-ajax> -->
         <div class="filters">
-        <span style="font-size:15px; font-weight:bold">Filter By Altitude &#8758;</span>
-            <!-- <paper-dropdown-menu id="filters" on-iron-select="_itemSelected" >
+        <span style="font-size:15px; font-weight:bold">Filter By &#8758;</span>
+            <paper-dropdown-menu id="filters" on-iron-select="_itemSelected" >
                 <paper-listbox class="dropdown-content" selected="0">
                     <paper-item>Altitude</paper-item>
                  </paper-listbox>
-            </paper-dropdown-menu> -->
+            </paper-dropdown-menu>
          
             <paper-dropdown-menu id="filtersValue" on-iron-select="_valueSelected"  on-change="report">
                 <paper-listbox class="dropdown-content" selected="0" >
