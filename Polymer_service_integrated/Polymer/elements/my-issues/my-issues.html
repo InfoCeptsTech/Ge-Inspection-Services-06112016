@@ -100,7 +100,7 @@
             <div class="dialog-container">
                 <div class="img-data">
                     <div class="zoomed-img flexchild">
-                        <img id="expandImgIssue">
+                        <img id="expandImgIssue" crossOrigin="Anonymous">
                     </div>
                     <div class="img-metadata flexchild">
                         <!-- <h3> Altitude </h3>
@@ -682,7 +682,7 @@
                     var obj;
                     var a = polymerThis.annoArray;
                     if (a.length > 0) {
-                        
+
                         for (var i = 0; i < a.length; i++) {
                             obj = a[i];
                             this.annoSpanId = obj.id;
@@ -1031,6 +1031,7 @@
                 var ctx = canvas.getContext("2d");
                 var img1 = document.createElement("img");
                 img1.setAttribute('crossOrigin', 'anonymous');
+                el.setAttribute('crossOrigin', 'anonymous');
                 img1.width = el.width;
                 img1.height = el.height;
                 var sourceCanvas = document.getElementById('myCanvas')
@@ -1052,9 +1053,9 @@
                 img1.setAttribute('src', el.src);
                 canvas.width = el.width;
                 canvas.height = el.height;
-                ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+                ctx.drawImage(el, 0, 0, el.width, el.height);
                 ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
-                var dataURL = canvas.toDataURL("image/jpeg");
+                var dataURL = canvas.toDataURL("image/jpeg",1);
                 el.src = "";
                 //window.open(dataURL);
 

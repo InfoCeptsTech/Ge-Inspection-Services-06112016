@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.bind.DatatypeConverter;
-
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,26 +43,19 @@ public class IssueController {
 	private ImageUtil imageUtil;
 	
 	
-	private String getValue(Object descObject,Object commentObj) {
+	private String getValue(Object commentObj) {
 		StringBuilder commentString=new StringBuilder();
-		StringBuilder descString=new StringBuilder();
 		String comment="";
-		
-		ArrayList<Object> descList= (ArrayList<Object>) descObject;
 		ArrayList<Object> commentList=(ArrayList<Object>) commentObj;
-		
-		for(Object c:descList){
+		for(Object c:commentList){
 			Map<String,String> map=(Map<String, String>) c;
 			commentString=commentString.append(map.get("date")+":"+map.get("message")+"\n");
 		}
-		for(Object c:commentList){
-			Map<String,String> map=(Map<String, String>) c;
-			descString=descString.append(map.get("date")+":"+map.get("message")+"\n");
-		}
-		
-		comment=commentString.toString()+"\n  "+descString.toString();
+		comment=commentString.toString();
 		return comment;
 	}
+	
+	
 	@CrossOrigin
 	@RequestMapping(value = "/inspection/addIssue", method = RequestMethod.POST)
 	public String addIssue(@RequestBody String inspectionMedia){
@@ -97,7 +88,7 @@ public class IssueController {
 			}catch(Exception e){
 				//e.printStackTrace();
 			}finally{
-				InspectionMedia media=new InspectionMedia(getValue(reqMap.get("comments"),reqMap.get("description")), blobId, inspectorId, new Date(), statusType, defectType,  annotation,description,assetId,inspectionId,imgByte,getAnnotatedComments(reqMap.get("annotation")),comment,userId);
+				InspectionMedia media=new InspectionMedia(getValue(reqMap.get("comments")),getValue(reqMap.get("description")), blobId, inspectorId, new Date(), statusType, defectType,  annotation,description,assetId,inspectionId,imgByte,getAnnotatedComments(reqMap.get("annotation")),comment,userId);
 				inspectionMediaList.add(media);
 			}
 			
@@ -113,7 +104,7 @@ public class IssueController {
 			int index=1;
 			for(Object obj:annoationList ){
 				Map<String,Object> objMap=(Map<String, Object>) obj;
-				annotatedComments=annotatedComments.concat(index+". "+(String) objMap.get("text")+", ");
+				annotatedComments=annotatedComments.concat(index+". "+(String) objMap.get("text")+"\n ");
 				index++;
 			}
 		}

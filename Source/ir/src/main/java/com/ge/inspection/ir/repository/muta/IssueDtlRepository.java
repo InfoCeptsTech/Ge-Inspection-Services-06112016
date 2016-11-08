@@ -50,7 +50,7 @@ public interface IssueDtlRepository extends
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE InspectionMedia set issueImage=:issueImage,commentJson=:commentJson,statusType=:statusType,description=:description,annotedComments=:annotedComments,annotatedMetadata=:annotatedMetadata,comment=:comment,defectType=:defectType,inspectionDate=:inspectionDate where blobId=:blobId and userId=:userId")
+	@Query("UPDATE InspectionMedia set issueImage=:issueImage,commentJson=:commentJson,statusType=:statusType,description=:description,annotedComments=:annotedComments,annotatedMetadata=:annotatedMetadata,comment=:comment,defectType=:defectType,inspectionDate=:inspectionDate,inspectionRequirement=:inspectionRequirement where blobId=:blobId and userId=:userId")
 	void updateIssue(@Param("blobId") String blobId,
 			@Param("statusType") String statusType,
 			@Param("defectType") String defectType,
@@ -61,7 +61,8 @@ public interface IssueDtlRepository extends
 			@Param("issueImage") byte[] issueImage,
 			@Param("commentJson") String commentJson,
 			@Param("inspectionDate") Date inspectionDate,
-			@Param("userId") String userId);
+			@Param("userId") String userId,
+			@Param("inspectionRequirement") String inspectionRequirement);
 	
 	@Transactional
 	@Modifying

@@ -42,7 +42,7 @@ public class IssueDaoImpl implements IssueDao{
 			if(issueDtlRepository.getCount(inspectionMedia.getUserId(),inspectionMedia.getBlobId())==0){
 				issueDtlRepository.saveAndFlush(inspectionMedia);
 			}else{
-				issueDtlRepository.updateIssue(inspectionMedia.getBlobId(), inspectionMedia.getStatusType(), inspectionMedia.getDefectType(), inspectionMedia.getComment(), inspectionMedia.getDescription(), inspectionMedia.getAnnotedComments(), inspectionMedia.getAnnotatedMetadata(), inspectionMedia.getIssueImage(), inspectionMedia.getCommentJson(), inspectionMedia.getInspectionDate(), inspectionMedia.getUserId());
+				issueDtlRepository.updateIssue(inspectionMedia.getBlobId(), inspectionMedia.getStatusType(), inspectionMedia.getDefectType(), inspectionMedia.getComment(), inspectionMedia.getDescription(), inspectionMedia.getAnnotedComments(), inspectionMedia.getAnnotatedMetadata(), inspectionMedia.getIssueImage(), inspectionMedia.getCommentJson(), inspectionMedia.getInspectionDate(), inspectionMedia.getUserId(),inspectionMedia.getInspectionRequirement());
 			}
 		}
 	

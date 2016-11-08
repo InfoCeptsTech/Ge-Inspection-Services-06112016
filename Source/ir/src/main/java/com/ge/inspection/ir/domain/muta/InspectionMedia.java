@@ -43,7 +43,8 @@ public class InspectionMedia {
 	private String commentJson;
 	@Column(name = "\"user\"",length = 400) 
 	private String userId;
-	
+	@Column(name = "inspection_requirement",length = 4000) 
+	private String inspectionRequirement;
 	@Column(name = "issueimage")
 	private byte[] issueImage;
 	
@@ -65,11 +66,12 @@ public class InspectionMedia {
 		this.userId=userId;
 	}
 	
-	public InspectionMedia(String comment, String blobId,
+	public InspectionMedia(String comment,String inspectionRequirement, String blobId,
 			String inspectorId, Date inspectionDate, String statusType,
 			String defectType, String annotatedMetadata, String description,
 			String assetId, String inspectionId,byte[] issueImage,String annotedComments,String commentJson,String userId) {
 		this.comment=comment;
+		this.inspectionRequirement=inspectionRequirement;
 		this.blobId=blobId;
 		this.inspectorId=inspectorId;
 		this.inspectionDate=inspectionDate;
@@ -187,5 +189,13 @@ public class InspectionMedia {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getInspectionRequirement() {
+		return inspectionRequirement;
+	}
+
+	public void setInspectionRequirement(String inspectionRequirement) {
+		this.inspectionRequirement = inspectionRequirement;
 	}
 }
