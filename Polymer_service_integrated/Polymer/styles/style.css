@@ -1339,15 +1339,6 @@ a.sub-menu.iron-selected, a.sub-menu.style-scope.my-drone:hover {
     background: #636363;
     color: #fff !important;
 }
-.users {
-    width: 30%;
-    display: inline-block;
-    font-size: 14px;
-    text-transform: capitalize;
-    font-weight: 600;
-    padding: 0 10px 0 0;
-    float: left;
-}
 .date {
     width: 100%;
     display: inline-block;
@@ -1387,4 +1378,16 @@ span.asset-title.style-scope.my-drone {
     border: none;
     height: 100px;
     margin: 0;
+}
+.users {
+    width: auto;
+    display: inline-block;
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 600;
+    padding: 0 9px 0 0;
+    float: left;
+}
+.phases-img {
+    border: 4px solid #ccc;
 }
