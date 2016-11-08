@@ -576,6 +576,11 @@
                 this.annoArray = [];
                 var polymerThis = this;
                 //var annotationsArray = [];
+                var canvas = document.getElementById('myCanvas');
+                expand.style.width = 814.5 + "px";
+                expand.style.height = 450 + "px";
+                canvas.style.width = 814.5 + "px";
+                canvas.style.height = 450 + "px";
                 for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                     if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
                         //annotationsArray = this.annotoriousResponse[i].annotation;
@@ -584,13 +589,17 @@
                         this.annoArray = this.issueMarkerServiceResponse[i].annotation;
                          if (this.issueMarkerServiceResponse[i].width != "" && this.issueMarkerServiceResponse[i].width != undefined) {
                             expand.style.width = this.issueMarkerServiceResponse[i].width + "px";
+                            canvas.style.width = this.issueMarkerServiceResponse[i].width + "px";
                         } else {
                             expand.style.width = 814.5 + "px";
+                            canvas.style.width = 814.5 + "px";
                         }
                         if (this.issueMarkerServiceResponse[i].height != "" && this.issueMarkerServiceResponse[i].height != undefined) {
                             expand.style.height = this.issueMarkerServiceResponse[i].height + "px";
+                            canvas.style.height = this.issueMarkerServiceResponse[i].height + "px";
                         } else {
                             expand.style.height = 450 + "px";
+                            canvas.style.height = 450 + "px";
                         }
                         break;
 
@@ -601,6 +610,8 @@
                         this.annoArray = [];
                         expand.style.width = 814.5+"px";
                         expand.style.height = 450+"px";
+                        canvas.style.width = 814.5+"px";
+                        canvas.style.height = 450+"px";
                     }
                 }
                 if(this.commentArrayIssue != undefined){
