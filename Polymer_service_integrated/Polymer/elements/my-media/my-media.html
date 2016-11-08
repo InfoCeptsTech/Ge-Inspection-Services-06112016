@@ -545,7 +545,9 @@
                                         }
                                     }
                                     console.log(phaseArr[k].title + " , issues: " + phaseIssueCount);
+                                    if(document.getElementById(phaseArr[k].title)!=null){
                                     document.getElementById(phaseArr[k].title).innerHTML = phaseIssueCount + " issues";
+                                }
                                     //
                                 }
                             }
