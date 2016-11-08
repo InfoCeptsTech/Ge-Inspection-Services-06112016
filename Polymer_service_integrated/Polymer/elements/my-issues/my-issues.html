@@ -576,6 +576,14 @@
                 this.annoArray = [];
                 var polymerThis = this;
                 //var annotationsArray = [];
+                anno.setProperties({
+                    stroke: 'red',
+                    stroke_width: 5,
+                    hi_stroke: '#3e87e8',
+                    hi_stroke_width: 5
+                });
+                //var a = this.annoArray;
+                anno.makeAnnotatable(document.getElementById('expandImgIssue'));
                 var canvas = document.getElementById('myCanvas');
                 expand.style.width = 814.5 + "px";
                 expand.style.height = 450 + "px";
@@ -667,19 +675,14 @@
                 //     alert(srcNew);
                 //     this.annoArray.src=srcNew; 
                 // }
-                anno.setProperties({
-                    stroke: 'red',
-                    stroke_width: 5,
-                    hi_stroke: '#3e87e8',
-                    hi_stroke_width: 5
-                });
-                var a = this.annoArray;
-                anno.makeAnnotatable(document.getElementById('expandImgIssue'));
+                
                 document.getElementById("expandImgIssue").onload = function() {
                     //alert("The image has loaded!");
                     //debugger;
                     var obj;
+                    var a = polymerThis.annoArray;
                     if (a.length > 0) {
+                        
                         for (var i = 0; i < a.length; i++) {
                             obj = a[i];
                             this.annoSpanId = obj.id;
