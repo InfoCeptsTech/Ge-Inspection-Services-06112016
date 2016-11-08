@@ -1052,6 +1052,7 @@
                 ctx.drawImage(img1, 0, 0, img1.width, img1.height);
                 ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
                 var dataURL = canvas.toDataURL("image/jpeg");
+                el.src = "";
                 //window.open(dataURL);
 
                  var viewportOffset = el.getBoundingClientRect();
@@ -1206,6 +1207,7 @@
                 img.style.height = 0 + "px";
                 canvas.style.width = 0 + "px";
                 canvas.style.height = 0 + "px";
+                img.src= "";
             },
             toggleDialogGenerate: function(e) {
                 var dialog = document.querySelector('#reportToggle');
