@@ -217,7 +217,7 @@
             <span class="dialogTitle">Enter Executive Summary:</span>
               <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
               <div class="modal-footer ">
-                <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</a>
+                <a href="https://qlikreport.infocepts.com/QlikView/index.htm" on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</a>
                 <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
                 <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
             </div>
@@ -1235,6 +1235,7 @@
             },
             _handleReportSave:function(e){
               // alert("saved succesfully");
+              this.$.webTicketGet.url = "https://qlikreport.infocepts.com/QlikView/index.htm";
               this.$.webTicketGet.generateRequest();
             },
             _handleWebTicketResponse:function(e){
@@ -1248,13 +1249,13 @@
                 this.$.qlikReport.generateRequest();
             },
             _handleWebTicketError:function(e){
-               alert('error response for token');
+               //alert('error response for token');
             },
             _handleQlikResponse:function(e){
               // alert('qlik response ');
             },
             _handleQlikError:function(e){
-              alert('error response for qlik report');
+              //alert('error response for qlik report');
             },
             ready: function() {
                 // debugger;
