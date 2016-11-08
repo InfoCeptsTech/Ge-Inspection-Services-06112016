@@ -187,7 +187,7 @@ span.inspections-title {
     height: 100%;
     cursor: pointer;
     padding: 0px;
-    border: none;
+    border: 2px inset rgb(255, 255, 255);
     position: relative;
 }
 paper-toolbar.head-toolbar {
@@ -1162,15 +1162,19 @@ paper-input#inputReqIssue, #inputCommentIssue {
 }
 #inputReqIssue paper-input-container {
     border: none!important;
+    width: 80%;
 }
 #inputCommentIssue paper-input-container {
     border: none!important;
+    width: 80%;
 }
 #inputReq paper-input-container {
     border: none!important;
+    width: 80%;
 }
 #inputComment paper-input-container {
     border: none!important;
+    width: 80%;
 }
 .deco-collpase {
     padding: 18px 5px;
@@ -1342,15 +1346,6 @@ a.sub-menu.iron-selected, a.sub-menu.style-scope.my-drone:hover {
     background: #636363;
     color: #fff !important;
 }
-.users {
-    width: 30%;
-    display: inline-block;
-    font-size: 14px;
-    text-transform: capitalize;
-    font-weight: 600;
-    padding: 0 10px 0 0;
-    float: left;
-}
 .date {
     width: 100%;
     display: inline-block;
@@ -1368,6 +1363,7 @@ a.sub-menu.iron-selected, a.sub-menu.style-scope.my-drone:hover {
     float: left;
     width: 65%;
     font-size: 13px;
+    word-wrap: break-word;
 }
 canvas#myCanvas {
     min-width: 100%;
@@ -1390,4 +1386,13 @@ span.asset-title.style-scope.my-drone {
     border: none;
     height: 100px;
     margin: 0;
+}
+.users {
+    width: auto;
+    display: inline-block;
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 600;
+    padding: 0 9px 0 0;
+    float: left;
 }

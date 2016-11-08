@@ -100,7 +100,7 @@
             <div class="dialog-container">
                 <div class="img-data">
                     <div class="zoomed-img flexchild">
-                        <img id="expandImgIssue">
+                        <img id="expandImgIssue" crossOrigin="Anonymous">
                     </div>
                     <div class="img-metadata flexchild">
                         <!-- <h3> Altitude </h3>
@@ -576,6 +576,19 @@
                 this.annoArray = [];
                 var polymerThis = this;
                 //var annotationsArray = [];
+                anno.setProperties({
+                    stroke: 'red',
+                    stroke_width: 5,
+                    hi_stroke: '#3e87e8',
+                    hi_stroke_width: 5
+                });
+                //var a = this.annoArray;
+                anno.makeAnnotatable(document.getElementById('expandImgIssue'));
+                var canvas = document.getElementById('myCanvas');
+                expand.style.width = 814.5 + "px";
+                expand.style.height = 450 + "px";
+                canvas.style.width = 814.5 + "px";
+                canvas.style.height = 450 + "px";
                 for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                     if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
                         //annotationsArray = this.annotoriousResponse[i].annotation;
@@ -584,13 +597,17 @@
                         this.annoArray = this.issueMarkerServiceResponse[i].annotation;
                          if (this.issueMarkerServiceResponse[i].width != "" && this.issueMarkerServiceResponse[i].width != undefined) {
                             expand.style.width = this.issueMarkerServiceResponse[i].width + "px";
+                            canvas.style.width = this.issueMarkerServiceResponse[i].width + "px";
                         } else {
                             expand.style.width = 814.5 + "px";
+                            canvas.style.width = 814.5 + "px";
                         }
                         if (this.issueMarkerServiceResponse[i].height != "" && this.issueMarkerServiceResponse[i].height != undefined) {
                             expand.style.height = this.issueMarkerServiceResponse[i].height + "px";
+                            canvas.style.height = this.issueMarkerServiceResponse[i].height + "px";
                         } else {
                             expand.style.height = 450 + "px";
+                            canvas.style.height = 450 + "px";
                         }
                         break;
 
@@ -601,6 +618,8 @@
                         this.annoArray = [];
                         expand.style.width = 814.5+"px";
                         expand.style.height = 450+"px";
+                        canvas.style.width = 814.5+"px";
+                        canvas.style.height = 450+"px";
                     }
                 }
                 if(this.commentArrayIssue != undefined){
@@ -656,19 +675,14 @@
                 //     alert(srcNew);
                 //     this.annoArray.src=srcNew; 
                 // }
-                anno.setProperties({
-                    stroke: 'red',
-                    stroke_width: 5,
-                    hi_stroke: '#3e87e8',
-                    hi_stroke_width: 5
-                });
-                var a = this.annoArray;
-                anno.makeAnnotatable(document.getElementById('expandImgIssue'));
+                
                 document.getElementById("expandImgIssue").onload = function() {
                     //alert("The image has loaded!");
                     //debugger;
                     var obj;
+                    var a = polymerThis.annoArray;
                     if (a.length > 0) {
+
                         for (var i = 0; i < a.length; i++) {
                             obj = a[i];
                             this.annoSpanId = obj.id;
@@ -1017,6 +1031,7 @@
                 var ctx = canvas.getContext("2d");
                 var img1 = document.createElement("img");
                 img1.setAttribute('crossOrigin', 'anonymous');
+                el.setAttribute('crossOrigin', 'anonymous');
                 img1.width = el.width;
                 img1.height = el.height;
                 var sourceCanvas = document.getElementById('myCanvas')
@@ -1038,9 +1053,10 @@
                 img1.setAttribute('src', el.src);
                 canvas.width = el.width;
                 canvas.height = el.height;
-                ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+                ctx.drawImage(el, 0, 0, el.width, el.height);
                 ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
-                var dataURL = canvas.toDataURL("image/jpeg");
+                var dataURL = canvas.toDataURL("image/jpeg",1);
+                el.src = "";
                 //window.open(dataURL);
 
                  var viewportOffset = el.getBoundingClientRect();
@@ -1195,6 +1211,7 @@
                 img.style.height = 0 + "px";
                 canvas.style.width = 0 + "px";
                 canvas.style.height = 0 + "px";
+                img.src= "";
             },
             toggleDialogGenerate: function(e) {
                 var dialog = document.querySelector('#reportToggle');
