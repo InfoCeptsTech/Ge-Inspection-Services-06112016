@@ -1374,7 +1374,7 @@
                 img1.setAttribute('src', el.src);
                 canvas.width = el.width;
                 canvas.height = el.height;
-                ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+                ctx.drawImage(el, 0, 0, el.width, el.height);
                 ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
                 var dataURL = canvas.toDataURL("image/jpeg");
                 //alert("from getbase64 function" + dataURL);
