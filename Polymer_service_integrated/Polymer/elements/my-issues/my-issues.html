@@ -52,7 +52,7 @@
         </iron-ajax>
          <iron-ajax
             id="qlikReport"
-            url="https://35.162.2.176/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket=<WebTicket>"
+            url=""
             method="GET"
             handle-as="doc"
             on-response="_handleQlikResponse"
@@ -217,7 +217,8 @@
             <span class="dialogTitle">Enter Executive Summary:</span>
               <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
               <div class="modal-footer ">
-                <a href="https://qlikreport.infocepts.com/QlikView/index.htm" on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</a>
+
+               <paper-button on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</paper-button>
                 <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
                 <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
             </div>
@@ -1235,7 +1236,7 @@
             },
             _handleReportSave:function(e){
               // alert("saved succesfully");
-              this.$.webTicketGet.url = "https://qlikreport.infocepts.com/QlikView/index.htm";
+             // this.$.webTicketGet.url = "https://qlikreport.infocepts.com/QlikView/index.htm";
               this.$.webTicketGet.generateRequest();
             },
             _handleWebTicketResponse:function(e){
@@ -1245,13 +1246,18 @@
                 var y = x.getElementsByTagName("_retval_");
                 var z = y[0].textContent;
                 console.log(this.$.webTicketGet.lastResponse);
+
                 this.$.qlikReport.url = "https://qlikreport.infocepts.com/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket="+z;
-                this.$.qlikReport.generateRequest();
+                console.log(this.$.qlikReport.url);
+                // window.open(this.$.qlikReport.url);
+                window.open(this.$.qlikReport.url,'_blank');
+                //this.$.qlikReport.generateRequest();
             },
             _handleWebTicketError:function(e){
                //alert('error response for token');
             },
             _handleQlikResponse:function(e){
+
               // alert('qlik response ');
             },
             _handleQlikError:function(e){

@@ -696,18 +696,18 @@
             //     //debugger;
             //     this.annotoriousResponse = this.$.annotoriousAjax.lastResponse;
             // },
-            addQuantity: function(e) {
+          addQuantity: function(e) {
                 //debugger;
                 var target = e.model.item.id;
                 var id = document.getElementById(target),
                     style = window.getComputedStyle(id),
                     border = style.getPropertyValue('border'),
-                    borderNone = "0px none rgb(0, 0, 0)";
+                    borderNone = "2px inset rgb(255, 255, 255)";
                 if (border.toString() == borderNone) {
-                    id.style.border = "4px solid #049FCF";
+                    id.style.border = "2px solid #049FCF";
                     this.idArr.push(target);
                 } else {
-                    id.style.border = "none";
+                    id.style.border = "2px inset rgb(255, 255, 255)";
                     var index = this.idArr.indexOf(target);
                     this.idArr.splice(index, 1);
                 }
