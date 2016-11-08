@@ -107,6 +107,7 @@
                 <template is="dom-repeat" items="{{item.inspection}}">
                     <div class="image-gall">
                         <template is="dom-repeat" items="{{item.phase}}">
+                            <template is="dom-if" if="[[show(item)]]">
                             <!--  <span class="phase-title" id="{{item.title}}">{{item.title}}<label class="phase-title">0 issues</label><paper-checkbox class="paper-checkbox">NEED REVIEW</paper-checkbox></span> -->
                             <span class="phase-title">{{item.title}}<label class="phase-title" id="{{item.title}}">0 issues</label><paper-checkbox class="checkit paper-checkbox" id="check{{index}}"  on-click="_yesno" /></paper-checkbox>
                            <label for="smoking" name="yesnos" id="lable{{index}}">NEED REVIEW</label></span>
@@ -287,6 +288,7 @@
         </div>
         <!-- <paper-slider id="ratings" pin snaps min="0" max="18" max-markers="18" step="1" value="4.15" editable></paper-slider> -->
         <paper-button id="reviewBtn" class="reviewbtn pull-right reviewMargin">Review Issue</paper-button>
+    </template>
         <!--  <paper-dialog id="modal" modal>
             <template is="dom-repeat " items="{{dronesServiceResponse}} ">
                 <template is="dom-repeat " items="{{item.inspection}} ">
@@ -455,6 +457,17 @@
                     Polymer.dom(button).setAttribute('icon', 'add')
                 }
             },
+              show:function(e){
+                debugger;
+              console.log(e);
+              console.log("length for  phase: "+e.img.length);
+              if(e.img.length>0){
+               return true;
+              }else{
+                return false;
+              }
+
+                         },
             ready: function() {
                 //  alert(" in ready-----------");
                 title = localStorage.getItem('assetTitle');
