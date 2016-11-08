@@ -1344,7 +1344,7 @@ a.sub-menu.iron-selected, a.sub-menu.style-scope.my-drone:hover {
     color: #fff !important;
 }
 .users {
-    width: 30%;
+    width: auto;
     display: inline-block;
     font-size: 14px;
     text-transform: capitalize;
@@ -1369,6 +1369,7 @@ a.sub-menu.iron-selected, a.sub-menu.style-scope.my-drone:hover {
     float: left;
     width: 65%;
     font-size: 13px;
+    word-wrap: break-word;
 }
 canvas#myCanvas {
     min-width: 100%;
@@ -1391,4 +1392,7 @@ span.asset-title.style-scope.my-drone {
     border: none;
     height: 100px;
     margin: 0;
+}
+.phases-img {
+    border: 4px solid #ccc;
 }
