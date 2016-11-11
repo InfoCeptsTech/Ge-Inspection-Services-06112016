@@ -1447,10 +1447,18 @@ paper-textarea#inputReq {
 .img-metadata .modal-footer{
     text-align: right !important;
 }
-paper-dialog#reportToggle{
+/*paper-dialog#reportToggle{
     width: 80%;
-}
-#executiveSummary paper-input-container.style-scope.paper-textarea.x-scope.paper-input-container-1 {
+}*/
+/*#executiveSummary paper-input-container.style-scope.paper-textarea.x-scope.paper-input-container-1 {
     width: 100%;
-}
+}*/
+/*#executiveSummary --paper-input-container: {
+            min-width: 324px;
+            width: 324px;
+            margin-right: 24px;
+        };*/
+
+
+
 
