@@ -65,12 +65,12 @@
                                     <a class="nav-link assetsLabel" is="pushstate-anchor" id="{{item.id}}" href="{{item.url}}" on-click="handleAssetsClick">
                                     <!-- <span id="mainAsset"> -->
                                     <!-- <iron-icon  id="{{item.title}}" icon="add" on-click="_onClick" class="addBtn"></iron-icon> -->
-                                        <span title="{{item.title}}" on-click="_onClick" class="asset-title">{{item.title}}</span>
+                                        <span id="title{{index}}" on-click="_onClick" class="asset-title">{{item.title}}</span>
                                         <template is="dom-repeat" items="{{item.issues-markers}}">
                                             <img width="30" height="30" src="{{item.path}}">
                                         </template>
 
-                                        <iron-collapse id="{{item.title}}" opened>
+                                        <iron-collapse id="accordian{{index}}" opened>
 
                                     <div class="deco-collpase collapsePhase" >
 
@@ -413,7 +413,7 @@
                     
             
             },
-            _onClick: function(e) {
+            /*_onClick: function(e) {
                 debugger
                 var id = e.model.index;
                 var title=e.model.item.title;
@@ -427,13 +427,33 @@
                     Polymer.dom(button).setAttribute('icon', 'add');
                 }
             }
-            /*if(title=="Pressure Vessel")
+            if(title=="Pressure Vessel")
             {
               if (!collapse.opened) {
                     Polymer.dom(button).setAttribute('icon', 'add');  
                 }
-            }*/
-			},
+            }
+			},*/
+
+            _onClick: function(e) {
+                debugger
+                var id = e.model.index;
+                var title = e.model.item.title;
+                var collapse = document.getElementById("accordian"+id);
+                var collapseTitle = collapse.id;
+                var collapseID = collapseTitle.replace("accordian","");
+                for (var i = 0; i < this.dronesServiceResponse.length; i++) {
+                if (title == this.dronesServiceResponse[i].title) {
+                //collapse.toggle();
+                if(id==collapseID){
+                collapse.opened = true;
+                }
+                }
+                else{
+                    collapse.opened = false;
+                }
+                }
+            },
             ready: function() {
                 var xx=document.getElementById("basic1");
      xx.style.display="none"
