@@ -909,6 +909,11 @@
                 });
                 var a = this.annoArray;
                 anno.makeAnnotatable(document.getElementById('expandImg'));
+                var canvas = document.getElementById('myCanvas');
+                expand.style.width = 814.5 + "px";
+                expand.style.height = 450 + "px";
+                canvas.style.width = 814.5 + "px";
+                canvas.style.height = 450 + "px";
                  for(var i=0;i<this.dronesServiceResponse.length;i++){
                     var inspection = this.dronesServiceResponse[i].inspection;
                     for(var j=0;j<inspection.length;j++){
