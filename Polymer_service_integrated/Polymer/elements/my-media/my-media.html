@@ -993,11 +993,17 @@
                         var mainDiv = document.createElement('div');
                         //mainDiv.id="main"+i;
                         var dateDiv = document.createElement('div');
-                        dateDiv.class = "date";
+                        dateDiv.classList.add("date");
                         dateDiv.innerHTML = CurrentDate;
                         var commentDiv = document.createElement('div');
-                        commentDiv.class = "comments";
+                        commentDiv.classList.add("comments");
                         commentDiv.innerHTML = message;
+
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = this.userName;
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
                         var aDiv = document.getElementById('appendMsg');
@@ -1020,6 +1026,12 @@
                         var commentDiv = document.createElement('div');
                         commentDiv.class = "comments";
                         commentDiv.innerHTML = message;
+
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = this.userName;
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
                         var aDiv = document.getElementById('appendMsgInspectionFinding');
@@ -1285,7 +1297,7 @@
                                     //mainDiv.id="main"+i;
                                     
                                     var commentDivInspectionFinding = document.createElement('div');
-                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.classList.add("comments");
                                     commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
 
                                     var userDivInspectionFinding = document.createElement('div');
@@ -1293,7 +1305,7 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                     var dateDivInspectionFinding = document.createElement('div');
-                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.classList.add("date");
                                     dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
 
 
