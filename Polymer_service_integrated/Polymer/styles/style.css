@@ -1441,3 +1441,10 @@ paper-textarea#inputReq {
 .img-metadata .modal-footer{
     text-align: right !important;
 }
+paper-dialog#reportToggle{
+    width: 80%;
+}
+#executiveSummary paper-input-container.style-scope.paper-textarea.x-scope.paper-input-container-1 {
+    width: 100%;
+}
+
