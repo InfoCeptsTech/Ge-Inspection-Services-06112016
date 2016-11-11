@@ -19,7 +19,7 @@
             float: left;
             margin-top: 10px;
         }
-		.hi{font-size: 10px}
+        .hi{font-size: 10px}
         
         #progressContainer {
             background: #fff;
@@ -212,6 +212,7 @@
                                         <paper-item>Thermal Fatigue</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
+
                                 <span>Status</span>
                                 <paper-dropdown-menu class="statusDrop">
                                     <paper-listbox class="dropdown-content" id="popstatusType" selected="0" >
@@ -220,6 +221,7 @@
                                         <paper-item>Manual Inspection</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
+
                                 <span>Image Detail</span>
                                 <span id="imageDetail"><iron-icon  id="iron-icon" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
                                 <iron-collapse style="width:219px" id="collapse">
@@ -230,9 +232,19 @@
                                     </div>
                                 </iron-collapse>
                                 </paper-dropdown-menu>
+
+
+
+
+
+
+
+
+
                                 <div class="inspectionsReqFin">
                                 <div id="error1"></div>
                                 <div id="error2"></div>
+
                                 <paper-tabs selected="{{selected}}" no-bar>
                                       <paper-tab>Inspection Requirement</paper-tab>
                                       <paper-tab>Inspection Findings</paper-tab>
@@ -241,18 +253,26 @@
                                     <iron-pages selected="{{selected}}">
                                       <div id="inspectionRequirement">
                                           <!-- <span>Inspection Requirement :</span> -->
+
                                 
                                 <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
+
                                 <div id="appendMsg" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
 
+
+
+
+
                                       </div>
                                       <div id="inspectionFinding">
-
                                           <!-- <span>Inspection Findings :</span> -->
+
+
                                 <paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+
                                 <div id="appendMsgInspectionFinding" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
@@ -262,7 +282,7 @@
                                 </div>
                                 
                                 <!-- <span>Inspection Requirement :</span>
-        
+                                
                                 <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
                                 <div id="appendMsg" class="hii">
                                     <div class="issue-date" id="issue-date">
@@ -271,7 +291,7 @@
                                 
                                <!--  <hr class="divider"> -->
                                 <!-- <span>Inspection Findings :</span>
-        <paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+                                <paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
                                 <div id="appendMsgInspectionFinding" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
@@ -287,7 +307,11 @@
                                 </div>
                                 </div>
 
+
                                 
+
+
+
                             </div>
                             <div class="editCropSection">
                                 <paper-icon-button src="/images/zoomout_rest.png" on-click="zoomOut"></paper-icon-button>
@@ -448,7 +472,7 @@
                 commentArrayInspectionFinding: {
                     type: Array,
                     value: []
-				},
+                },
                 altitude:{
                       type: String,
                     value: ''
@@ -457,7 +481,6 @@
                     type:String,
                     value:''
                 },
-
                 selection:{
                      type:Number,
                      value:0
@@ -466,11 +489,12 @@
                      type:Number,
                      value:0
                 },
-	
-                selected: {
+                 selected: {
                     type: String,
                     value: "0"
                 },
+
+
 
                 noBar:{
                     type: String,
@@ -541,7 +565,7 @@
             },
             handleResponse: function() {
                 // debugger;
-				this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
+                this.dronesServiceResponse = JSON.parse(JSON.stringify(this.droneServiceResponse));
                 //this.dronesServiceResponse = this.droneServiceResponse;
                 //alert("response :::: "+this.dronesServiceResponse);
                 //console.log(this.dronesServiceResponse);
@@ -629,7 +653,7 @@
                         {
                            elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath); 
                         }
-						//elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath);
+                        //elem.setAttribute("src", this.issueMarkerServiceResponse[i].issuePath);
                         elem.setAttribute("class", this.issueMarkerServiceResponse[i].class);
                         console.log(this.issueMarkerServiceResponse[i]);
                         if (document.getElementById(this.issueMarkerServiceResponse[i].id) != null) {
@@ -920,11 +944,11 @@
             toggleDialog: function(e) {
 
                 debugger;
-				var assetId = localStorage.getItem("assetId");
+                var assetId = localStorage.getItem("assetId");
                 this.userName = localStorage.getItem("username");
                 var user = this.userName;
-				
-				anno.reset();
+                
+                anno.reset();
                 localStorage.setItem("target", "media");
                 // anno.destroy("http://localhost:8000/images/0002.jpg");
                 // if(this.annoArray.length > 0){
@@ -951,11 +975,6 @@
                 });
                 var a = this.annoArray;
                 anno.makeAnnotatable(document.getElementById('expandImg'));
-                var canvas = document.getElementById('myCanvas');
-                expand.style.width = 814.5 + "px";
-                expand.style.height = 450 + "px";
-                canvas.style.width = 814.5 + "px";
-                canvas.style.height = 450 + "px";
                  for(var i=0;i<this.dronesServiceResponse.length;i++){
                     var inspection = this.dronesServiceResponse[i].inspection;
                     for(var j=0;j<inspection.length;j++){
@@ -1288,10 +1307,9 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                      mainDivInspectionFinding.appendChild(userDivInspectionFinding);
-
-                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+ mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                                    
+                                   
 
                                     var aDivInspectionFinding = document.getElementById('appendAnnotations');
                                     aDivInspectionFinding.appendChild(mainDivInspectionFinding);
@@ -1325,9 +1343,7 @@
                                     //mainDiv.id="main"+i;
                                     
                                     var commentDivInspectionFinding = document.createElement('div');
-
-                                    commentDivInspectionFinding.classList.add("comments");
-
+                                                                        commentDivInspectionFinding.classList.add("comments");
                                     commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
 
                                     var userDivInspectionFinding = document.createElement('div');
