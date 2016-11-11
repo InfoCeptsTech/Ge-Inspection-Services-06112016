@@ -68,6 +68,12 @@
             padding: 10px;
             width: 96%;
         }
+        #error1{color:red;font: 15.33335px Arial;}
+        #error2{color:red;font: 15.33335px Arial;}
+        #error3{color:red;font: 15.33335px Arial;}
+        
+
+
         </style>
         <iron-ajax id="AjaxPost" url="https://dashboard.immuta.io/ir-0.0.1/inspection/addIssue" method="POST" content-type="application/json" handle-as="json" on-response="_handleAjaxPostResponse" on-error="_handleAjaxPostError">
         </iron-ajax>
@@ -196,8 +202,8 @@
                                                     <hr> -->
                         <div class="metadataSet">
                             <div class="defectDrop">
-                                <span>Defect Type:</span>
-                                <paper-dropdown-menu >
+                                <span>Defect Type</span>
+                                <paper-dropdown-menu class="defectDrop">
                                     <paper-listbox class="dropdown-content" id="popdefectType" selected="0" >
                                         <paper-item>Corrosion</paper-item>
                                         <paper-item>Thinning</paper-item>
@@ -206,15 +212,17 @@
                                         <paper-item>Thermal Fatigue</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
-                                <span>Status:</span>
-                                <paper-dropdown-menu >
+
+                                <span>Status</span>
+                                <paper-dropdown-menu class="statusDrop">
                                     <paper-listbox class="dropdown-content" id="popstatusType" selected="0" >
                                         <paper-item>Fix</paper-item>
                                         <paper-item>Continue to monitor</paper-item>
                                         <paper-item>Manual Inspection</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
-                                <br/>
+
+                                <span>Image Detail</span>
                                 <span id="imageDetail"><iron-icon  id="iron-icon" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
                                 <iron-collapse style="width:219px" id="collapse">
                                     <div class="deco-collpase">
@@ -224,47 +232,88 @@
                                     </div>
                                 </iron-collapse>
                                 </paper-dropdown-menu>
-                                <!-- <button id="imageDetail" on-click="toggleDescr">Image Detail</button>
-                                                        <iron-collapse id="collapse" class="deco-collpase">
-                                                          <div>
-                                                            <div class="Imgtitle">Altitude</div>
-                                                            <div class="ImgValue">87.5465</div>
-                                                            <div class="Imgtitle">Latitude &amp; Longitude</div>
-                          <div class="ImgValue">(3.414725, -122.167969)</div>
-                                                          </div>
-                                                        </iron-collapse> -->
-                                <span>Inspection Requirement :</span>
-								<!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+
+
+
+
+
+
+
+
+
+                                <div class="inspectionsReqFin">
+								<div id="error1"></div>
+                                <div id="error2"></div>
+
+                                <paper-tabs selected="{{selected}}" no-bar>
+                                      <paper-tab>Inspection Requirement</paper-tab>
+                                      <paper-tab>Inspection Findings</paper-tab>
+                                    </paper-tabs>
+
+                                    <iron-pages selected="{{selected}}">
+                                      <div id="inspectionRequirement">
+                                          <!-- <span>Inspection Requirement :</span> -->
+
+                                
                                 <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
+
                                 <div id="appendMsg" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
-                                <div id="requirementMsg"></div>
-                                <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
-                                <!-- <paper-button class="submit addComment">Add</paper-button> -->
-                                <hr class="divider">
-                                <span>Inspection Findings :</span>
-								<paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+
+
+
+
+
+                                      </div>
+                                      <div id="inspectionFinding">
+                                          <!-- <span>Inspection Findings :</span> -->
+
+
+                                <paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+
                                 <div id="appendMsgInspectionFinding" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
+                                      </div>
+                                    </iron-pages>
+                                </div>
+                                
+                                <!-- <span>Inspection Requirement :</span>
+								
+                                <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
+                                <div id="appendMsg" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div> -->
+                                
+                               <!--  <hr class="divider"> -->
+                                <!-- <span>Inspection Findings :</span>
+								<paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+                                <div id="appendMsgInspectionFinding" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div> -->
 
-                                <hr class="divider">
-                                <span>Annotation Comments :</span>
+                                <!-- <hr class="divider"> -->
+                                <div class="annotationSection">
+                                <span>Annotation Comments</span>
+								<div id="error3"></div>
                                 <div id="appendAnnotations" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
+                                </div>
 
-                                <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
+
                                 
-                                <!--  <input type="text" id="commentSection">
-                                                        <paper-textarea label="" id="commentSection"></paper-textarea>
-                                                        <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
+
+
+
                             </div>
-                            <div class="editCropSection">
+							<div class="editCropSection">
                                 <paper-icon-button src="/images/zoomout_rest.png" on-click="zoomOut"></paper-icon-button>
                                 <paper-icon-button src="/images/zoomin_rest.png" on-click="zoomIn"></paper-icon-button>
                             </div>
@@ -431,6 +480,25 @@
                 userName:{
                     type:String,
                     value:''
+                },
+                selection:{
+                     type:Number,
+                     value:0
+                },
+                 selctStatus:{
+                     type:Number,
+                     value:0
+                },
+				 selected: {
+                    type: String,
+                    value: "0"
+                },
+
+
+
+                noBar:{
+                    type: String,
+                    value: "true"
                 }
 
             },
@@ -683,8 +751,6 @@
                         this.$.AjaxPost.body = objectArray;
                         this.$.AjaxPost.generateRequest();
 
-
-
                     }
                     return;
 
@@ -932,6 +998,8 @@
                 for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                     if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
                         //annotationsArray = this.annotoriousResponse[i].annotation;
+                       this.getDefectName(this.selection)= this.issueMarkerServiceResponse[i].defectType;
+                        this.getStatusName(this.selctStatus) = this.issueMarkerServiceResponse[i].statusType;
                         this.commentArray = this.issueMarkerServiceResponse[i].comments;
                         this.commentArrayInspectionFinding = this.issueMarkerServiceResponse[i].description;
                         this.annoArray = this.issueMarkerServiceResponse[i].annotation;
@@ -970,11 +1038,18 @@
                         var mainDiv = document.createElement('div');
                         //mainDiv.id="main"+i;
                         var dateDiv = document.createElement('div');
-                        dateDiv.class = "date";
+
+                        dateDiv.classList.add("date");
                         dateDiv.innerHTML = CurrentDate;
                         var commentDiv = document.createElement('div');
-                        commentDiv.class = "comments";
+                        commentDiv.classList.add("comments");
                         commentDiv.innerHTML = message;
+
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = this.userName;
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
                         var aDiv = document.getElementById('appendMsg');
@@ -997,6 +1072,12 @@
                         var commentDiv = document.createElement('div');
                         commentDiv.class = "comments";
                         commentDiv.innerHTML = message;
+
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = this.userName;
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
                         var aDiv = document.getElementById('appendMsgInspectionFinding');
@@ -1226,8 +1307,9 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                      mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+ mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                   
 
                                     var aDivInspectionFinding = document.getElementById('appendAnnotations');
                                     aDivInspectionFinding.appendChild(mainDivInspectionFinding);
@@ -1261,7 +1343,7 @@
                                     //mainDiv.id="main"+i;
                                     
                                     var commentDivInspectionFinding = document.createElement('div');
-                                    commentDivInspectionFinding.class = "comments";
+                                                                        commentDivInspectionFinding.classList.add("comments");
                                     commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
 
                                     var userDivInspectionFinding = document.createElement('div');
@@ -1269,7 +1351,7 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                     var dateDivInspectionFinding = document.createElement('div');
-                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.classList.add("date");
                                     dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
 
 
@@ -1307,8 +1389,37 @@
                          altitude = (a[0].altitude);
                     }*/
             },
-            closeDialog: function() {
+              getDefectName:function(statusId) {
+                    debugger;
+                    if (statusId == 0) {
+                        return "Corrosion";
+                    } else if (statusId == 1) {
+                        return "Thinning";
+                    } else if (statusId == 2) {
+                        return "Stress cracking";
+                    } else if (statusId == 3) {
+                        return "Mechanical Fatigue";
+                    } else if (statusId == 4) {
+                        return "Thermal Fatigue";
+                    }
+
+                },
+                 getStatusName:function(statusId) {
+                        debugger;
+                        if (statusId == 0) {
+                            return "Fix";
+                        } else if (statusId == 1) {
+                            return "Continue to Monitor";
+                        } else if (statusId == 2) {
+                            return "Manual Inspection";
+                        }
+                    },
+                closeDialog: function() {
                 //debugger;
+                 document.getElementById('error1').innerHTML=""; 
+                 document.getElementById('error2').innerHTML=""; 
+                 this.selection = 0;
+                 this.selctStatus = 0;
                 var div = document.getElementById("dialog-box");
                 div.style.display = "none";
                 //anno.makeAnnotatable(document.getElementById('expandImg'));
@@ -1343,12 +1454,13 @@
                 img.style.height = 0 + "px";
                 canvas.style.width = 0 + "px";
                 canvas.style.height = 0 + "px";
+              
 
             },
             saveDialog: function(e) {
+
                 debugger;
                 var el = document.getElementById('expandImg');
-
                 var p;
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
@@ -1368,9 +1480,7 @@
                     left = left.replace("px","");
                    sourceCtx.fillText(annotationArray[i].id,Number(left),Number(top));
                 }
-
-
-                // p = document.getElementById("fileUpload").value;
+                 // p = document.getElementById("fileUpload").value;
                 img1.setAttribute('src', el.src);
                 canvas.width = el.width;
                 canvas.height = el.height;
@@ -1380,14 +1490,8 @@
                 //alert("from getbase64 function" + dataURL);
                 //window.open(dataURL);
                 // return dataURL;
-
-
-                var viewportOffset = el.getBoundingClientRect();
-
-
-
-
-                // these are relative to the viewport, i.e. the window
+                 var viewportOffset = el.getBoundingClientRect();
+                 // these are relative to the viewport, i.e. the window
 
                 // alert(viewportOffset.x+"---"+viewportOffset.left);
                 // alert(viewportOffset.y+"---"+viewportOffset.top);
@@ -1402,16 +1506,21 @@
                 // var yposition = abc.top;
                 var width = viewportOffset.width;
                 var height = viewportOffset.height;
-
-
-
                 var id = this.megaPath;
 
                 var div = document.getElementById("dialog-box");
                 var inspectorId = localStorage.getItem('inspectorId');
-                var defectType = getDefectName(document.getElementById("defectType").selected);
+                // var defectType = getDefectName(document.getElementById("defectType").selected);
+                debugger;
+                // var defectType =this.selection;
+                // var statusType =this.selctStatus;
+                var defectType =this.getDefectName(this.selection);
+                var statusType =this.getStatusName(this.selctStatus);
 
-                //  alert(document.getElementById('requirementMsg'));
+                // var statusType = getStatusName(document.getElementById("statusType").selected);
+                //var defectType = getDefectName(this.selection);
+              
+               //  alert(document.getElementById('requirementMsg'));
                 // alert(document.getElementById('appendMsg'));
 
                 // var comment;
@@ -1432,9 +1541,8 @@
                 // }
                 var comments = this.commentArray; //document.getElementById('requirementMsg').innerHTML;
                 var desc = this.commentArrayInspectionFinding; //document.getElementById('inputCommentIssue').value;
- var userId=localStorage.getItem('username');
+                var userId=localStorage.getItem('username');
 
-                var statusType = getStatusName(document.getElementById("statusType").selected);
 
                 var assetId = localStorage.getItem("assetTitle");
                 var inspectionId = localStorage.getItem("inspectionId");
@@ -1443,6 +1551,8 @@
 
 
                 console.log("id : " + id + "defectType: " + defectType + ", comments: " + comments + ", statusType : " + statusType + " , assetId : " + assetId + " , inspectionId: " + inspectionId + " , annotatedMetadata: " + annotatedMetadata + " , desc: " + desc + " :" + ", userId: " + userId);
+
+
 
 
                 this.$.AjaxPost.body = [{
@@ -1460,47 +1570,75 @@
                 }];
 
                 console.log(this.$.AjaxPost.body);
+                debugger;
+                var append_msg=document.getElementById('appendMsg').innerHTML;
+                var append_msgIfind=document.getElementById('appendMsgInspectionFinding').innerHTML;
+                var annoteComment=document.getElementById('appendAnnotations').innerHTML;
+                if( append_msg!= "" && append_msgIfind!=="" && annoteComment!=="")
+                { 
+                    this.$.AjaxPost.generateRequest();
+                    this.$.issueAjax.generateRequest();
+                    var div = document.getElementById("dialog-box");
+                    div.style.display = "none";
+                    var obj = {
+                        "id": this.currentId,
+                        "annotation": anno.getAnnotations()
+                    };
+                    //anno.destroy(document.getElementById('expandImg'));
+                    if (this.annoArray.length > 0) {
+                        for (var i = 0; i < this.annoArray.length; i++) {
+                            anno.removeAnnotation(this.annoArray[i]);
+                        }
+                    }
+                    var img = document.getElementById("expandImg");
+                    var canvas = document.getElementById("myCanvas");
+                    img.style.width = 0 + "px";
+                    img.style.height = 0 + "px";
+                    canvas.style.width = 0 + "px";
+                    canvas.style.height = 0 + "px";
+                    //document.getElementById('appendMsg').innerHTML = "";
+                    // for (var i = 0; i < this.commentArray.length; i++) {
+                    //     document.getElementById('appendMsg').innerHTML = "";
+                    // }
+
+                    this.commentArray = [];
+                    this.commentArrayInspectionFinding = [];
+                    var myNode = document.getElementById("appendMsg");
+                    while (myNode.firstChild) {
+                        myNode.removeChild(myNode.firstChild);
+                    }
+                    var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                    while (myNodeInspectionFinding.firstChild) {
+                        myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                    }
+                    document.getElementById('appendMsg').innerHTML = "";
+                    document.getElementById('appendMsgInspectionFinding').innerHTML = "";
+                    document.getElementById('inputReq').value = "";
+                    document.getElementById('inputComment').value = "";
+                    document.getElementById('error1').innerHTML=""; 
+                    document.getElementById('error2').innerHTML=""; 
+                    document.getElementById('error3').innerHTML=""; 
+                }
+                 else
+                    {
+                        if(append_msg ==""){ document.getElementById('error1').innerHTML="Please Enter Inspection Requirement";  }
+                        else if(append_msgIfind ==""){
+                            document.getElementById('error2').innerHTML="Please Enter Inspection Findings";  }
+                             else if(annoteComment ==""){
+                        document.getElementById('error3').innerHTML="Please Enter Annotation Comments";  }
+                        
+                        else{
+                            alert="All fields are mandatory";
+                        }
+
+                                         
+                        }
+                    
 
                 //this.$.AjaxPost.body = {"id":"/Polymer/images/0001.jpg"};
-                this.$.AjaxPost.generateRequest();
-                this.$.issueAjax.generateRequest();
-                var div = document.getElementById("dialog-box");
-                div.style.display = "none";
-                var obj = {
-                    "id": this.currentId,
-                    "annotation": anno.getAnnotations()
-                };
-                //anno.destroy(document.getElementById('expandImg'));
-                if (this.annoArray.length > 0) {
-                    for (var i = 0; i < this.annoArray.length; i++) {
-                        anno.removeAnnotation(this.annoArray[i]);
-                    }
-                }
-                var img = document.getElementById("expandImg");
-                var canvas = document.getElementById("myCanvas");
-                img.style.width = 0 + "px";
-                img.style.height = 0 + "px";
-                canvas.style.width = 0 + "px";
-                canvas.style.height = 0 + "px";
-                //document.getElementById('appendMsg').innerHTML = "";
-                // for (var i = 0; i < this.commentArray.length; i++) {
-                //     document.getElementById('appendMsg').innerHTML = "";
-                // }
-
-                this.commentArray = [];
-                this.commentArrayInspectionFinding = [];
-                var myNode = document.getElementById("appendMsg");
-                while (myNode.firstChild) {
-                    myNode.removeChild(myNode.firstChild);
-                }
-                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
-                while (myNodeInspectionFinding.firstChild) {
-                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                }
-                document.getElementById('appendMsg').innerHTML = "";
-                document.getElementById('appendMsgInspectionFinding').innerHTML = "";
-                document.getElementById('inputReq').value = "";
-                document.getElementById('inputComment').value = "";
+                //this.$.AjaxPost.generateRequest();
+               
+              
 
             },
             toggleDialogEdit: function(e) {
@@ -1542,7 +1680,10 @@
             //},
             onEnterComment: function(e) {
                 debugger;
+                document.getElementById('error1').innerHTML=""; 
+               
                 if (e.keyCode === 13) {
+                    document.getElementById('error1').innerHTML=""; 
                     console.log(this.userInput);
                     console.log(this.userInputComment);
                     var d = new Date();
@@ -1561,21 +1702,25 @@
                     var id = null;
                     id = this.currentId;
                     var user = this.userName;
+
                     for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                        // if (id == this.issueMarkerServiceResponse[i].id) {
-                            if (this.target != null) {
-                                comments = this.userInput;
-                                var obj = {
+                             if (this.target != null) {
+
+                               comments = this.userInput;
+                             
+                                 var obj = {
                                     "date": CurrentDate,
                                     "message": comments,
                                     "user": user
-                                }
-                                this.commentArray.push(obj);
+                                    }
+                                  this.commentArray.push(obj);
                                 var myNode = document.getElementById("appendMsg");
                                 while (myNode.firstChild) {
                                     myNode.removeChild(myNode.firstChild);
-                                }
-                                var count = this.commentArray.length;
+                                    }
+                                
+                                 var count = this.commentArray.length;
                                 for (var i = 0; i < count; i++) {
                                     debugger;
                                     console.log(this.commentArray[i]);
@@ -1592,8 +1737,9 @@
                                     userDiv.innerHTML = user;
 
                                     mainDiv.appendChild(userDiv);
-                                    mainDiv.appendChild(commentDiv);
                                     mainDiv.appendChild(dateDiv);
+                                    mainDiv.appendChild(commentDiv);
+                                    
                                     
                                     
                                     var aDiv = document.getElementById('appendMsg');
@@ -1602,6 +1748,7 @@
                                 break;
                             } else {
                                 comments = this.userInputComment;
+                               document.getElementById('error2').innerHTML=""; 
                                 var obj = {
 
                                     "date": CurrentDate,
@@ -1632,8 +1779,9 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                     mainDivInspectionFinding.appendChild(userDivInspectionFinding);
-                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    
                                     
 
                                     var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
@@ -1642,57 +1790,6 @@
                                 break;
 
                             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                             // comments = this.userInputComment;
@@ -1971,33 +2068,9 @@
 
         });
     })();
-    function getStatusName(statusId) {
-        debugger;
-        if (statusId == 0) {
-            return "Fix";
-        } else if (statusId == 1) {
-            return "Continue to Monitor";
-        } else if (statusId == 2) {
-            return "Manual Inspection";
-        }
-    }
+    
 
-    function getDefectName(statusId) {
-        debugger;
-        if (statusId == 0) {
-            return "Corrosion";
-        } else if (statusId == 1) {
-            return "Thinning";
-        } else if (statusId == 2) {
-            return "Stress cracking";
-        } else if (statusId == 3) {
-            return "Mechanical Fatigue";
-        } else if (statusId == 4) {
-            return "Thermal Fatigue";
-        }
-
-    }
-
+   
     function getPosition(el) {
         debugger;
         var el2 = el;
