@@ -196,8 +196,8 @@
                                                     <hr> -->
                         <div class="metadataSet">
                             <div class="defectDrop">
-                                <span>Defect Type:</span>
-                                <paper-dropdown-menu >
+                                <span>Defect Type</span>
+                                <paper-dropdown-menu class="defectDrop">
                                     <paper-listbox class="dropdown-content" id="popdefectType" selected="0" >
                                         <paper-item>Corrosion</paper-item>
                                         <paper-item>Thinning</paper-item>
@@ -206,15 +206,15 @@
                                         <paper-item>Thermal Fatigue</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
-                                <span>Status:</span>
-                                <paper-dropdown-menu >
+                                <span>Status</span>
+                                <paper-dropdown-menu class="statusDrop">
                                     <paper-listbox class="dropdown-content" id="popstatusType" selected="0" >
                                         <paper-item>Fix</paper-item>
                                         <paper-item>Continue to monitor</paper-item>
                                         <paper-item>Manual Inspection</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
-                                <br/>
+                                <span>Image Detail</span>
                                 <span id="imageDetail"><iron-icon  id="iron-icon" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
                                 <iron-collapse style="width:219px" id="collapse">
                                     <div class="deco-collpase">
@@ -224,45 +224,60 @@
                                     </div>
                                 </iron-collapse>
                                 </paper-dropdown-menu>
-                                <!-- <button id="imageDetail" on-click="toggleDescr">Image Detail</button>
-                                                        <iron-collapse id="collapse" class="deco-collpase">
-                                                          <div>
-                                                            <div class="Imgtitle">Altitude</div>
-                                                            <div class="ImgValue">87.5465</div>
-                                                            <div class="Imgtitle">Latitude &amp; Longitude</div>
-                          <div class="ImgValue">(3.414725, -122.167969)</div>
-                                                          </div>
-                                                        </iron-collapse> -->
-                                <span>Inspection Requirement :</span>
-								<!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+                                <div class="inspectionsReqFin">
+                                <paper-tabs selected="{{selected}}" no-bar>
+                                      <paper-tab>Inspection Requirement</paper-tab>
+                                      <paper-tab>Inspection Findings</paper-tab>
+                                    </paper-tabs>
+
+                                    <iron-pages selected="{{selected}}">
+                                      <div id="inspectionRequirement">
+                                          <!-- <span>Inspection Requirement :</span> -->
+                                
                                 <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
                                 <div id="appendMsg" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
-                                <div id="requirementMsg"></div>
-                                <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
-                                <!-- <paper-button class="submit addComment">Add</paper-button> -->
-                                <hr class="divider">
-                                <span>Inspection Findings :</span>
-								<paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+
+                                      </div>
+                                      <div id="inspectionFinding">
+                                          <!-- <span>Inspection Findings :</span> -->
+                                <paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
                                 <div id="appendMsgInspectionFinding" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
+                                      </div>
+                                    </iron-pages>
+                                </div>
+                                
+                                <!-- <span>Inspection Requirement :</span>
+								
+                                <paper-textarea id="inputReq" placeholder="Enter inspection requirements here" value="{{userInput::input}}" on-focus="setTarget" on-keydown="onEnterComment"></paper-textarea>
+                                <div id="appendMsg" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div> -->
+                                
+                               <!--  <hr class="divider"> -->
+                                <!-- <span>Inspection Findings :</span>
+								<paper-textarea id="inputComment" placeholder="Enter inspection findings" value="{{userInputComment::input}}" on-focus="setTargetComment" on-keydown="onEnterComment"></paper-textarea>
+                                <div id="appendMsgInspectionFinding" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div> -->
 
-                                <hr class="divider">
-                                <span>Annotation Comments :</span>
+                                <!-- <hr class="divider"> -->
+                                <div class="annotationSection">
+                                <span>Annotation Comments</span>
                                 <div id="appendAnnotations" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
+                                </div>
 
-                                <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
                                 
-                                <!--  <input type="text" id="commentSection">
-                                                        <paper-textarea label="" id="commentSection"></paper-textarea>
-                                                        <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
                             </div>
                             <div class="editCropSection">
                                 <paper-icon-button src="/images/zoomout_rest.png" on-click="zoomOut"></paper-icon-button>
@@ -431,6 +446,14 @@
                 userName:{
                     type:String,
                     value:''
+                },
+                selected: {
+                    type: String,
+                    value: "0"
+                },
+                noBar:{
+                    type: String,
+                    value: "true"
                 }
 
             },
@@ -975,11 +998,17 @@
                         var mainDiv = document.createElement('div');
                         //mainDiv.id="main"+i;
                         var dateDiv = document.createElement('div');
-                        dateDiv.class = "date";
+                        dateDiv.classList.add("date");
                         dateDiv.innerHTML = CurrentDate;
                         var commentDiv = document.createElement('div');
-                        commentDiv.class = "comments";
+                        commentDiv.classList.add("comments");
                         commentDiv.innerHTML = message;
+
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = this.userName;
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
                         var aDiv = document.getElementById('appendMsg');
@@ -1002,6 +1031,12 @@
                         var commentDiv = document.createElement('div');
                         commentDiv.class = "comments";
                         commentDiv.innerHTML = message;
+
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = this.userName;
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
                         var aDiv = document.getElementById('appendMsgInspectionFinding');
@@ -1231,8 +1266,9 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                      mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    
 
                                     var aDivInspectionFinding = document.getElementById('appendAnnotations');
                                     aDivInspectionFinding.appendChild(mainDivInspectionFinding);
@@ -1266,7 +1302,7 @@
                                     //mainDiv.id="main"+i;
                                     
                                     var commentDivInspectionFinding = document.createElement('div');
-                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.classList.add("comments");
                                     commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
 
                                     var userDivInspectionFinding = document.createElement('div');
@@ -1274,7 +1310,7 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                     var dateDivInspectionFinding = document.createElement('div');
-                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.classList.add("date");
                                     dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
 
 
@@ -1597,8 +1633,9 @@
                                     userDiv.innerHTML = user;
 
                                     mainDiv.appendChild(userDiv);
-                                    mainDiv.appendChild(commentDiv);
                                     mainDiv.appendChild(dateDiv);
+                                    mainDiv.appendChild(commentDiv);
+                                    
                                     
                                     
                                     var aDiv = document.getElementById('appendMsg');
@@ -1637,8 +1674,9 @@
                                     userDivInspectionFinding.innerHTML = this.userName;
 
                                     mainDivInspectionFinding.appendChild(userDivInspectionFinding);
-                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    
                                     
 
                                     var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
