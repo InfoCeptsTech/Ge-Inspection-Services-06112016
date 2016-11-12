@@ -841,11 +841,7 @@ input#button {
     background: #fff;
     order: 2;
     width: 24%;
-<<<<<<< HEAD
     flex: 0 0 26%;
-=======
-    flex: 0 0 25%;
->>>>>>> upstream/master
 }
 paper-dialog#dialog {
     width: 100%;
@@ -1119,7 +1115,7 @@ input[type=range]:focus::-ms-fill-upper {
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-top: 15px;
-    width: 207px;
+    width: 100%;
     clear:both;
     font-weight: 100;
 }
@@ -1130,7 +1126,7 @@ input[type=range]:focus::-ms-fill-upper {
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-top: 15px;
-    width: 207px;
+    width: 100%;
     clear: both;
 }
 .Imgtitle.style-scope.my-media {
@@ -1167,11 +1163,11 @@ paper-input#inputReqIssue, #inputCommentIssue {
 }
 #inputReqIssue paper-input-container {
     border: none!important;
-    width: 80%;
+    width: 100%;
 }
 #inputCommentIssue paper-input-container {
     border: none!important;
-    width: 80%;
+    width: 100%;
 }
 #inputReq paper-input-container {
     border: none!important;
@@ -1182,7 +1178,7 @@ paper-input#inputReqIssue, #inputCommentIssue {
     width: 100%;
 }
 .deco-collpase {
-        padding: 18px 5px;
+    padding: 18px 5px;
     background: #fff;
     transition-duration: 0s;
     width: 94%;
@@ -1393,7 +1389,6 @@ span.asset-title.style-scope.my-drone {
     background: none;
     border-radius: 0;
     border: none;
-    height: 100px;
     margin: 0;
 }
 .users {
@@ -1422,16 +1417,19 @@ paper-textarea#inputReq {
     max-height: 110px;
     overflow-x: scroll;
 }
-.inspectionsReqFin.style-scope.my-media {
+.inspectionsReqFin.style-scope.my-media, .IssueInspectionsReqFin.style-scope.my-issues {
+    float: left;
+    width: 100%;
+} {
     width: 100%;
     float: left;
 }
-.inspectionsReqFin paper-tab.paper-tab-0.iron-selected {
+.inspectionsReqFin paper-tab.paper-tab-0.iron-selected, .IssueInspectionsReqFin paper-tab.paper-tab-0.iron-selected {
     color: #3e87e8;
     font-weight: 800;
 }
 
-.inspectionsReqFin paper-tab{
+.inspectionsReqFin paper-tab, .IssueInspectionsReqFin paper-tab{
     color: #000;
     font-weight: 800;
     padding: 0;
@@ -1439,7 +1437,7 @@ paper-textarea#inputReq {
     font-size: 15px;
     padding: 0 5px 0 0;
 }
-.annotationSection span.style-scope.my-media {
+.annotationSection span.style-scope.my-media, .IssueannotationSection span.style-scope.my-media {
     padding: 5px 0;
     border-top: 1px dashed #000;
     margin-top: 5px;
@@ -1447,12 +1445,16 @@ paper-textarea#inputReq {
 .img-metadata .modal-footer{
     text-align: right !important;
 }
-/*paper-dialog#reportToggle{
+paper-dialog#reportToggle{
     width: 80%;
-}*/
-/*#executiveSummary paper-input-container.style-scope.paper-textarea.x-scope.paper-input-container-1 {
+}
+#executiveSummary paper-input-container.style-scope.paper-textarea.x-scope.paper-input-container-1 {
     width: 100%;
-}*/
+}
+iron-collapse#collapse-issue {
+    width: 100% !important;
+    float: left;
+}
 /*#executiveSummary --paper-input-container: {
             min-width: 324px;
             width: 324px;
