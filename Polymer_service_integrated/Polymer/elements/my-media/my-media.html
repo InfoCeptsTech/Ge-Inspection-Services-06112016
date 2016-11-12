@@ -1267,6 +1267,7 @@
                         if (localStorage.getItem("saveCount") == "1") {
                             //alert('vish');
                             // debugger;
+                             document.getElementById('error3').innerHTML="";
                             var d = new Date();
                                 var month = d.getMonth() + 1;
                                 var day = d.getDate();
@@ -1662,7 +1663,7 @@
                 var append_msg=document.getElementById('appendMsg').innerHTML;
                 var append_msgIfind=document.getElementById('appendMsgInspectionFinding').innerHTML;
                 var annoteComment=document.getElementById('appendAnnotations').innerHTML;
-                if( append_msg!= "" && append_msgIfind!=="" && annoteComment!=="")
+                if( this.commentArray.length>0 && this.commentArrayInspectionFinding.length>0 && this.commentArrayAnnotations.length>0)
                 { 
                     this.$.AjaxPost.generateRequest();
                     this.$.issueAjax.generateRequest();
@@ -1714,10 +1715,10 @@
                 }
                  else
                     {
-                        if(append_msg ==""){ document.getElementById('error1').innerHTML="Please Enter Inspection Requirement";  }
-                        else if(append_msgIfind ==""){
+                        if(this.commentArray.length == 0){ document.getElementById('error1').innerHTML="Please Enter Inspection Requirement";  }
+                        else if(this.commentArrayInspectionFinding.length == 0){
                             document.getElementById('error2').innerHTML="Please Enter Inspection Findings";  }
-                             else if(annoteComment ==""){
+                             else if(this.commentArrayAnnotations.length == 0){
                         document.getElementById('error3').innerHTML="Please Enter Annotation Comments";  }
                         
                         else{
