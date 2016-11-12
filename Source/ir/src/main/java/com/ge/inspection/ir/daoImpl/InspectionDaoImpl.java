@@ -2,6 +2,7 @@ package com.ge.inspection.ir.daoImpl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -82,10 +83,17 @@ public class InspectionDaoImpl implements InspectionDao {
 			InspectionModel inspectionModel=null;
 			
 			String duration="";
+			Date inspectionStartDate=null;
 			for(InspectionDtls inspectionDtls:inspectionList){
 				if(inspectionDtls.getInspectionId().equals(inspectionId)){
 					startDuration.add(new DurationModel(inspectionDtls.getInspectionStart()));
 					endDuration.add(new DurationModel(inspectionDtls.getInspectionStop()));
+				}
+			}
+			for(InspectionDtls inspectionDtls:inspectionList){
+				if(inspectionDtls.getInspectionId().equals(inspectionId)){
+				 inspectionStartDate=inspectionDtls.getInspectionStart();
+				 break;
 				}
 			}
 			if(startDuration.get(0)!=null && endDuration.get(endDuration.size()-1)!=null){
@@ -97,7 +105,7 @@ public class InspectionDaoImpl implements InspectionDao {
 			    
 				duration=String.valueOf(startTime[0]+":"+startTime[1]+"-"+endTime[0]+":"+endTime[1]);	
 			}
-			 inspectionModel=new InspectionModel(inspectionList.get(0).getInspectionStart(),duration,inspectionId,null,"my-media");
+			 inspectionModel=new InspectionModel(inspectionStartDate,duration,inspectionId,null,"my-media");
 			inspectionModelList.add(inspectionModel);
 			
 		}

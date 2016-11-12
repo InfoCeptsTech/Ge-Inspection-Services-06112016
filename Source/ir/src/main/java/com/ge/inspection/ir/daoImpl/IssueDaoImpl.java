@@ -15,7 +15,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arjuna.ats.internal.jdbc.drivers.modifiers.extensions;
 import com.ge.inspection.ir.dao.IssueDao;
 import com.ge.inspection.ir.domain.muta.InspectionMedia;
 import com.ge.inspection.ir.model.IssueInspection;

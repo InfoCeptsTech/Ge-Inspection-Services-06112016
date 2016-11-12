@@ -212,8 +212,9 @@ public class IssueController {
 			for(IssueInspection issueInspection:issueInspectionList){
 				Set<IssueDtlModel> set=new HashSet<IssueDtlModel>();
 				for(InspectionMedia inspectionMedia:inspectionMediaList){
-					String compFilePath="";
 					/*
+					String compFilePath="";
+					
 					File file=new File(mediaLocation+inspectionMedia.getBlobId());
 					if(!ImageUtil.isCompressedFilePresent(compMediaLocation+file.getName())){
 						compFilePath=ImageUtil.storeAndCompressedFile(mediaLocation+inspectionMedia.getBlobId(), compMediaLocation);

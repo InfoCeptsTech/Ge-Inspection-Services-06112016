@@ -7,9 +7,9 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = "com.ge.inspection") 
+@ComponentScan(basePackages = "com.ge.inspection") 
 public class IrApplication extends SpringBootServletInitializer{
-
+  
 	public static void main(String[] args) {
 		SpringApplication.run(IrApplication.class, args);
 	}
@@ -17,6 +17,6 @@ public class IrApplication extends SpringBootServletInitializer{
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(IrApplication.class);
     }
-    
+   
 }
 

@@ -94,11 +94,12 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>5.1.30</version>
 		</dependency>
-				
+	<!-- 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jta-narayana</artifactId>
 		</dependency>
+	 -->	
 	</dependencies>
   <!-- 
 	<build>

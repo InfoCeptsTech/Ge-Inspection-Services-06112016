@@ -1,14 +1,26 @@
 package com.ge.inspection.ir.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ge.inspection.ir.dao.InspectionDao;
@@ -27,6 +39,35 @@ public class InspectionController {
 	
 	@Autowired
 	private IssueDao issueDao;
+	
+	@Value("${media.location}")
+ 	private String mediaLocation;
+	
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/inspection/getMedia/mediaId={imageName}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<byte[]> getPhotoBytes(@PathVariable String imageName) throws IOException {
+	    String imagePath=mediaLocation+"/Polymer/images/"+imageName+".JPG";
+		File imageFile=new File(imagePath);
+		BufferedImage  image =null;
+		try{
+			image= ImageIO.read(imageFile);
+		}catch(Exception e){
+			image=ImageIO.read(new File(mediaLocation+"/Polymer/images/"+imageName+".jpg"));
+		}
+	   
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    ImageIO.write( image, "jpg", baos );
+	    baos.flush();
+	    byte[] imageInByte = baos.toByteArray();
+	    //return imageInByte;
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.setAccessControlAllowCredentials(true);
+	    responseHeaders.setAccessControlAllowOrigin("*");
+	    return new ResponseEntity<byte[]>(imageInByte, responseHeaders, HttpStatus.CREATED);
+	}
+	 
+	
 	/*
 	@CrossOrigin
 	@RequestMapping(value = "/inspection/getInspection/inspectorId={inspectorId}", method = RequestMethod.GET)
