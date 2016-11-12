@@ -993,6 +993,7 @@
                     var inspection = this.dronesServiceResponse[i].inspection;
                     for(var j=0;j<inspection.length;j++){
                         var phase = inspection[j].phase;
+                        if(phase != undefined){
                         for(var k=0;k<phase.length;k++){
                             var img = phase[k].img;
                             for(var l=0;l<img.length;l++){
@@ -1002,6 +1003,7 @@
                                 }
                             }
                         }
+                    }
                     }
                   }
                 var canvas = document.getElementById('myCanvas');
