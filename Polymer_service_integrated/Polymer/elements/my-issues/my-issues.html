@@ -78,7 +78,7 @@
                                                     <hr> -->
                                                 <div class="metadataSet">
                                                     <div class="defectDrop">
-                                                        <span>Defect Type:</span>
+                                                        <span>Defect Type</span>
                                                         <paper-dropdown-menu>
                                                             <paper-listbox class="dropdown-content" selected="{{selection}}" id="popdefectType" attr-for-selected="value">
                                                                 <paper-item value="0">Corrosion</paper-item>
@@ -88,7 +88,7 @@
                                                                 <paper-item value="4">Thermal Fatigue</paper-item>
                                                             </paper-listbox>
                                                         </paper-dropdown-menu>
-                                                        <span>Status:</span>
+                                                        <span>Status</span>
                                                         <paper-dropdown-menu>
                                                             <paper-listbox class="dropdown-content" selected="{{selctStatus}}" id="popstatusType" attr-for-selected="value">
                                                                 <paper-item value="0">Fix</paper-item>
@@ -97,13 +97,12 @@
                                                             </paper-listbox>
                                                         </paper-dropdown-menu>
                                                         <br/>
+                                                        <span>Image Detail</span>
                                                         <span id="imageDetailIssue"><iron-icon  id="iron-icon-issue" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
                                                         <iron-collapse style="width:219px" id="collapse-issue">
                                                             <div class="deco-collpase">
                                                                 <div class="Imgtitle">Altitude</div>
                                                                 <div class="ImgValue">87.5465</div>
-                                                                <div class="Imgtitle">Latitude &amp; Longitude</div>
-                                                                <div class="ImgValue">(3.414725, -122.167969)</div>
                                                             </div>
                                                         </iron-collapse>
                                                         </paper-dropdown-menu>
@@ -116,24 +115,58 @@
                           <div class="ImgValue">(3.414725, -122.167969)</div>
                                                           </div>
                                                         </iron-collapse> -->
-                                                        <span>Inspection Requirement :</span>
-                                                        <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
-                                                        <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
-                                                        <div id="requirementMsg"></div>
-                                                        <div id="appendMsgIssue" class="hii">
-                                                            <div class="issue-date" id="issue-date">
-                                                            </div>
-                                                        </div>
-                                                        <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
-                                                        <!-- <paper-button class="submit addComment">Add</paper-button> -->
-                                                        <hr class="divider">
-                                                        <span>Inspection Findings :</span>
-                                                        <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
-                                                        <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                <div class="IssueInspectionsReqFin">
+                <paper-tabs selected="{{selected}}" no-bar>
+                                      <paper-tab>Inspection Requirement</paper-tab>
+                                      <paper-tab>Inspection Findings</paper-tab>
+                </paper-tabs>
+                <iron-pages selected="{{selected}}">
+                    <div id="inspectionRequirement">
+
+                        <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                <div id="requirementMsg"></div>
+                                    <div id="appendMsgIssue" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div>
+
+                    </div>
+                    <div id="inspectionFinding">
+                    <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
                                                         <div id="appendMsgInspectionFindingIssue" class="hii">
                                                             <div class="issue-date" id="issue-date">
                                                             </div>
                                                         </div>
+                    </div>
+                </iron-pages>
+                </div>
+
+                <div class="IssueannotationSection">
+                                <span>Annotation Comments</span>
+                                <div id="error3"></div>
+                                <div id="IssueappendAnnotations" class="hii">
+                                    <div class="issue-date" id="issue-date">
+                                    </div>
+                                </div>
+                                </div>
+                                                        <!-- <span>Inspection Requirement :</span> -->
+                                                        <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+                                                        <!-- <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                                        <div id="requirementMsg"></div>
+                                                        <div id="appendMsgIssue" class="hii">
+                                                            <div class="issue-date" id="issue-date">
+                                                            </div>
+                                                        </div> -->
+                                                        <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
+                                                        <!-- <paper-button class="submit addComment">Add</paper-button> -->
+                                                        <!-- <hr class="divider">
+                                                        <span>Inspection Findings :</span> -->
+                                                        <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
+                                                        <!-- <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                                        <div id="appendMsgInspectionFindingIssue" class="hii">
+                                                            <div class="issue-date" id="issue-date">
+                                                            </div>
+                                                        </div> -->
                                                         <!--  <input type="text" id="commentSection">
                                                         <paper-textarea label="" id="commentSection"></paper-textarea>
                                                         <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
@@ -182,7 +215,7 @@
                 <paper-button raised on-click="toggleDialogGenerate" class="reviewbtn pull-right">Generate Report</paper-button>
                 <paper-dialog id="reportToggle" modal>
                     <span class="dialogTitle">Enter Executive Summary:</span>
-                    <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
+                    <paper-textarea id="executiveSummary"></paper-textarea>
                     <div class="modal-footer ">
                         <paper-button on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</paper-button>
                         <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
@@ -274,6 +307,14 @@
                 userName: {
                     type: String,
                     value: ''
+                },
+                selected: {
+                    type: String,
+                    value: "0"
+                },
+                noBar:{
+                    type: String,
+                    value: "true"
                 }
             },
             handleResponseIssueMarker: function(data) {
@@ -975,10 +1016,10 @@
                                     console.log(this.commentArrayIssue[i]);
                                     var dateDiv = document.createElement('div');
                                     dateDiv.classList.add("date");
-                                    dateDiv.innerHTML = this.commentArray[i].date;
+                                    dateDiv.innerHTML = CurrentDate;
                                     var commentDiv = document.createElement('div');
                                     commentDiv.classList.add("comments");
-                                    commentDiv.innerHTML = this.commentArray[i].message;
+                                    commentDiv.innerHTML = this.commentArray[i].comments;
                                     var userDiv = document.createElement('div');
                                     userDiv.classList.add("users");
                                     userDiv.innerHTML = user;
