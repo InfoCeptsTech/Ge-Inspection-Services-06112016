@@ -31,43 +31,13 @@
             border: 1px solid #f0f0f0;
         }
         </style>
-         <iron-ajax
-            id="saveSummaryPost"
-            url="https://dashboard.immuta.io/ir-0.0.1/inspection/addReport"
-            method="POST"
-            content-type="application/json"
-            handle-as="json"
-            on-response="_handleReportSave"
-            on-error="_handleReportError"
-            >
+        <iron-ajax id="saveSummaryPost" url="https://dashboard.immuta.io/ir-0.0.1/inspection/addReport" method="POST" content-type="application/json" handle-as="json" on-response="_handleReportSave" on-error="_handleReportError">
         </iron-ajax>
-         <iron-ajax
-            id="webTicketGet"
-            url="https://qlikreport.infocepts.com/QvAJAXZfc/GetWebTicket.aspx?cmd=%3CGlobal%20method=%27GetWebTicket%27%3E%3CUserId%3ECUSTOM\amahajan%3C/UserId%3E%3C/Global%3E"
-            method="GET"
-            handle-as="xml"
-            on-response="_handleWebTicketResponse"
-            on-error="_handleWebTicketError"
-            >
+        <iron-ajax id="webTicketGet" url="https://qlikreport.infocepts.com/QvAJAXZfc/GetWebTicket.aspx?cmd=%3CGlobal%20method=%27GetWebTicket%27%3E%3CUserId%3ECUSTOM\amahajan%3C/UserId%3E%3C/Global%3E" method="GET" handle-as="xml" on-response="_handleWebTicketResponse" on-error="_handleWebTicketError">
         </iron-ajax>
-         <iron-ajax
-            id="qlikReport"
-            url=""
-            method="GET"
-            handle-as="doc"
-            on-response="_handleQlikResponse"
-            on-error="_handleQlikError"
-            >
+        <iron-ajax id="qlikReport" url="" method="GET" handle-as="doc" on-response="_handleQlikResponse" on-error="_handleQlikError">
         </iron-ajax>
-         <iron-ajax
-            id="AjaxPost"
-            url="https://dashboard.immuta.io/ir-0.0.1/inspection/addIssue"
-            method="POST"
-            content-type="application/json"
-            handle-as="json"
-            on-response="_handleAjaxPostResponse"
-            on-error="_handleAjaxPostError"
-            >
+        <iron-ajax id="AjaxPost" url="https://dashboard.immuta.io/ir-0.0.1/inspection/addIssue" method="POST" content-type="application/json" handle-as="json" on-response="_handleAjaxPostResponse" on-error="_handleAjaxPostError">
         </iron-ajax>
         <iron-ajax id="ajaxAddUpdatePost" url="https://dashboard.immuta.io/ir-0.0.1/inspection/updateIssue" method="POST" content-type="application/json" handle-as="json" on-response="_handleAjaxPostResponse" on-error="_handleAjaxPostError">
         </iron-ajax>
@@ -96,48 +66,48 @@
                                 <paper-icon-button raised on-dblclick="toggleDialogIssue" on-tap="addQuantity" src="https://dashboard.immuta.io{{item.miniPath}}" class="img-tooltip" id="img-tooltip-{{index}}">
                                 </paper-icon-button>
                                 <paper-tooltip for="img-tooltip-{{index}}">{{item.tooltip}}</paper-tooltip>
-                               <div class="dailog-box" id="dialog-box-issue">
-            <div class="dialog-container">
-                <div class="img-data">
-                    <div class="zoomed-img flexchild">
-                        <img id="expandImgIssue" crossOrigin="Anonymous">
-                    </div>
-                    <div class="img-metadata flexchild">
-                        <!-- <h3> Altitude </h3>
+                                <div class="dailog-box" id="dialog-box-issue">
+                                    <div class="dialog-container">
+                                        <div class="img-data">
+                                            <div class="zoomed-img flexchild">
+                                                <img id="expandImgIssue" crossOrigin="Anonymous">
+                                            </div>
+                                            <div class="img-metadata flexchild">
+                                                <!-- <h3> Altitude </h3>
                                                 <span id="imgAltitude"> 42.026914</span>
                                                     <hr> -->
-                        <div class="metadataSet">
-                            <div class="defectDrop">
-                                <span>Defect Type:</span>
-                                <paper-dropdown-menu>
-                                    <paper-listbox class="dropdown-content" selected="0" id="popdefectType">
-                                        <paper-item>Corrosion</paper-item>
-                                        <paper-item>Thinning</paper-item>
-                                        <paper-item>Stress cracking</paper-item>
-                                        <paper-item>Mechanical Fatigue</paper-item>
-                                        <paper-item>Thermal Fatigue</paper-item>
-                                    </paper-listbox>
-                                </paper-dropdown-menu>
-                                <span>Status:</span>
-                                <paper-dropdown-menu>
-                                    <paper-listbox class="dropdown-content" selected="0" id="popstatusType">
-                                        <paper-item>Fix</paper-item>
-                                        <paper-item>Continue to monitor</paper-item>
-                                        <paper-item>Manual Inspection</paper-item>
-                                    </paper-listbox>
-                                </paper-dropdown-menu>
-                                <br/>
-                                <span id="imageDetailIssue"><iron-icon  id="iron-icon-issue" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
-                                <iron-collapse style="width:219px" id="collapse-issue">
-                                    <div class="deco-collpase">
-                                        <div class="Imgtitle">Altitude</div>
-                                        <div class="ImgValue">87.5465</div>
-                                        <div class="Imgtitle">Latitude &amp; Longitude</div>
-                                        <div class="ImgValue">(3.414725, -122.167969)</div>
-                                    </div>
-                                </iron-collapse>
-                                </paper-dropdown-menu>
-                                <!-- <button id="imageDetail" on-click="toggleDescr">Image Detail</button>
+                                                <div class="metadataSet">
+                                                    <div class="defectDrop">
+                                                        <span>Defect Type:</span>
+                                                        <paper-dropdown-menu>
+                                                            <paper-listbox class="dropdown-content" selected="{{selection}}" id="popdefectType" attr-for-selected="value">
+                                                                <paper-item value="0">Corrosion</paper-item>
+                                                                <paper-item value="1">Thinning</paper-item>
+                                                                <paper-item value="2">Stress cracking</paper-item>
+                                                                <paper-item value="3">Mechanical Fatigue</paper-item>
+                                                                <paper-item value="4">Thermal Fatigue</paper-item>
+                                                            </paper-listbox>
+                                                        </paper-dropdown-menu>
+                                                        <span>Status:</span>
+                                                        <paper-dropdown-menu>
+                                                            <paper-listbox class="dropdown-content" selected="{{selctStatus}}" id="popstatusType" attr-for-selected="value">
+                                                                <paper-item value="0">Fix</paper-item>
+                                                                <paper-item value="1">Continue to monitor</paper-item>
+                                                                <paper-item value="2">Manual Inspection</paper-item>
+                                                            </paper-listbox>
+                                                        </paper-dropdown-menu>
+                                                        <br/>
+                                                        <span id="imageDetailIssue"><iron-icon  id="iron-icon-issue" icon="add" on-click="_onClick" class="addBtn"></iron-icon>Image Detail</span>
+                                                        <iron-collapse style="width:219px" id="collapse-issue">
+                                                            <div class="deco-collpase">
+                                                                <div class="Imgtitle">Altitude</div>
+                                                                <div class="ImgValue">87.5465</div>
+                                                                <div class="Imgtitle">Latitude &amp; Longitude</div>
+                                                                <div class="ImgValue">(3.414725, -122.167969)</div>
+                                                            </div>
+                                                        </iron-collapse>
+                                                        </paper-dropdown-menu>
+                                                        <!-- <button id="imageDetail" on-click="toggleDescr">Image Detail</button>
                                                         <iron-collapse id="collapse" class="deco-collpase">
                                                           <div>
                                                             <div class="Imgtitle">Altitude</div>
@@ -146,56 +116,53 @@
                           <div class="ImgValue">(3.414725, -122.167969)</div>
                                                           </div>
                                                         </iron-collapse> -->
-                                <span>Inspection Requirement :</span>
-                                
-                                <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
-                                <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
-                                <div id="requirementMsg"></div>
-                                <div id="appendMsgIssue" class="hii">
-                                    <div class="issue-date" id="issue-date">
-                                    </div>
-                                </div>
-                                <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
-                                <!-- <paper-button class="submit addComment">Add</paper-button> -->
-                                <hr class="divider">
-                                <span>Inspection Findings :</span>
-                                
-                                <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
-                                <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
-                                <div id="appendMsgInspectionFindingIssue" class="hii">
-                                    <div class="issue-date" id="issue-date">
-                                    </div>
-                                </div>
-                                <!--  <input type="text" id="commentSection">
+                                                        <span>Inspection Requirement :</span>
+                                                        <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
+                                                        <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                                        <div id="requirementMsg"></div>
+                                                        <div id="appendMsgIssue" class="hii">
+                                                            <div class="issue-date" id="issue-date">
+                                                            </div>
+                                                        </div>
+                                                        <!-- <input type="text" id="requirementSection" on-tap="submitRequirement"> -->
+                                                        <!-- <paper-button class="submit addComment">Add</paper-button> -->
+                                                        <hr class="divider">
+                                                        <span>Inspection Findings :</span>
+                                                        <!-- <iron-a11y-keys id="a11z" target="[[targetComment]]" keys="enter" on-keys-pressed="onEnterComment"></iron-a11y-keys> -->
+                                                        <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                                        <div id="appendMsgInspectionFindingIssue" class="hii">
+                                                            <div class="issue-date" id="issue-date">
+                                                            </div>
+                                                        </div>
+                                                        <!--  <input type="text" id="commentSection">
                                                         <paper-textarea label="" id="commentSection"></paper-textarea>
                                                         <paper-button class="submit addComment" on-click="submitComment">Add</paper-button> -->
-                            </div>
-                            <div class="editCropSection">
-                                <paper-icon-button src="/images/zoomout_rest.png" on-click="zoomOut"></paper-icon-button>
-                                <paper-icon-button src="/images/zoomin_rest.png" on-click="zoomIn"></paper-icon-button>
-                            </div>
-                        </div>
-                        <!-- <div class="editCropSection">
+                                                    </div>
+                                                    <div class="editCropSection">
+                                                        <paper-icon-button src="/images/zoomout_rest.png" on-click="zoomOut"></paper-icon-button>
+                                                        <paper-icon-button src="/images/zoomin_rest.png" on-click="zoomIn"></paper-icon-button>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="editCropSection">
                                                         <iron-icon icon="icons:flip-to-back"></iron-icon>
                                                         <iron-icon icon="icons:create"></iron-icon>
                                                  </div>
                                                     <div class="modal-footer ">
 
                                                     </div> -->
-                        <div class="modal-footer ">
-                            <paper-button on-click="saveDialog" class="btn-default">Submit</paper-button>
-                            <paper-button on-click="closeDialog" class="btn-default">Close</paper-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                                <div class="modal-footer ">
+                                                    <paper-button on-click="saveDialog" class="btn-default">Submit</paper-button>
+                                                    <paper-button on-click="closeDialog" class="btn-default">Close</paper-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
-                    </template>
-        </div>
-        </template>
-        </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
         </div>
         <br/>
         <div class="bottom-section report-type">
@@ -211,18 +178,17 @@
                         </template>
                     </paper-listbox>
                 </paper-dropdown-menu>
-               <!--  <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" class="reviewbtn pull-right" target="_blank">Generate Report</a> -->
-               <paper-button raised on-click="toggleDialogGenerate" class="reviewbtn pull-right">Generate Report</paper-button>
+                <!--  <a href="http://35.160.149.207/QvAJAXZfc/singleobject.htm?document=GE_Demo.qvw&object=BU01" class="reviewbtn pull-right" target="_blank">Generate Report</a> -->
+                <paper-button raised on-click="toggleDialogGenerate" class="reviewbtn pull-right">Generate Report</paper-button>
                 <paper-dialog id="reportToggle" modal>
-            <span class="dialogTitle">Enter Executive Summary:</span>
-              <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
-              <div class="modal-footer ">
-
-               <paper-button on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</paper-button>
-                <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
-                <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
-            </div>
-            </paper-dialog>
+                    <span class="dialogTitle">Enter Executive Summary:</span>
+                    <paper-textarea id="executiveSummary" rows="3"></paper-textarea>
+                    <div class="modal-footer ">
+                        <paper-button on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</paper-button>
+                        <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
+                        <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
+                    </div>
+                </paper-dialog>
             </div>
         </div>
     </template>
@@ -255,6 +221,14 @@
                 userInputIssue: {
                     type: String,
                     notify: true,
+                },
+                selection: {
+                    type: String,
+                    value: "0"
+                },
+                selctStatus: {
+                    type: String,
+                    value: "0"
                 },
                 targetIssue: {
                     type: Object,
@@ -293,19 +267,19 @@
                     notify: true,
                     observer: 'handleResponseIssueMarker'
                 },
-                megaPath:{
+                megaPath: {
                     type: String,
-                    value:''
+                    value: ''
                 },
-                userName:{
-                    type:String,
-                    value:''
+                userName: {
+                    type: String,
+                    value: ''
                 }
             },
             handleResponseIssueMarker: function(data) {
                 //debugger;
                 // alert(this.$.issueAjax.lastResponse);
-               this.issueMarkerServiceResponse = this.$.issueAjax.lastResponse;
+                this.issueMarkerServiceResponse = this.$.issueAjax.lastResponse;
             },
             _change: function(e) {
                 this.megapath = e.model.item.megaPath;
@@ -326,7 +300,14 @@
 
             },
             _handleAjaxPostResponse: function() {
+                 var inspectionId = localStorage.getItem("inspectionId");
+                var assetId = localStorage.getItem("assetId");
+                // alert("success");
+                var inspectorId = localStorage.getItem("inspectorId");
+                var userId=localStorage.getItem("username");
+                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
 
+                document.getElementById('issueAjax').generateRequest();
                 console.log("success");
 
             },
@@ -511,21 +492,21 @@
                 canvas.style.width = (wid / zm) + "px";
                 canvas.style.height = (ht / zm) + "px";
                 var annotationArray = anno.getAnnotations();
-                for(var i=0;i<annotationArray.length;i++){
-                var span = document.getElementById("anno"+annotationArray[i].id);
-                var t = span.style.top;
-                t = t.replace('px', '');
-                var l = span.style.left;
-                l = l.replace('px', '');
-                span.style.top = (Number(t) / zm) + "px";
-                span.style.left = (Number(l) / zm) + "px";
+                for (var i = 0; i < annotationArray.length; i++) {
+                    var span = document.getElementById("anno" + annotationArray[i].id);
+                    var t = span.style.top;
+                    t = t.replace('px', '');
+                    var l = span.style.left;
+                    l = l.replace('px', '');
+                    span.style.top = (Number(t) / zm) + "px";
+                    span.style.left = (Number(l) / zm) + "px";
                 }
                 // img.style.marginLeft = -(img.width / 2) + "px";
                 // img.style.marginTop = -(img.height / 2) + "px";
             },
             zoomIn: function() {
                 //debugger;
-                 var zm = 1.1;
+                var zm = 1.1;
                 var zoomLevel = 100;
                 var maxZoomLevel = 105;
                 var minZoomLevel = 95;
@@ -544,26 +525,76 @@
                 canvas.style.width = (wid * zm) + "px";
                 canvas.style.height = (ht * zm) + "px";
                 var annotationArray = anno.getAnnotations();
-                for(var i=0;i<annotationArray.length;i++){
-                var span = document.getElementById("anno"+annotationArray[i].id);
-                var t = span.style.top;
-                t = t.replace('px', '');
-                var l = span.style.left;
-                l = l.replace('px', '');
-                span.style.top = (Number(t) * zm) + "px";
-                span.style.left = (Number(l) * zm) + "px";
+                for (var i = 0; i < annotationArray.length; i++) {
+                    var span = document.getElementById("anno" + annotationArray[i].id);
+                    var t = span.style.top;
+                    t = t.replace('px', '');
+                    var l = span.style.left;
+                    l = l.replace('px', '');
+                    span.style.top = (Number(t) * zm) + "px";
+                    span.style.left = (Number(l) * zm) + "px";
                 }
                 // alert(img.style.width);
                 // alert(img.style.height);
                 // img.style.marginLeft = -(img.width / 2) + "px";
                 // img.style.marginTop = -(img.height / 2) + "px";
             },
+            getDefectNameFromId:function(statusId) {
+                    debugger;
+                    if (statusId == "0") {
+                        return "Corrosion";
+                    } else if (statusId == "1") {
+                        return "Thinning";
+                    } else if (statusId == "2") {
+                        return "Stress cracking";
+                    } else if (statusId == "3") {
+                        return "Mechanical Fatigue";
+                    } else if (statusId == "4") {
+                        return "Thermal Fatigue";
+                    }
+
+                },
+              getDefectName:function(statusId) {
+                    debugger;
+                    if (statusId == "Corrosion") {
+                        return 0;
+                    } else if (statusId == "Thinning") {
+                        return 1;
+                    } else if (statusId == "Stress cracking") {
+                        return 2;
+                    } else if (statusId == "Mechanical Fatigue") {
+                        return 3;
+                    } else if (statusId == "Thermal Fatigue") {
+                        return 4;
+                    }
+
+                },
+                 getStatusName:function(statusId) {
+                        debugger;
+                        if (statusId == "Fix") {
+                            return "0";
+                        } else if (statusId == "Continue to Monitor") {
+                            return "1";
+                        } else if (statusId == "Manual Inspection") {
+                            return "2";
+                        }
+                    },
+                    getStatusNameFromId:function(statusId) {
+                        debugger;
+                        if (statusId == "0") {
+                            return "Fix";
+                        } else if (statusId == "1") {
+                            return "Continue to Monitor";
+                        } else if (statusId == "2") {
+                            return "Manual Inspection";
+                        }
+                    },
             toggleDialogIssue: function(e) {
                 //var dialog = document.querySelector('#dialogIssue');
                 debugger;
-                localStorage.setItem("target","issue");
+                localStorage.setItem("target", "issue");
                 var expand = document.querySelector('#expandImgIssue');
-                expand.src = "https://dashboard.immuta.io"+e.model.item.megaPath;
+                expand.src = "https://dashboard.immuta.io" + e.model.item.megaPath;
                 this.megaPath = e.model.item.megaPath;
                 var div = document.getElementById("dialog-box-issue");
                 div.style.display = "block";
@@ -593,10 +624,12 @@
                 for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                     if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
                         //annotationsArray = this.annotoriousResponse[i].annotation;
+                        this.selection = this.getDefectName(this.issueMarkerServiceResponse[i].defectType);
+                        this.selctStatus = this.getStatusName(this.issueMarkerServiceResponse[i].statusType);
                         this.commentArrayIssue = this.issueMarkerServiceResponse[i].comments;
                         this.commentArrayInspectionFindingIssue = this.issueMarkerServiceResponse[i].description;
                         this.annoArray = this.issueMarkerServiceResponse[i].annotation;
-                         if (this.issueMarkerServiceResponse[i].width != "" && this.issueMarkerServiceResponse[i].width != undefined) {
+                        if (this.issueMarkerServiceResponse[i].width != "" && this.issueMarkerServiceResponse[i].width != undefined) {
                             expand.style.width = this.issueMarkerServiceResponse[i].width + "px";
                             canvas.style.width = this.issueMarkerServiceResponse[i].width + "px";
                         } else {
@@ -612,61 +645,60 @@
                         }
                         break;
 
-                    }
-                    else{
+                    } else {
                         this.commentArray = [];
                         this.commentArrayInspectionFinding = [];
                         this.annoArray = [];
-                        expand.style.width = 814.5+"px";
-                        expand.style.height = 450+"px";
-                        canvas.style.width = 814.5+"px";
-                        canvas.style.height = 450+"px";
+                        expand.style.width = 814.5 + "px";
+                        expand.style.height = 450 + "px";
+                        canvas.style.width = 814.5 + "px";
+                        canvas.style.height = 450 + "px";
                     }
                 }
-                if(this.commentArrayIssue != undefined){
-                for (var i = 0; i < this.commentArrayIssue.length; i++) {
-                    var CurrentDate = this.commentArrayIssue[i].date;
-                    var message = this.commentArrayIssue[i].message;
-                    //console.log(commentArrayIssue[i]);
-                    var mainDiv = document.createElement('div');
-                    //mainDiv.id="main"+i;
-                    var dateDiv = document.createElement('div');
-                    dateDiv.class = "date";
-                    dateDiv.innerHTML = CurrentDate;
-                    var commentDiv = document.createElement('div');
-                    commentDiv.class = "comments";
-                    commentDiv.innerHTML = message;
-                    mainDiv.appendChild(dateDiv);
-                    mainDiv.appendChild(commentDiv);
-                    var aDiv = document.getElementById('appendMsg');
-                    aDiv.appendChild(mainDiv);
+                if (this.commentArrayIssue != undefined) {
+                    for (var i = 0; i < this.commentArrayIssue.length; i++) {
+                        var CurrentDate = this.commentArrayIssue[i].date;
+                        var message = this.commentArrayIssue[i].message;
+                        //console.log(commentArrayIssue[i]);
+                        var mainDiv = document.createElement('div');
+                        //mainDiv.id="main"+i;
+                        var dateDiv = document.createElement('div');
+                        dateDiv.class = "date";
+                        dateDiv.innerHTML = CurrentDate;
+                        var commentDiv = document.createElement('div');
+                        commentDiv.class = "comments";
+                        commentDiv.innerHTML = message;
+                        mainDiv.appendChild(dateDiv);
+                        mainDiv.appendChild(commentDiv);
+                        var aDiv = document.getElementById('appendMsg');
+                        aDiv.appendChild(mainDiv);
 
+                    }
+                } else {
+                    this.commentArrayIssue = [];
                 }
-            }else{
-                this.commentArrayIssue = [];
-            }   
-            if(this.commentArrayInspectionFindingIssue != undefined){
-                for (var i = 0; i < this.commentArrayInspectionFindingIssue.length; i++) {
-                    var CurrentDate = this.commentArrayInspectionFindingIssue[i].date;
-                    var message = this.commentArrayInspectionFindingIssue[i].message;
-                    //console.log(commentArrayIssue[i]);
-                    var mainDiv = document.createElement('div');
-                    //mainDiv.id="main"+i;
-                    var dateDiv = document.createElement('div');
-                    dateDiv.class = "date";
-                    dateDiv.innerHTML = CurrentDate;
-                    var commentDiv = document.createElement('div');
-                    commentDiv.class = "comments";
-                    commentDiv.innerHTML = message;
-                    mainDiv.appendChild(dateDiv);
-                    mainDiv.appendChild(commentDiv);
-                    var aDiv = document.getElementById('appendMsgInspectionFinding');
-                    aDiv.appendChild(mainDiv);
+                if (this.commentArrayInspectionFindingIssue != undefined) {
+                    for (var i = 0; i < this.commentArrayInspectionFindingIssue.length; i++) {
+                        var CurrentDate = this.commentArrayInspectionFindingIssue[i].date;
+                        var message = this.commentArrayInspectionFindingIssue[i].message;
+                        //console.log(commentArrayIssue[i]);
+                        var mainDiv = document.createElement('div');
+                        //mainDiv.id="main"+i;
+                        var dateDiv = document.createElement('div');
+                        dateDiv.class = "date";
+                        dateDiv.innerHTML = CurrentDate;
+                        var commentDiv = document.createElement('div');
+                        commentDiv.class = "comments";
+                        commentDiv.innerHTML = message;
+                        mainDiv.appendChild(dateDiv);
+                        mainDiv.appendChild(commentDiv);
+                        var aDiv = document.getElementById('appendMsgInspectionFinding');
+                        aDiv.appendChild(mainDiv);
 
+                    }
+                } else {
+                    this.commentArrayInspectionFindingIssue = [];
                 }
-            }else{
-                this.commentArrayInspectionFindingIssue = [];
-            }
 
                 // for(var i=0;i<this.annoArray.length;i++){
                 //     var src = this.annoArray[i].src;
@@ -676,7 +708,7 @@
                 //     alert(srcNew);
                 //     this.annoArray.src=srcNew; 
                 // }
-                
+
                 document.getElementById("expandImgIssue").onload = function() {
                     //alert("The image has loaded!");
                     //debugger;
@@ -734,7 +766,7 @@
 
                             // anno.activateSelector(a[i].src);
                         }
-                    }else{
+                    } else {
                         localStorage.setItem("annoSpanId", "0");
                     }
                     anno.addHandler('beforeAnnotationRemoved', function(event) {
@@ -763,7 +795,7 @@
                             debugger;
 
                             var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
-                            event.id=spanId;
+                            event.id = spanId;
                             console.log(event);
                             localStorage.setItem("annoSpanId", spanId);
                             var x = anno.getAnnotations();
@@ -800,83 +832,83 @@
                             while (myNodeInspectionFinding.firstChild) {
                                 myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
                             }
-                            if(localStorage.getItem("target") == "issue"){
+                            if (localStorage.getItem("target") == "issue") {
                                 var d = new Date();
-                            var month = d.getMonth() + 1;
-                            var day = d.getDate();
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
 
-                            var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
-                                (('' + month).length < 2 ? '0' : '') + month + '/' +
-                                d.getFullYear();
+                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                    d.getFullYear();
                                 debugger;
-                            var CurrentDate = output;
-                            var comments = spanId+"."+event.text;
-                            var obj = {
-                                "date": CurrentDate,
-                                "message": comments
-                            }
-                            polymerThis.commentArrayInspectionFindingIssue.push(obj);
-                            var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
-                            while (myNodeInspectionFinding.firstChild) {
-                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            }
-                            var count = polymerThis.commentArrayInspectionFindingIssue.length;
-                            for (var i = 0; i < count; i++) {
-                                debugger;
-                                console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
-                                var mainDivInspectionFinding = document.createElement('div');
-                                //mainDiv.id="main"+i;
-                                var dateDivInspectionFinding = document.createElement('div');
-                                dateDivInspectionFinding.class = "date";
-                                dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].date;
-                                var commentDivInspectionFinding = document.createElement('div');
-                                commentDivInspectionFinding.class = "comments";
-                                commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].message;
-                                mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
-                                mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                                var aDivInspectionFinding = document.getElementById('appendMsgInspectionFindingIssue');
-                                aDivInspectionFinding.appendChild(mainDivInspectionFinding);
-                            }
-                            }else{
+                                var CurrentDate = output;
+                                var comments = spanId + "." + event.text;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments
+                                }
+                                polymerThis.commentArrayInspectionFindingIssue.push(obj);
+                                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = polymerThis.commentArrayInspectionFindingIssue.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].date;
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].message;
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    var aDivInspectionFinding = document.getElementById('appendMsgInspectionFindingIssue');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
+                            } else {
                                 var d = new Date();
-                            var month = d.getMonth() + 1;
-                            var day = d.getDate();
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
 
-                            var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
-                                (('' + month).length < 2 ? '0' : '') + month + '/' +
-                                d.getFullYear();
-                            debugger;
-                            var CurrentDate = output;
-                            var comments = spanId+"."+event.text;
-                            var obj = {
-                                "date": CurrentDate,
-                                "message": comments
-                            }
-                            polymerThis.commentArrayInspectionFindingIssue.push(obj);
-                            var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
-                            while (myNodeInspectionFinding.firstChild) {
-                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            }
-                            var count = polymerThis.commentArrayInspectionFindingIssue.length;
-                            for (var i = 0; i < count; i++) {
+                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                    d.getFullYear();
                                 debugger;
-                                console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
-                                var mainDivInspectionFinding = document.createElement('div');
-                                //mainDiv.id="main"+i;
-                                var dateDivInspectionFinding = document.createElement('div');
-                                dateDivInspectionFinding.class = "date";
-                                dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
-                                var commentDivInspectionFinding = document.createElement('div');
-                                commentDivInspectionFinding.class = "comments";
-                                commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
-                                mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
-                                mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                                var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
-                                aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                var CurrentDate = output;
+                                var comments = spanId + "." + event.text;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments
+                                }
+                                polymerThis.commentArrayInspectionFindingIssue.push(obj);
+                                var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = polymerThis.commentArrayInspectionFindingIssue.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
                             }
-                            }
-                            
-                            
+
+
                             localStorage.setItem("saveCount", "0");
 
 
@@ -989,7 +1021,7 @@
                                     var commentDivInspectionFinding = document.createElement('div');
                                     commentDivInspectionFinding.class = "comments";
 
-                                     mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(userDivInspectionFinding);
                                     commentDivInspectionFinding.innerHTML = this.commentArrayInspectionFindingIssue[i].message;
                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
@@ -1008,8 +1040,8 @@
 
                         }
                     }
-                    document.getElementById("inputReqIssue").value="";
-                     document.getElementById("inputCommentIssue").value="";
+                    document.getElementById("inputReqIssue").value = "";
+                    document.getElementById("inputCommentIssue").value = "";
                 }
             },
             setTargetIssue: function() {
@@ -1025,9 +1057,9 @@
             saveDialog: function() {
                 // var div = document.getElementById("dialog-box-issue");
                 // div.style.display = "none";
-                 var el=document.getElementById('expandImgIssue');
+                var el = document.getElementById('expandImgIssue');
 
-                 var p;
+                var p;
                 var canvas = document.createElement("canvas");
                 var ctx = canvas.getContext("2d");
                 var img1 = document.createElement("img");
@@ -1037,16 +1069,16 @@
                 img1.height = el.height;
                 var sourceCanvas = document.getElementById('myCanvas')
                 var sourceCtx = sourceCanvas.getContext("2d");
-                sourceCtx.font="30px Verdana";
+                sourceCtx.font = "30px Verdana";
                 sourceCtx.fillStyle = "white";
                 var annotationArray = anno.getAnnotations();
-                for(var i=0;i<annotationArray.length;i++){
-                   var spanId = document.getElementById("anno"+annotationArray[i].id);
-                   var top = spanId.style.top;
-                   top = top.replace("px","");
-                   var left = spanId.style.left;
-                    left = left.replace("px","");
-                   sourceCtx.fillText(annotationArray[i].id,Number(left),Number(top));
+                for (var i = 0; i < annotationArray.length; i++) {
+                    var spanId = document.getElementById("anno" + annotationArray[i].id);
+                    var top = spanId.style.top;
+                    top = top.replace("px", "");
+                    var left = spanId.style.left;
+                    left = left.replace("px", "");
+                    sourceCtx.fillText(annotationArray[i].id, Number(left), Number(top));
                 }
 
 
@@ -1055,89 +1087,89 @@
                 canvas.width = el.width;
                 canvas.height = el.height;
                 ctx.drawImage(el, 0, 0, el.width, el.height);
-                ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
-                var dataURL = canvas.toDataURL("image/jpeg",1);
+                ctx.drawImage(sourceCanvas, 0, 0, img1.width, img1.height);
+                var dataURL = canvas.toDataURL("image/jpeg", 1);
                 el.src = "";
                 //window.open(dataURL);
 
-                 var viewportOffset = el.getBoundingClientRect();
-               
+                var viewportOffset = el.getBoundingClientRect();
 
-                
-                
+
+
+
                 // these are relative to the viewport, i.e. the window
 
-               // alert(viewportOffset.x+"---"+viewportOffset.left);
-               // alert(viewportOffset.y+"---"+viewportOffset.top);
-                
-                
+                // alert(viewportOffset.x+"---"+viewportOffset.left);
+                // alert(viewportOffset.y+"---"+viewportOffset.top);
+
+
                 var xposition = viewportOffset.left;
                 var yposition = viewportOffset.top;
-               // var getAbsPosition = getPosition(el);
-               // var abc = getAbsoluteOffsetFromBody(el);
-               // var abc = getAbsoluteOffsetFromRelative(divNeww);
-               // var xposition = abc.left;
-               // var yposition = abc.top;
+                // var getAbsPosition = getPosition(el);
+                // var abc = getAbsoluteOffsetFromBody(el);
+                // var abc = getAbsoluteOffsetFromRelative(divNeww);
+                // var xposition = abc.left;
+                // var yposition = abc.top;
                 var width = viewportOffset.width;
                 var height = viewportOffset.height;
 
-               
 
-                var id=this.megaPath;
-                               
+
+                var id = this.megaPath;
+
                 var div = document.getElementById("dialog-box-issue");
-                var inspectorId=localStorage.getItem('inspectorId');
-                var defectType=getDefectName(document.getElementById("defectType").selected);
+                var inspectorId = localStorage.getItem('inspectorId');
+                
+                //  alert(document.getElementById('requirementMsg'));
+                // alert(document.getElementById('appendMsg'));
+                // var comment;
+                // var desc;
+                // for(var i=0;i<this.issueMarkerServiceResponse.length;i++){
+                //  if(this.currentIdIssue == this.issueMarkerServiceResponse[i].id){
+                //      comment = this.issueMarkerServiceResponse[i].comments;
+                //      desc = this.issueMarkerServiceResponse[i].description;
+                //      break;
+                //  }
+                // }
+                // if(comment == 'undefined'){
+                //  comment = [];
+                // }
+                // if(desc == 'undefined'){
+                //  desc = [];
+                // }
+                var comments = this.commentArrayIssue; //document.getElementById('requirementMsg').innerHTML;
+                var desc = this.commentArrayInspectionFindingIssue; //document.getElementById('inputCommentIssue').value;
+                var defectType = this.getDefectNameFromId(this.selection);
+                var statusType = this.getStatusNameFromId(this.selctStatus);
 
-              //  alert(document.getElementById('requirementMsg'));
-               // alert(document.getElementById('appendMsg'));
-               // var comment;
-               // var desc;
-               // for(var i=0;i<this.issueMarkerServiceResponse.length;i++){
-               //  if(this.currentIdIssue == this.issueMarkerServiceResponse[i].id){
-               //      comment = this.issueMarkerServiceResponse[i].comments;
-               //      desc = this.issueMarkerServiceResponse[i].description;
-               //      break;
-               //  }
-               // }
-               // if(comment == 'undefined'){
-               //  comment = [];
-               // }
-               // if(desc == 'undefined'){
-               //  desc = [];
-               // }
-                var comments= this.commentArrayIssue;//document.getElementById('requirementMsg').innerHTML;
-                var desc= this.commentArrayInspectionFindingIssue;//document.getElementById('inputCommentIssue').value;
-
-                var statusType=getStatusName(document.getElementById("statusType").selected);
-               
-                var assetId=localStorage.getItem("assetTitle");
-                var inspectionId=localStorage.getItem("inspectionId");
-                var annotatedMetadata=anno.getAnnotations();
-                  
+                var assetId = localStorage.getItem("assetTitle");
+                var inspectionId = localStorage.getItem("inspectionId");
+                var annotatedMetadata = anno.getAnnotations();
 
 
-                 console.log("id : "+id+ "defectType: "+defectType+", comments: "+comments+", statusType : "+statusType+" , assetId : "+assetId+" , inspectionId: "+inspectionId+" , annotatedMetadata: "+annotatedMetadata+" , desc: "+desc+ " :"+", viewportOffset: "+viewportOffset);
+
+                console.log("id : " + id + "defectType: " + defectType + ", comments: " + comments + ", statusType : " + statusType + " , assetId : " + assetId + " , inspectionId: " + inspectionId + " , annotatedMetadata: " + annotatedMetadata + " , desc: " + desc + " :" + ", viewportOffset: " + viewportOffset);
 
 
                 this.$.AjaxPost.body = [{
-                                        "id": id,
-                                        "inspectorId": inspectorId,
-                                        "annotation": annotatedMetadata,
-                                        "comments": comments,
-                                        "defectType": defectType,
-                                        "statusType": statusType,
-                                        "assetId": assetId,
-                                        "inspectionId": inspectionId,
-                                        "description": desc,
-                                        "userId":userId,
-                                        "dataURL": dataURL
-                                    }
-                                    ];
+                    "id": id,
+                    "inspectorId": inspectorId,
+                    "annotation": annotatedMetadata,
+                    "comments": comments,
+                    "defectType": defectType,
+                    "statusType": statusType,
+                    "assetId": assetId,
+                    "inspectionId": inspectionId,
+                    "description": desc,
+                    "userId": userId,
+                    "dataURL": dataURL
+                }];
 
-                               console.log(this.$.AjaxPost.body);     
-                
-                this.$.AjaxPost.body = {"id":"/Polymer/images/0001.jpg"};
+                console.log(this.$.AjaxPost.body);
+
+                // this.$.AjaxPost.body = {
+                //     "id": "/Polymer/images/0001.jpg"
+                // };
                 this.$.AjaxPost.generateRequest();
                 this.$.issueAjax.generateRequest();
                 var div = document.getElementById("dialog-box-issue");
@@ -1147,10 +1179,10 @@
                     "annotation": anno.getAnnotations()
                 };
                 //anno.destroy(document.getElementById('expandImg'));
-                if(this.annoArray.length>0){
-                for (var i = 0; i < this.annoArray.length; i++) {
-                    anno.removeAnnotation(this.annoArray[i]);
-                }
+                if (this.annoArray.length > 0) {
+                    for (var i = 0; i < this.annoArray.length; i++) {
+                        anno.removeAnnotation(this.annoArray[i]);
+                    }
                 }
                 var img = document.getElementById("expandImgIssue");
                 var canvas = document.getElementById("myCanvas");
@@ -1182,11 +1214,13 @@
             closeDialog: function() {
                 var div = document.getElementById("dialog-box-issue");
                 div.style.display = "none";
-                 if(this.annoArray.length>0){
-                for (var i = 0; i < this.annoArray.length; i++) {
-                    anno.removeAnnotation(this.annoArray[i]);
+                this.selection = "0";
+                this.selctStatus = "0";
+                if (this.annoArray.length > 0) {
+                    for (var i = 0; i < this.annoArray.length; i++) {
+                        anno.removeAnnotation(this.annoArray[i]);
+                    }
                 }
-            }
                 // for (var i = 0; i < this.commentArrayIssue.length; i++) {
                 //     document.getElementById('appendMsg').innerHTML = "";
                 // }
@@ -1212,34 +1246,34 @@
                 img.style.height = 0 + "px";
                 canvas.style.width = 0 + "px";
                 canvas.style.height = 0 + "px";
-                img.src= "";
+                img.src = "";
             },
             toggleDialogGenerate: function(e) {
                 var dialog = document.querySelector('#reportToggle');
                 dialog.toggle();
             },
-            saveSummary: function(e){
+            saveSummary: function(e) {
                 debugger;
                 summary = document.querySelector('#executiveSummary');
                 console.log(summary.value);
-                userId=localStorage.getItem('username');
+                userId = localStorage.getItem('username');
                 this.$.saveSummaryPost.body = {
-                                        "userId":userId,
-                                        "comment": summary.value
-                                        };
+                    "userId": userId,
+                    "comment": summary.value
+                };
 
-                console.log(this.$.saveSummaryPost.body);     
-                
+                console.log(this.$.saveSummaryPost.body);
+
                 this.$.saveSummaryPost.generateRequest();
-               
-                
+
+
             },
-            _handleReportSave:function(e){
-              // alert("saved succesfully");
-             // this.$.webTicketGet.url = "https://qlikreport.infocepts.com/QlikView/index.htm";
-              this.$.webTicketGet.generateRequest();
+            _handleReportSave: function(e) {
+                // alert("saved succesfully");
+                // this.$.webTicketGet.url = "https://qlikreport.infocepts.com/QlikView/index.htm";
+                this.$.webTicketGet.generateRequest();
             },
-            _handleWebTicketResponse:function(e){
+            _handleWebTicketResponse: function(e) {
                 //alert("token received");
                 debugger;
                 var x = this.$.webTicketGet.lastResponse;
@@ -1247,32 +1281,32 @@
                 var z = y[0].textContent;
                 console.log(this.$.webTicketGet.lastResponse);
 
-                this.$.qlikReport.url = "https://qlikreport.infocepts.com/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket="+z;
+                this.$.qlikReport.url = "https://qlikreport.infocepts.com/qvajaxzfc/authenticate.aspx?type=html&try=opendoc.htm?document=GE_Demo.qvw&webticket=" + z;
                 console.log(this.$.qlikReport.url);
                 // window.open(this.$.qlikReport.url);
-                window.open(this.$.qlikReport.url,'_blank');
+                window.open(this.$.qlikReport.url, '_blank');
                 //this.$.qlikReport.generateRequest();
             },
-            _handleWebTicketError:function(e){
-               //alert('error response for token');
+            _handleWebTicketError: function(e) {
+                //alert('error response for token');
             },
-            _handleQlikResponse:function(e){
+            _handleQlikResponse: function(e) {
 
-              // alert('qlik response ');
+                // alert('qlik response ');
             },
-            _handleQlikError:function(e){
-              //alert('error response for qlik report');
+            _handleQlikError: function(e) {
+                //alert('error response for qlik report');
             },
             ready: function() {
                 // debugger;
                 title = localStorage.getItem('assetTitle');
                 inspectorId = localStorage.getItem('inspectorId');
-                userId=localStorage.getItem('username');
+                userId = localStorage.getItem('username');
                 // alert("title in issue : "+title);
                 if (title == null || title == 'null') {
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssues/inspectorId=" + inspectorId+"assetId="+title+"&userId="+userId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssues/inspectorId=" + inspectorId + "assetId=" + title + "&userId=" + userId;
                 } else {
-                    this.url="https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueDate/inspectorId="+inspectorId+"&assetId="+title+"&userId="+userId;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueDate/inspectorId=" + inspectorId + "&assetId=" + title + "&userId=" + userId;
                 }
                 //  alert(this.url);
 
@@ -1280,7 +1314,7 @@
                 if (localStorage.getItem('issueUrl') != '' && localStorage.getItem('issueUrl') != null) {
                     document.getElementById('ajax').generateRequest();
                 }
-                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
+                this.markerurl = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId + "&userId=" + userId;
 
 
                 var a = JSON.parse(localStorage.getItem('dronesServiceResponse'));
