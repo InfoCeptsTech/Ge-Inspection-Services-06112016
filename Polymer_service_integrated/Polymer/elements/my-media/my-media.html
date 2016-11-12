@@ -965,7 +965,12 @@
                 /*var altitude = document.querySelector('#imgAltitude');*/
                 var srvsrc = "https://dashboard.immuta.io";
                 var zoomImgsrc = e.model.item.megaPath;
+                imgname=zoomImgsrc.split('/')[3];
                 expand.src = srvsrc.concat(zoomImgsrc);
+                expand.src='https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/mediaId='+imgname;
+                expand.crossOrigin ='';
+
+
                 this.megaPath = e.model.item.megaPath;
                 var div = document.getElementById("dialog-box");
                 div.style.display = "block";

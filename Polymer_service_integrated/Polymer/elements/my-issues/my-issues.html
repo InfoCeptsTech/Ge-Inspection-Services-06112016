@@ -144,7 +144,7 @@
                 <div class="IssueannotationSection">
                                 <span>Annotation Comments</span>
                                 <div id="error3"></div>
-                                <div id="IssueappendAnnotations" class="hii">
+                                <div id="appendAnnotationsIssue" class="hii">
                                     <div class="issue-date" id="issue-date">
                                     </div>
                                 </div>
@@ -289,6 +289,10 @@
                     value: []
                 },
                 commentArrayInspectionFindingIssue: {
+                    type: Array,
+                    value: []
+                },
+                commentArrayAnnotationIssue: {
                     type: Array,
                     value: []
                 },
@@ -635,7 +639,12 @@
                 debugger;
                 localStorage.setItem("target", "issue");
                 var expand = document.querySelector('#expandImgIssue');
-                expand.src = "https://dashboard.immuta.io" + e.model.item.megaPath;
+                var srvsrc = "https://dashboard.immuta.io";
+                var zoomImgsrc = e.model.item.megaPath;
+                imgname=zoomImgsrc.split('/')[3];
+                expand.src = srvsrc.concat(zoomImgsrc);
+                expand.src='https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/mediaId='+imgname;
+                expand.crossOrigin ='';
                 this.megaPath = e.model.item.megaPath;
                 var div = document.getElementById("dialog-box-issue");
                 div.style.display = "block";
@@ -669,6 +678,7 @@
                         this.selctStatus = this.getStatusName(this.issueMarkerServiceResponse[i].statusType);
                         this.commentArrayIssue = this.issueMarkerServiceResponse[i].comments;
                         this.commentArrayInspectionFindingIssue = this.issueMarkerServiceResponse[i].description;
+                        this.commentArrayAnnotationIssue = this.issueMarkerServiceResponse[i].annotation;
                         this.annoArray = this.issueMarkerServiceResponse[i].annotation;
                         if (this.issueMarkerServiceResponse[i].width != "" && this.issueMarkerServiceResponse[i].width != undefined) {
                             expand.style.width = this.issueMarkerServiceResponse[i].width + "px";
@@ -704,14 +714,19 @@
                         var mainDiv = document.createElement('div');
                         //mainDiv.id="main"+i;
                         var dateDiv = document.createElement('div');
-                        dateDiv.class = "date";
+                        dateDiv.classList.add("date");
                         dateDiv.innerHTML = CurrentDate;
                         var commentDiv = document.createElement('div');
-                        commentDiv.class = "comments";
+                        commentDiv.classList.add("comments");
                         commentDiv.innerHTML = message;
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = localStorage.getItem("username");
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
-                        var aDiv = document.getElementById('appendMsg');
+                        var aDiv = document.getElementById('appendMsgIssue');
                         aDiv.appendChild(mainDiv);
 
                     }
@@ -726,19 +741,51 @@
                         var mainDiv = document.createElement('div');
                         //mainDiv.id="main"+i;
                         var dateDiv = document.createElement('div');
-                        dateDiv.class = "date";
+                        dateDiv.classList.add("date");
                         dateDiv.innerHTML = CurrentDate;
                         var commentDiv = document.createElement('div');
-                        commentDiv.class = "comments";
+                        commentDiv.classList.add("comments");
                         commentDiv.innerHTML = message;
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = localStorage.getItem("username");
+
+                        mainDiv.appendChild(userDiv);
                         mainDiv.appendChild(dateDiv);
                         mainDiv.appendChild(commentDiv);
-                        var aDiv = document.getElementById('appendMsgInspectionFinding');
+                        var aDiv = document.getElementById('appendMsgInspectionFindingIssue');
                         aDiv.appendChild(mainDiv);
 
                     }
                 } else {
                     this.commentArrayInspectionFindingIssue = [];
+                }
+                if (this.commentArrayAnnotationIssue != undefined) {
+                    for (var i = 0; i < this.commentArrayAnnotationIssue.length; i++) {
+                        var CurrentDate = this.commentArrayAnnotationIssue[i].date;
+                        var message = this.commentArrayAnnotationIssue[i].id + ". " + this.commentArrayAnnotationIssue[i].text;
+                        //console.log(commentArrayIssue[i]);
+                        var mainDiv = document.createElement('div');
+                        //mainDiv.id="main"+i;
+                        var dateDiv = document.createElement('div');
+                        dateDiv.classList.add("date");
+                        dateDiv.innerHTML = CurrentDate;
+                        var commentDiv = document.createElement('div');
+                        commentDiv.classList.add("comments");
+                        commentDiv.innerHTML = message;
+                        var userDiv = document.createElement('div');
+                        userDiv.classList.add("users");
+                        userDiv.innerHTML = localStorage.getItem("username");
+
+                        mainDiv.appendChild(userDiv);
+                        mainDiv.appendChild(dateDiv);
+                        mainDiv.appendChild(commentDiv);
+                        var aDiv = document.getElementById('appendAnnotationsIssue');
+                        aDiv.appendChild(mainDiv);
+
+                    }
+                } else {
+                    this.commentArrayAnnotationIssue = [];
                 }
 
                 // for(var i=0;i<this.annoArray.length;i++){
@@ -834,9 +881,19 @@
                         if (localStorage.getItem("saveCount") == "1") {
                             //alert('vish');
                             debugger;
+                            var d = new Date();
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
+
+                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                    d.getFullYear();
+                                var CurrentDate = output;
 
                             var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
                             event.id = spanId;
+                            event.date = CurrentDate;
+                            event.user = localStorage.getItem("username");
                             console.log(event);
                             localStorage.setItem("annoSpanId", spanId);
                             var x = anno.getAnnotations();
@@ -867,87 +924,89 @@
                             body[0].appendChild(span);
 
 
-                            // this.targetIssue = null;
-                            // this.targetCommentIssue = document.querySelector('#inputCommentIssue');
-                            // var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
-                            // while (myNodeInspectionFinding.firstChild) {
-                            //     myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            // }
-                            // if (localStorage.getItem("target") == "issue") {
-                            //     var d = new Date();
-                            //     var month = d.getMonth() + 1;
-                            //     var day = d.getDate();
+                            this.targetIssue = null;
+                            this.targetCommentIssue = document.querySelector('#inputCommentIssue');
+                            var myNodeInspectionFinding = document.getElementById("appendAnnotationsIssue");
+                            while (myNodeInspectionFinding.firstChild) {
+                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            }
+                            if (localStorage.getItem("target") == "issue") {
+                                var d = new Date();
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
 
-                            //     var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
-                            //         (('' + month).length < 2 ? '0' : '') + month + '/' +
-                            //         d.getFullYear();
-                            //     debugger;
-                            //     var CurrentDate = output;
-                            //     var comments = spanId + "." + event.text;
-                            //     var obj = {
-                            //         "date": CurrentDate,
-                            //         "message": comments
-                            //     }
-                            //     polymerThis.commentArrayInspectionFindingIssue.push(obj);
-                            //     var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
-                            //     while (myNodeInspectionFinding.firstChild) {
-                            //         myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            //     }
-                            //     var count = polymerThis.commentArrayInspectionFindingIssue.length;
-                            //     for (var i = 0; i < count; i++) {
-                            //         debugger;
-                            //         console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
-                            //         var mainDivInspectionFinding = document.createElement('div');
-                            //         //mainDiv.id="main"+i;
-                            //         var dateDivInspectionFinding = document.createElement('div');
-                            //         dateDivInspectionFinding.class = "date";
-                            //         dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].date;
-                            //         var commentDivInspectionFinding = document.createElement('div');
-                            //         commentDivInspectionFinding.class = "comments";
-                            //         commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFindingIssue[i].message;
-                            //         mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
-                            //         mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                            //         var aDivInspectionFinding = document.getElementById('appendMsgInspectionFindingIssue');
-                            //         aDivInspectionFinding.appendChild(mainDivInspectionFinding);
-                            //     }
-                            // } else {
-                            //     var d = new Date();
-                            //     var month = d.getMonth() + 1;
-                            //     var day = d.getDate();
+                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                    d.getFullYear();
+                                debugger;
+                                var CurrentDate = output;
+                                var comments = spanId + "." + event.text;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments
+                                }
+                                polymerThis.commentArrayAnnotationIssue.push(event);
+                                var myNodeInspectionFinding = document.getElementById("appendAnnotationsIssue");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = polymerThis.commentArrayAnnotationIssue.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(polymerThis.commentArrayAnnotationIssue[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.classList.add("date");
+                                    dateDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].date;
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.classList.add("comments");
+                                    commentDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].id + ". " +
+                                    polymerThis.commentArrayAnnotationIssue[i].text;
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    var aDivInspectionFinding = document.getElementById('appendAnnotationsIssue');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
+                            } else {
+                                var d = new Date();
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
 
-                            //     var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
-                            //         (('' + month).length < 2 ? '0' : '') + month + '/' +
-                            //         d.getFullYear();
-                            //     debugger;
-                            //     var CurrentDate = output;
-                            //     var comments = spanId + "." + event.text;
-                            //     var obj = {
-                            //         "date": CurrentDate,
-                            //         "message": comments
-                            //     }
-                            //     polymerThis.commentArrayInspectionFindingIssue.push(obj);
-                            //     var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFinding");
-                            //     while (myNodeInspectionFinding.firstChild) {
-                            //         myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
-                            //     }
-                            //     var count = polymerThis.commentArrayInspectionFindingIssue.length;
-                            //     for (var i = 0; i < count; i++) {
-                            //         debugger;
-                            //         console.log(polymerThis.commentArrayInspectionFindingIssue[i]);
-                            //         var mainDivInspectionFinding = document.createElement('div');
-                            //         //mainDiv.id="main"+i;
-                            //         var dateDivInspectionFinding = document.createElement('div');
-                            //         dateDivInspectionFinding.class = "date";
-                            //         dateDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].date;
-                            //         var commentDivInspectionFinding = document.createElement('div');
-                            //         commentDivInspectionFinding.class = "comments";
-                            //         commentDivInspectionFinding.innerHTML = polymerThis.commentArrayInspectionFinding[i].message;
-                            //         mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
-                            //         mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
-                            //         var aDivInspectionFinding = document.getElementById('appendMsgInspectionFinding');
-                            //         aDivInspectionFinding.appendChild(mainDivInspectionFinding);
-                            //     }
-                            // }
+                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                    d.getFullYear();
+                                debugger;
+                                var CurrentDate = output;
+                                var comments = spanId + "." + event.text;
+                                var obj = {
+                                    "date": CurrentDate,
+                                    "message": comments
+                                }
+                                polymerThis.commentArrayAnnotationIssue.push(event);
+                                var myNodeInspectionFinding = document.getElementById("appendAnnotation");
+                                while (myNodeInspectionFinding.firstChild) {
+                                    myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                                }
+                                var count = polymerThis.commentArrayAnnotationIssue.length;
+                                for (var i = 0; i < count; i++) {
+                                    debugger;
+                                    console.log(polymerThis.commentArrayAnnotationIssue[i]);
+                                    var mainDivInspectionFinding = document.createElement('div');
+                                    //mainDiv.id="main"+i;
+                                    var dateDivInspectionFinding = document.createElement('div');
+                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].date;
+                                    var commentDivInspectionFinding = document.createElement('div');
+                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].id + ". " +
+                                    polymerThis.commentArrayAnnotationIssue[i].text;
+                                    mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                    mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                    var aDivInspectionFinding = document.getElementById('appendAnnotation');
+                                    aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                                }
+                            }
 
 
                             localStorage.setItem("saveCount", "0");
@@ -1014,19 +1073,22 @@
                                 for (var i = 0; i < count; i++) {
                                     debugger;
                                     console.log(this.commentArrayIssue[i]);
+                                     var mainDiv = document.createElement('div');
+                                    //mainDiv.id="main"+i;
                                     var dateDiv = document.createElement('div');
                                     dateDiv.classList.add("date");
-                                    dateDiv.innerHTML = CurrentDate;
+                                    dateDiv.innerHTML = this.commentArrayIssue[i].date;
                                     var commentDiv = document.createElement('div');
                                     commentDiv.classList.add("comments");
-                                    commentDiv.innerHTML = this.commentArray[i].comments;
+                                    commentDiv.innerHTML = this.commentArrayIssue[i].message;
                                     var userDiv = document.createElement('div');
                                     userDiv.classList.add("users");
-                                    userDiv.innerHTML = user;
+                                    userDiv.innerHTML = this.userName;
 
                                     mainDiv.appendChild(userDiv);
-                                    mainDiv.appendChild(commentDiv);
                                     mainDiv.appendChild(dateDiv);
+                                    mainDiv.appendChild(commentDiv);
+                                    
 
                                     var aDiv = document.getElementById('appendMsgIssue');
                                     aDiv.appendChild(mainDiv);
@@ -1057,10 +1119,10 @@
 
 
                                     var dateDivInspectionFinding = document.createElement('div');
-                                    dateDivInspectionFinding.class = "date";
+                                    dateDivInspectionFinding.classList.add("date");
                                     dateDivInspectionFinding.innerHTML = this.commentArrayInspectionFindingIssue[i].date;
                                     var commentDivInspectionFinding = document.createElement('div');
-                                    commentDivInspectionFinding.class = "comments";
+                                    commentDivInspectionFinding.classList.add("comments");
 
                                     mainDivInspectionFinding.appendChild(userDivInspectionFinding);
                                     commentDivInspectionFinding.innerHTML = this.commentArrayInspectionFindingIssue[i].message;
@@ -1238,6 +1300,7 @@
 
                 this.commentArrayIssue = [];
                 this.commentArrayInspectionFindingIssue = [];
+                this.commentArrayAnnotationIssue = [];
                 var myNode = document.getElementById("appendMsgIssue");
                 while (myNode.firstChild) {
                     myNode.removeChild(myNode.firstChild);
@@ -1245,6 +1308,10 @@
                 var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
                 while (myNodeInspectionFinding.firstChild) {
                     myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                }
+                var myNodeAnnotationFinding = document.getElementById("appendAnnotationsIssue");
+                while (myNodeAnnotationFinding.firstChild) {
+                    myNodeAnnotationFinding.removeChild(myNodeAnnotationFinding.firstChild);
                 }
                 document.getElementById('appendMsgIssue').innerHTML = "";
                 document.getElementById('appendMsgInspectionFindingIssue').innerHTML = "";
@@ -1269,6 +1336,7 @@
                 //document.getElementById('appendMsg').innerHTML = "";
                 this.commentArrayIssue = [];
                 this.commentArrayInspectionFindingIssue = [];
+                this.commentArrayAnnotationIssue = [];
                 var myNode = document.getElementById("appendMsgIssue");
                 while (myNode.firstChild) {
                     myNode.removeChild(myNode.firstChild);
@@ -1276,6 +1344,10 @@
                 var myNodeInspectionFinding = document.getElementById("appendMsgInspectionFindingIssue");
                 while (myNodeInspectionFinding.firstChild) {
                     myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                }
+                var myNodeAnnotationFinding = document.getElementById("appendAnnotationsIssue");
+                while (myNodeAnnotationFinding.firstChild) {
+                    myNodeAnnotationFinding.removeChild(myNodeAnnotationFinding.firstChild);
                 }
                 document.getElementById('appendMsgIssue').innerHTML = "";
                 document.getElementById('appendMsgInspectionFindingIssue').innerHTML = "";
