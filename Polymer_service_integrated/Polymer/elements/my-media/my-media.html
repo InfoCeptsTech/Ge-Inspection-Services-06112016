@@ -204,21 +204,21 @@
                             <div class="defectDrop">
                                 <span>Defect Type</span>
                                 <paper-dropdown-menu class="defectDrop">
-                                    <paper-listbox class="dropdown-content" id="popdefectType" selected="0" >
-                                        <paper-item>Corrosion</paper-item>
-                                        <paper-item>Thinning</paper-item>
-                                        <paper-item>Stress cracking</paper-item>
-                                        <paper-item>Mechanical Fatigue</paper-item>
-                                        <paper-item>Thermal Fatigue</paper-item>
+                                    <paper-listbox class="dropdown-content" id="popdefectType" selected="{{selection}}" attr-for-selected="value">
+                                        <paper-item value="0">Corrosion</paper-item>
+                                        <paper-item value="1">Thinning</paper-item>
+                                        <paper-item value="2">Stress cracking</paper-item>
+                                        <paper-item value="3">Mechanical Fatigue</paper-item>
+                                        <paper-item value="4">Thermal Fatigue</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
 
                                 <span>Status</span>
                                 <paper-dropdown-menu class="statusDrop">
-                                    <paper-listbox class="dropdown-content" id="popstatusType" selected="0" >
-                                        <paper-item>Fix</paper-item>
-                                        <paper-item>Continue to monitor</paper-item>
-                                        <paper-item>Manual Inspection</paper-item>
+                                    <paper-listbox class="dropdown-content" id="popstatusType" selected="{{selctStatus}}" attr-for-selected="value">
+                                        <paper-item value="0">Fix</paper-item>
+                                        <paper-item value="1">Continue to monitor</paper-item>
+                                        <paper-item value="2">Manual Inspection</paper-item>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
 
@@ -482,12 +482,12 @@
                     value:''
                 },
                 selection:{
-                     type:Number,
-                     value:0
+                     type:String,
+                     value:"0"
                 },
                  selctStatus:{
-                     type:Number,
-                     value:0
+                     type:String,
+                     value:"0"
                 },
                  selected: {
                     type: String,
@@ -1003,8 +1003,9 @@
                 for (var i = 0; i < this.issueMarkerServiceResponse.length; i++) {
                     if (e.model.item.id == this.issueMarkerServiceResponse[i].id) {
                         //annotationsArray = this.annotoriousResponse[i].annotation;
-                       this.getDefectName(this.selection)= this.issueMarkerServiceResponse[i].defectType;
-                        this.getStatusName(this.selctStatus) = this.issueMarkerServiceResponse[i].statusType;
+                       this.selection = this.getDefectName(this.issueMarkerServiceResponse[i].defectType);
+                       this.selctStatus = this.getStatusName(this.issueMarkerServiceResponse[i].statusType);
+                        // this.getStatusName(this.selctStatus) = this.issueMarkerServiceResponse[i].statusType;
                         this.commentArray = this.issueMarkerServiceResponse[i].comments;
                         this.commentArrayInspectionFinding = this.issueMarkerServiceResponse[i].description;
                         this.annoArray = this.issueMarkerServiceResponse[i].annotation;
@@ -1394,28 +1395,53 @@
                          altitude = (a[0].altitude);
                     }*/
             },
+             getDefectNameFromId:function(statusId) {
+                    debugger;
+                    if (statusId == "0") {
+                        return "Corrosion";
+                    } else if (statusId == "1") {
+                        return "Thinning";
+                    } else if (statusId == "2") {
+                        return "Stress cracking";
+                    } else if (statusId == "3") {
+                        return "Mechanical Fatigue";
+                    } else if (statusId == "4") {
+                        return "Thermal Fatigue";
+                    }
+
+                },
               getDefectName:function(statusId) {
                     debugger;
-                    if (statusId == 0) {
-                        return "Corrosion";
-                    } else if (statusId == 1) {
-                        return "Thinning";
-                    } else if (statusId == 2) {
-                        return "Stress cracking";
-                    } else if (statusId == 3) {
-                        return "Mechanical Fatigue";
-                    } else if (statusId == 4) {
-                        return "Thermal Fatigue";
+                    if (statusId == "Corrosion") {
+                        return 0;
+                    } else if (statusId == "Thinning") {
+                        return 1;
+                    } else if (statusId == "Stress cracking") {
+                        return 2;
+                    } else if (statusId == "Mechanical Fatigue") {
+                        return 3;
+                    } else if (statusId == "Thermal Fatigue") {
+                        return 4;
                     }
 
                 },
                  getStatusName:function(statusId) {
                         debugger;
-                        if (statusId == 0) {
+                        if (statusId == "Fix") {
+                            return "0";
+                        } else if (statusId == "Continue to Monitor") {
+                            return "1";
+                        } else if (statusId == "Manual Inspection") {
+                            return "2";
+                        }
+                    },
+                    getStatusNameFromId:function(statusId) {
+                        debugger;
+                        if (statusId == "0") {
                             return "Fix";
-                        } else if (statusId == 1) {
+                        } else if (statusId == "1") {
                             return "Continue to Monitor";
-                        } else if (statusId == 2) {
+                        } else if (statusId == "2") {
                             return "Manual Inspection";
                         }
                     },
@@ -1423,8 +1449,8 @@
                 //debugger;
                  document.getElementById('error1').innerHTML=""; 
                  document.getElementById('error2').innerHTML=""; 
-                 this.selection = 0;
-                 this.selctStatus = 0;
+                 this.selection = "0";
+                 this.selctStatus = "0";
                 var div = document.getElementById("dialog-box");
                 div.style.display = "none";
                 //anno.makeAnnotatable(document.getElementById('expandImg'));
@@ -1519,9 +1545,9 @@
                 debugger;
                 // var defectType =this.selection;
                 // var statusType =this.selctStatus;
-                var defectType =this.getDefectName(this.selection);
-                var statusType =this.getStatusName(this.selctStatus);
-
+                //var defectType =this.getDefectName(this.selection);
+                var statusType =this.getStatusNameFromId(this.selctStatus);
+                var defectType = this.getDefectNameFromId(this.selection);
                 // var statusType = getStatusName(document.getElementById("statusType").selected);
                 //var defectType = getDefectName(this.selection);
               
