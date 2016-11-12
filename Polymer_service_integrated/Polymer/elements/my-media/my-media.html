@@ -1636,7 +1636,8 @@
                 var assetId = localStorage.getItem("assetTitle");
                 var inspectionId = localStorage.getItem("inspectionId");
                 var annotatedMetadata = anno.getAnnotations();
-
+                this.commentArrayAnnotations = [];
+                this.commentArrayAnnotations = annotatedMetadata;
 
 
                 console.log("id : " + id + "defectType: " + defectType + ", comments: " + comments + ", statusType : " + statusType + " , assetId : " + assetId + " , inspectionId: " + inspectionId + " , annotatedMetadata: " + annotatedMetadata + " , desc: " + desc + " :" + ", userId: " + userId);
