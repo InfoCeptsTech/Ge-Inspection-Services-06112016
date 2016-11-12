@@ -1455,6 +1455,9 @@ iron-collapse#collapse-issue {
     width: 100% !important;
     float: left;
 }
+.IssueannotationSection span.style-scope.my-issues {
+    border-top: 1px dashed #000;
+}
 /*#executiveSummary --paper-input-container: {
             min-width: 324px;
             width: 324px;
