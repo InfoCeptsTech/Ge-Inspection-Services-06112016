@@ -108,12 +108,12 @@
                  var inspectionId = e.model.item.inspectionId;
                  console.log("--------------->>"+inspectionId);
                  title=localStorage.getItem('assetTitle');
-                 inspectorId=localStorage.getItem('assetTitle');
+                 inspectorId=localStorage.getItem('inspectorId');
                   localStorage.setItem('inspectionId',inspectionId);
                   user = localStorage.getItem("username");
                   phaseId = localStorage.getItem("phaseId");
 
-                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/inspectorId="+inspectorId+"&assetId="+title+"&inspectionId="+inspectionId+"&pId="+phaseId+"&userId="+user;
+                    this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getMediaDate/inspectorId="+inspectorId+"&assetId="+title+"&userId="+user+"&phaseId="+phaseId;
 
                    localStorage.setItem('inspectionId',inspectionId);
                    
