@@ -212,9 +212,9 @@
                 <paper-button raised on-click="toggleDialogGenerate" class="reviewbtn pull-right">Generate Report</paper-button>
                 <paper-dialog id="reportToggle" modal>
                     <span class="dialogTitle">Enter Executive Summary:</span>
-                    <paper-textarea id="executiveSummary"></paper-textarea>
+                    <paper-textarea id="executiveSummary" on-focus="setTargetExecutive"></paper-textarea>
                     <div class="modal-footer ">
-                        <paper-button on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</paper-button>
+                        <paper-button dialog-dismiss on-click="saveSummary" target="_blank" class="btn-default" style="text-decoration: none;">Generate</paper-button>
                         <!-- <paper-button on-click="saveDialog" class="btn-default">Save</paper-button> -->
                         <paper-button dialog-confirm autofocus class="btn-default close">Close</paper-button>
                     </div>
@@ -274,6 +274,13 @@
                     type: Object,
                     value: function() {
                         return document.querySelector('#inputCommentIssue');
+                    }
+
+                },
+                targetExecutive: {
+                    type: Object,
+                    value: function() {
+                        return document.querySelector('#executiveSummary');
                     }
 
                 },
@@ -1164,6 +1171,11 @@
                 this.targetIssue = null;
                 this.targetCommentIssue = document.querySelector('#inputCommentIssue');
             },
+            setTargetExecutive: function() {
+                //alert('inside set target comment');
+                this.targetExecutive = null;
+                this.targetExecutive = document.querySelector('#executiveSummary');
+            },
             saveDialog: function() {
                 // var div = document.getElementById("dialog-box-issue");
                 // div.style.display = "none";
@@ -1368,12 +1380,16 @@
                 img.src = "";
             },
             toggleDialogGenerate: function(e) {
+                debugger;
                 var dialog = document.querySelector('#reportToggle');
                 dialog.toggle();
             },
             saveSummary: function(e) {
                 debugger;
+                var summary = this.targetExecutive;
+                summary.value = null;
                 summary = document.querySelector('#executiveSummary');
+                
                 console.log(summary.value);
                 userId = localStorage.getItem('username');
                 this.$.saveSummaryPost.body = {
