@@ -352,6 +352,7 @@ label.phase-title {
     width: 48%;
     float: left;
     padding: 1%;
+    min-height: 290px;
 }
 .img-tooltip {
     width: 100%;
