@@ -1451,6 +1451,10 @@ paper-dialog#reportToggle{
 #executiveSummary paper-input-container.style-scope.paper-textarea.x-scope.paper-input-container-1 {
     width: 100%;
 }
+#executiveSummary .input-content.style-scope.paper-input-container, #executiveSummary div#labelAndInputContainer {
+    height: 200px;
+    overflow-x: auto;
+}
 iron-collapse#collapse-issue {
     width: 100% !important;
     float: left;
