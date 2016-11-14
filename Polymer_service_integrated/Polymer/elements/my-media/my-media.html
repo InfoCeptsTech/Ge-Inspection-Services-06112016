@@ -71,6 +71,8 @@
         #error1{color:red;font: 15.33335px Arial;}
         #error2{color:red;font: 15.33335px Arial;}
         #error3{color:red;font: 15.33335px Arial;}
+        #error_edit{color:red;font: 15.33335px Arial;}
+        #error_comment{color:red;font: 15.33335px Arial;}
         
 
 
@@ -134,6 +136,7 @@
         </div>
         <paper-dialog heading="" id="editDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop style="padding:10px;">
             <div>
+                <div id="error_edit"></div>
                 <span>
                                 Defect Type:
                                 <br/>
@@ -166,16 +169,17 @@
                             </span>
             </div>
             <div class="modal-footer ">
-                <paper-button dialog-dismiss class="submit" on-click="editSubmitClick">Submit</paper-button>
-                <paper-button dialog-dismiss class="close">Close</paper-button>
+                <paper-button  class="submit" on-click="editSubmitClick">Submit</paper-button>
+                <paper-button dialog-dismiss class="close" on-click="_editCloseClick">Close</paper-button>
             </div>
         </paper-dialog>
         <paper-dialog heading="" id="commentDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <div id="error_comment"></div>
             <span>Enter Comments Here:</span>
             <paper-textarea label="" id="textarea"></paper-textarea>
             <div class="modal-footer">
-                <paper-button dialog-dismiss class="submit">Submit</paper-button>
-                <paper-button dialog-dismiss class="close">Close</paper-button>
+                <paper-button class="submit" on-click="addComments">Submit</paper-button>
+                <paper-button dialog-dismiss  on-click="_editCloseClick" class="close">Close</paper-button>
             </div>
         </paper-dialog>
         <div class="editSection" id="editSection{{index}}" style="border-bottom:1px solid #ccc;">
@@ -506,6 +510,9 @@
                 }
 
             },
+            _editCloseClick:function(){
+                document.getElementById('erroe_edit').innerHTML="";
+            },
             _yesno: function(e) {
                 var id = e.model.index;
                 var checkboxvar = document.getElementById("check" + id);
@@ -759,7 +766,7 @@
                     return;
 
                 } else {
-                    alert('Please select image');
+                     document.getElementById('error_comment').innerHTML="Please select image";
                 }
             },
             // handleResponseAnnotorious: function() {
@@ -942,7 +949,7 @@
 
 
                 } else {
-                    alert('Please select image');
+                     document.getElementById('error_edit').innerHTML="Please select image";
                 }
             },
             toggleDialog: function(e) {
