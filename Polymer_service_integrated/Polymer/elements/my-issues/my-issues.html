@@ -861,26 +861,95 @@
                     } else {
                         localStorage.setItem("annoSpanId", "0");
                     }
+                    // anno.addHandler('beforeAnnotationRemoved', function(event) {
+                    //     if (localStorage.getItem("deleteCount") == "1") {
+                    //         var x = anno.getAnnotations();
+                    //         var id = event.id;
+                    //         var span = document.getElementById("anno" + id);
+                    //         span.parentNode.removeChild(span);
+                    //         localStorage.setItem("deleteCount", "0");
+                    //     }
+                    // });
                     anno.addHandler('beforeAnnotationRemoved', function(event) {
+                        debugger;
                         if (localStorage.getItem("deleteCount") == "1") {
-                            // debugger;
-                            // alert('vish');
-                            console.log(event);
                             var x = anno.getAnnotations();
-                            // var id = null;
-                            // for (var i = 0; i < x.length; i++) {
-                            //     if (x[i].text == event.text) {
-                            //         id = x[i].text;
-                            //         break;
-                            //     }
-                            // }
                             var id = event.id;
                             var span = document.getElementById("anno" + id);
                             span.parentNode.removeChild(span);
                             localStorage.setItem("deleteCount", "0");
                         }
-                    });
 
+                        if (localStorage.getItem("target") == "media") {
+                            var index;
+                            for (var i = 0; i < polymerThis.commentArrayAnnotationIssue.length; i++) {
+                                if (event.id == polymerThis.commentArrayAnnotationIssue[i].id) {
+                                    index = i;
+                                    polymerThis.commentArrayAnnotationIssue.splice(index, 1);
+                                    break;
+                                }
+                            }
+                            var count = polymerThis.commentArrayAnnotationIssue.length;
+                            for (var i = 0; i < count; i++) {
+                                debugger;
+                                console.log(polymerThis.commentArrayAnnotationIssue[i]);
+                                var mainDivInspectionFinding = document.createElement('div');
+                                //mainDiv.id="main"+i;
+                                var dateDivInspectionFinding = document.createElement('div');
+                                dateDivInspectionFinding.class = "date";
+                                dateDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].date;
+                                var commentDivInspectionFinding = document.createElement('div');
+                                commentDivInspectionFinding.class = "comments";
+                                commentDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].id + ". " +
+                                    polymerThis.commentArrayAnnotationIssue[i].text;
+                                var userDivInspectionFinding = document.createElement('div');
+                                userDivInspectionFinding.classList.add("users");
+                                userDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].user;
+
+                                mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                var aDivInspectionFinding = document.getElementById('appendAnnotation');
+                                aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                            }
+                        } else {
+                            var index;
+                            for (var i = 0; i < polymerThis.commentArrayAnnotationIssue.length; i++) {
+                                if (event.id == polymerThis.commentArrayAnnotationIssue[i].id) {
+                                    index = i;
+                                    polymerThis.commentArrayAnnotationIssue.splice(index, 1);
+                                    break;
+                                }
+                            }
+                            var myNodeInspectionFinding = document.getElementById("appendAnnotationsIssue");
+                            while (myNodeInspectionFinding.firstChild) {
+                                myNodeInspectionFinding.removeChild(myNodeInspectionFinding.firstChild);
+                            }
+                            var count = polymerThis.commentArrayAnnotationIssue.length;
+                            for (var i = 0; i < count; i++) {
+                                debugger;
+                                console.log(polymerThis.commentArrayAnnotationIssue[i]);
+                                var mainDivInspectionFinding = document.createElement('div');
+                                //mainDiv.id="main"+i;
+                                var dateDivInspectionFinding = document.createElement('div');
+                                dateDivInspectionFinding.classList.add("date");
+                                dateDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].date;
+                                var commentDivInspectionFinding = document.createElement('div');
+                                commentDivInspectionFinding.classList.add("comments");
+                                commentDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].id + ". " +
+                                    polymerThis.commentArrayAnnotationIssue[i].text;
+                                var userDivInspectionFinding = document.createElement('div');
+                                userDivInspectionFinding.classList.add("users");
+                                userDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].user;
+
+                                mainDivInspectionFinding.appendChild(userDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
+                                mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
+                                var aDivInspectionFinding = document.getElementById('appendAnnotationsIssue');
+                                aDivInspectionFinding.appendChild(mainDivInspectionFinding);
+                            }
+                        }
+                    });
                     anno.addHandler('onAnnotationCreated', function(event) {
                         if (localStorage.getItem("saveCount") == "1") {
                             //alert('vish');
