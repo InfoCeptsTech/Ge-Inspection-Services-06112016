@@ -23,7 +23,6 @@ public class InspectionMedia {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-	@Column(length = 4000) 
 	private String comment; 
 	private String blobId; 
 	private String inspectorId; 
@@ -33,17 +32,14 @@ public class InspectionMedia {
 	private String statusType; 
 	private String defectType; 
 	private String inspectionId; 
-	@Column(length = 4000) 
 	private String annotatedMetadata; 
-	@Column(length = 4000) 
 	private String description; 
-	@Column(length = 4000)
 	private String annotedComments;
-	@Column(name = "commentjson",length = 4000) 
+	@Column(name = "commentjson") 
 	private String commentJson;
-	@Column(name = "\"user\"",length = 400) 
+	@Column(name = "\"user\"") 
 	private String userId;
-	@Column(name = "inspection_requirement",length = 4000) 
+	@Column(name = "inspection_requirement") 
 	private String inspectionRequirement;
 	@Column(name = "issueimage")
 	private byte[] issueImage;

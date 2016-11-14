@@ -12,7 +12,6 @@ public class InspectionReport {
 	@Column(name="user_id")
 	private String userId;
 	
-	@Column(length = 4000) 
 	private String comment; 
 	
 	public String getComment() {

@@ -13,6 +13,8 @@ import java.util.concurrent.Future;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,8 @@ public class InspectionDaoImpl implements InspectionDao {
 
     @Autowired
     private InspectionDtlRepository inspectionDtlRepository;
+    
+    private final Logger logger = LoggerFactory.getLogger(InspectionDaoImpl.class);
     
     @Value("${media.location}")
    	private String mediaLocation;
@@ -129,14 +133,14 @@ public class InspectionDaoImpl implements InspectionDao {
 	
 	private Set<MediaModel> getMedia(List<InspectionDtls> inspectionDtlsList,String inspectionPhaseId){
 		Set<MediaModel> phaseSet=new HashSet<MediaModel>();
-		ExecutorService executor = Executors.newFixedThreadPool(10);
+		ExecutorService executor = Executors.newFixedThreadPool(2);
     	List<Future<Map<String,String>>> list = new ArrayList<Future<Map<String,String>>>();
     	//Map<String,String> allImgMap=new HashMap<String, String>();
 		
 		for(InspectionDtls inspectionDtls:inspectionDtlsList){
 			phaseSet.add(new MediaModel(inspectionDtls.getInspectionPhaseId()));
 		}
-		
+		logger.info("Image Fetch Start : "+System.currentTimeMillis());
 		for(MediaModel phase:phaseSet){
 					List<ImageModel> imageModelList=new ArrayList<ImageModel>();
 					//int index=0;
@@ -185,7 +189,7 @@ public class InspectionDaoImpl implements InspectionDao {
    	 }
 	//	System.out.println("---------------before executor shutdown------------------");
    	 executor.shutdown();
-   
+   	logger.info("Image Fetch Completed : "+System.currentTimeMillis());
 		return phaseSet;
 	}
   

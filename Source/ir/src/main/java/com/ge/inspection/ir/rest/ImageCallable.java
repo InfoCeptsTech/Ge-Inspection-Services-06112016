@@ -12,6 +12,8 @@ import java.util.concurrent.Callable;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,6 +32,7 @@ public class ImageCallable implements Callable<Map<String,String>>{
     private String username;
     private String password;
     private String imgPath;
+    private final Logger logger = LoggerFactory.getLogger(ImageCallable.class);
     	
     private String mediaLocation;
 
@@ -47,6 +50,7 @@ public class ImageCallable implements Callable<Map<String,String>>{
 		@Override
 		public Map<String,String> call() throws Exception {
 			
+			logger.info("Image Fetch Started for image Id :" + imgPath+" : "+System.currentTimeMillis());
 			 RestTemplate restTemplate = new RestTemplate();
 		     
 			 HttpHeaders headers = new HttpHeaders();
@@ -100,6 +104,7 @@ public class ImageCallable implements Callable<Map<String,String>>{
 				 }
 				
 			 }
+			 logger.info("Image Fetch Completed for image Id :" + imgPath+" : "+System.currentTimeMillis());
 			 return imgMap;
 		}
     	

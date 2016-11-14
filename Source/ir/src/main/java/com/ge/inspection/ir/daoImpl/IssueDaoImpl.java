@@ -44,7 +44,6 @@ public class IssueDaoImpl implements IssueDao{
 				issueDtlRepository.updateIssue(inspectionMedia.getBlobId(), inspectionMedia.getStatusType(), inspectionMedia.getDefectType(), inspectionMedia.getComment(), inspectionMedia.getDescription(), inspectionMedia.getAnnotedComments(), inspectionMedia.getAnnotatedMetadata(), inspectionMedia.getIssueImage(), inspectionMedia.getCommentJson(), inspectionMedia.getInspectionDate(), inspectionMedia.getUserId(),inspectionMedia.getInspectionRequirement());
 			}
 		}
-	
 	}
     
     @Override
