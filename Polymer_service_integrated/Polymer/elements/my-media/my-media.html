@@ -772,12 +772,12 @@
                 var id = document.getElementById(target),
                     style = window.getComputedStyle(id),
                     border = style.getPropertyValue('border'),
-                    borderNone = "2px inset rgb(255, 255, 255)";
+                    borderNone = "3px inset rgb(255, 255, 255)";
                 if (border.toString() == borderNone) {
-                    id.style.border = "2px solid #049FCF";
+                    id.style.border = "3px solid #049FCF";
                     this.idArr.push(target);
                 } else {
-                    id.style.border = "2px inset rgb(255, 255, 255)";
+                    id.style.border = "3px inset rgb(255, 255, 255)";
                     var index = this.idArr.indexOf(target);
                     this.idArr.splice(index, 1);
                 }

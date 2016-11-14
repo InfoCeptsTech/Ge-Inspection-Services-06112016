@@ -187,7 +187,7 @@ span.inspections-title {
     height: 100%;
     cursor: pointer;
     padding: 0px;
-    border: 2px inset rgb(255, 255, 255);
+    border: 3px inset rgb(255, 255, 255);
     position: relative;
 }
 paper-toolbar.head-toolbar {
@@ -1468,6 +1468,10 @@ iron-collapse#collapse-issue {
             margin-right: 24px;
         };*/
 
-
+#report-type iron-dropdown#dropdown {
+    position: absolute !important;
+    top: auto !important;
+    bottom: -10px !important;
+}
 
 
