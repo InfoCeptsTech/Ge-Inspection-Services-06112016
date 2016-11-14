@@ -1585,6 +1585,7 @@
                 ctx.drawImage(el, 0, 0, el.width, el.height);
                 ctx.drawImage(sourceCanvas, 0, 0,img1.width, img1.height);
                 var dataURL = canvas.toDataURL("image/jpeg");
+                el.src = "";
                 //alert("from getbase64 function" + dataURL);
                 //window.open(dataURL);
                 // return dataURL;
