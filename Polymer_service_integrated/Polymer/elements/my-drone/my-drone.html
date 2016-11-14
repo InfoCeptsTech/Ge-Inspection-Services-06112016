@@ -245,7 +245,7 @@
                 localStorage.setItem('assetTitle',this.dronesServiceResponse[0].title );
                } 
               }
-               if(localStorage.getItem('phaseSelected')!=true)
+               if(localStorage.getItem('phaseSelected')=="true")
               {
                for (var i = 0; i < this.dronesServiceResponse.length; i++) {
                  debugger;
@@ -266,6 +266,7 @@
                     }
                 }
                 }
+                localStorage.setItem("phaseSelected","false");
              }
             },
            handleAssetsClick: function(e) {
@@ -382,7 +383,7 @@
                 var title=e.model.item.title;
                 console.log(title);
                  localStorage.setItem('phaseId',title);
-                 localStorage.setItem('phaseSelected',true);
+                
 
                 for (var i = 0; i < this.dronesServiceResponse.length; i++) {
                     inspection = null;
@@ -464,6 +465,7 @@
                  
                 this.url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getAsset/inspectorId="+inspectorId+"&userId="+userId;    
                 this.userName = localStorage.getItem("username");
+                 localStorage.setItem('phaseSelected',"true");
             },
             urlState: function(urlPath) {
                 //  debugger;
