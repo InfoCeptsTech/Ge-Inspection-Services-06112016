@@ -1384,6 +1384,7 @@
             _handleReportSave: function(e) {
                 // alert("saved succesfully");
                 // this.$.webTicketGet.url = "https://qlikreport.infocepts.com/QlikView/index.htm";
+                this.$.webTicketGet.url=this.$.webTicketGet.url.replace('amahajan',username);
                 this.$.webTicketGet.generateRequest();
             },
             _handleWebTicketResponse: function(e) {
