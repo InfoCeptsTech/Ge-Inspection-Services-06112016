@@ -115,40 +115,37 @@
                           <div class="ImgValue">(3.414725, -122.167969)</div>
                                                           </div>
                                                         </iron-collapse> -->
-                <div class="IssueInspectionsReqFin">
-                <paper-tabs selected="{{selected}}" no-bar>
-                                      <paper-tab>Inspection Requirement</paper-tab>
-                                      <paper-tab>Inspection Findings</paper-tab>
-                </paper-tabs>
-                <iron-pages selected="{{selected}}">
-                    <div id="inspectionRequirement">
-
-                        <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
-                                <div id="requirementMsg"></div>
-                                    <div id="appendMsgIssue" class="hii">
-                                    <div class="issue-date" id="issue-date">
-                                    </div>
-                                </div>
-
-                    </div>
-                    <div id="inspectionFinding">
-                    <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
-                                                        <div id="appendMsgInspectionFindingIssue" class="hii">
-                                                            <div class="issue-date" id="issue-date">
+                                                        <div class="IssueInspectionsReqFin">
+                                                            <paper-tabs selected="{{selected}}" no-bar>
+                                                                <paper-tab>Inspection Requirement</paper-tab>
+                                                                <paper-tab>Inspection Findings</paper-tab>
+                                                            </paper-tabs>
+                                                            <iron-pages selected="{{selected}}">
+                                                                <div id="inspectionRequirement">
+                                                                    <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                                                    <div id="requirementMsg"></div>
+                                                                    <div id="appendMsgIssue" class="hii">
+                                                                        <div class="issue-date" id="issue-date">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="inspectionFinding">
+                                                                    <paper-textarea id="inputCommentIssue" placeholder="Enter inspection findings" value="{{userInputCommentIssue::input}}" on-focus="setTargetCommentIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
+                                                                    <div id="appendMsgInspectionFindingIssue" class="hii">
+                                                                        <div class="issue-date" id="issue-date">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </iron-pages>
+                                                        </div>
+                                                        <div class="IssueannotationSection">
+                                                            <span>Annotation Comments</span>
+                                                            <div id="error3"></div>
+                                                            <div id="appendAnnotationsIssue" class="hii">
+                                                                <div class="issue-date" id="issue-date">
+                                                                </div>
                                                             </div>
                                                         </div>
-                    </div>
-                </iron-pages>
-                </div>
-
-                <div class="IssueannotationSection">
-                                <span>Annotation Comments</span>
-                                <div id="error3"></div>
-                                <div id="appendAnnotationsIssue" class="hii">
-                                    <div class="issue-date" id="issue-date">
-                                    </div>
-                                </div>
-                                </div>
                                                         <!-- <span>Inspection Requirement :</span> -->
                                                         <!--  <iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="onEnter"></iron-a11y-keys> -->
                                                         <!-- <paper-textarea id="inputReqIssue" placeholder="Enter inspection requirements here" value="{{userInputIssue::input}}" on-focus="setTargetIssue" on-keydown="onEnterCommentIssue"></paper-textarea>
@@ -316,7 +313,7 @@
                     type: String,
                     value: "0"
                 },
-                noBar:{
+                noBar: {
                     type: String,
                     value: "true"
                 }
@@ -345,12 +342,12 @@
 
             },
             _handleAjaxPostResponse: function() {
-                 var inspectionId = localStorage.getItem("inspectionId");
+                var inspectionId = localStorage.getItem("inspectionId");
                 var assetId = localStorage.getItem("assetId");
                 // alert("success");
                 var inspectorId = localStorage.getItem("inspectorId");
-                var userId=localStorage.getItem("username");
-                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId+"&userId="+userId;
+                var userId = localStorage.getItem("username");
+                document.getElementById('issueAjax').url = "https://dashboard.immuta.io/ir-0.0.1/inspection/getIssueMarker/inspectorId=" + inspectorId + "&userId=" + userId;
 
                 document.getElementById('issueAjax').generateRequest();
                 console.log("success");
@@ -584,56 +581,56 @@
                 // img.style.marginLeft = -(img.width / 2) + "px";
                 // img.style.marginTop = -(img.height / 2) + "px";
             },
-            getDefectNameFromId:function(statusId) {
-                    debugger;
-                    if (statusId == "0") {
-                        return "Corrosion";
-                    } else if (statusId == "1") {
-                        return "Thinning";
-                    } else if (statusId == "2") {
-                        return "Stress cracking";
-                    } else if (statusId == "3") {
-                        return "Mechanical Fatigue";
-                    } else if (statusId == "4") {
-                        return "Thermal Fatigue";
-                    }
+            getDefectNameFromId: function(statusId) {
+                debugger;
+                if (statusId == "0") {
+                    return "Corrosion";
+                } else if (statusId == "1") {
+                    return "Thinning";
+                } else if (statusId == "2") {
+                    return "Stress cracking";
+                } else if (statusId == "3") {
+                    return "Mechanical Fatigue";
+                } else if (statusId == "4") {
+                    return "Thermal Fatigue";
+                }
 
-                },
-              getDefectName:function(statusId) {
-                    debugger;
-                    if (statusId == "Corrosion") {
-                        return 0;
-                    } else if (statusId == "Thinning") {
-                        return 1;
-                    } else if (statusId == "Stress cracking") {
-                        return 2;
-                    } else if (statusId == "Mechanical Fatigue") {
-                        return 3;
-                    } else if (statusId == "Thermal Fatigue") {
-                        return 4;
-                    }
+            },
+            getDefectName: function(statusId) {
+                debugger;
+                if (statusId == "Corrosion") {
+                    return 0;
+                } else if (statusId == "Thinning") {
+                    return 1;
+                } else if (statusId == "Stress cracking") {
+                    return 2;
+                } else if (statusId == "Mechanical Fatigue") {
+                    return 3;
+                } else if (statusId == "Thermal Fatigue") {
+                    return 4;
+                }
 
-                },
-                 getStatusName:function(statusId) {
-                        debugger;
-                        if (statusId == "Fix") {
-                            return "0";
-                        } else if (statusId == "Continue to Monitor") {
-                            return "1";
-                        } else if (statusId == "Manual Inspection") {
-                            return "2";
-                        }
-                    },
-                    getStatusNameFromId:function(statusId) {
-                        debugger;
-                        if (statusId == "0") {
-                            return "Fix";
-                        } else if (statusId == "1") {
-                            return "Continue to Monitor";
-                        } else if (statusId == "2") {
-                            return "Manual Inspection";
-                        }
-                    },
+            },
+            getStatusName: function(statusId) {
+                debugger;
+                if (statusId == "Fix") {
+                    return "0";
+                } else if (statusId == "Continue to Monitor") {
+                    return "1";
+                } else if (statusId == "Manual Inspection") {
+                    return "2";
+                }
+            },
+            getStatusNameFromId: function(statusId) {
+                debugger;
+                if (statusId == "0") {
+                    return "Fix";
+                } else if (statusId == "1") {
+                    return "Continue to Monitor";
+                } else if (statusId == "2") {
+                    return "Manual Inspection";
+                }
+            },
             toggleDialogIssue: function(e) {
                 //var dialog = document.querySelector('#dialogIssue');
                 debugger;
@@ -641,10 +638,10 @@
                 var expand = document.querySelector('#expandImgIssue');
                 var srvsrc = "https://dashboard.immuta.io";
                 var zoomImgsrc = e.model.item.megaPath;
-                imgname=zoomImgsrc.split('/')[3];
+                imgname = zoomImgsrc.split('/')[3];
                 expand.src = srvsrc.concat(zoomImgsrc);
-                expand.src='https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/mediaId='+imgname;
-                expand.crossOrigin ='';
+                expand.src = 'https://dashboard.immuta.io/ir-0.0.1/inspection/getMedia/mediaId=' + imgname;
+                expand.crossOrigin = '';
                 this.megaPath = e.model.item.megaPath;
                 var div = document.getElementById("dialog-box-issue");
                 div.style.display = "block";
@@ -882,13 +879,13 @@
                             //alert('vish');
                             debugger;
                             var d = new Date();
-                                var month = d.getMonth() + 1;
-                                var day = d.getDate();
+                            var month = d.getMonth() + 1;
+                            var day = d.getDate();
 
-                                var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
-                                    (('' + month).length < 2 ? '0' : '') + month + '/' +
-                                    d.getFullYear();
-                                var CurrentDate = output;
+                            var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                                (('' + month).length < 2 ? '0' : '') + month + '/' +
+                                d.getFullYear();
+                            var CurrentDate = output;
 
                             var spanId = Number(localStorage.getItem("annoSpanId")) + 1;
                             event.id = spanId;
@@ -962,7 +959,12 @@
                                     var commentDivInspectionFinding = document.createElement('div');
                                     commentDivInspectionFinding.classList.add("comments");
                                     commentDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].id + ". " +
-                                    polymerThis.commentArrayAnnotationIssue[i].text;
+                                        polymerThis.commentArrayAnnotationIssue[i].text;
+                                    var userDivInspectionFinding = document.createElement('div');
+                                    userDivInspectionFinding.classList.add("users");
+                                    userDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].user;
+
+                                    mainDivInspectionFinding.appendChild(userDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
                                     var aDivInspectionFinding = document.getElementById('appendAnnotationsIssue');
@@ -1000,7 +1002,12 @@
                                     var commentDivInspectionFinding = document.createElement('div');
                                     commentDivInspectionFinding.class = "comments";
                                     commentDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].id + ". " +
-                                    polymerThis.commentArrayAnnotationIssue[i].text;
+                                        polymerThis.commentArrayAnnotationIssue[i].text;
+                                    var userDivInspectionFinding = document.createElement('div');
+                                    userDivInspectionFinding.classList.add("users");
+                                    userDivInspectionFinding.innerHTML = polymerThis.commentArrayAnnotationIssue[i].user;
+
+                                    mainDivInspectionFinding.appendChild(userDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(dateDivInspectionFinding);
                                     mainDivInspectionFinding.appendChild(commentDivInspectionFinding);
                                     var aDivInspectionFinding = document.getElementById('appendAnnotation');
@@ -1073,7 +1080,7 @@
                                 for (var i = 0; i < count; i++) {
                                     debugger;
                                     console.log(this.commentArrayIssue[i]);
-                                     var mainDiv = document.createElement('div');
+                                    var mainDiv = document.createElement('div');
                                     //mainDiv.id="main"+i;
                                     var dateDiv = document.createElement('div');
                                     dateDiv.classList.add("date");
@@ -1088,7 +1095,7 @@
                                     mainDiv.appendChild(userDiv);
                                     mainDiv.appendChild(dateDiv);
                                     mainDiv.appendChild(commentDiv);
-                                    
+
 
                                     var aDiv = document.getElementById('appendMsgIssue');
                                     aDiv.appendChild(mainDiv);
@@ -1221,7 +1228,7 @@
 
                 var div = document.getElementById("dialog-box-issue");
                 var inspectorId = localStorage.getItem('inspectorId');
-                
+
                 //  alert(document.getElementById('requirementMsg'));
                 // alert(document.getElementById('appendMsg'));
                 // var comment;
@@ -1383,7 +1390,7 @@
             _handleReportSave: function(e) {
                 // alert("saved succesfully");
                 // this.$.webTicketGet.url = "https://qlikreport.infocepts.com/QlikView/index.htm";
-                this.$.webTicketGet.url=this.$.webTicketGet.url.replace('amahajan',username);
+                this.$.webTicketGet.url = this.$.webTicketGet.url.replace('amahajan', username);
                 this.$.webTicketGet.generateRequest();
             },
             _handleWebTicketResponse: function(e) {
