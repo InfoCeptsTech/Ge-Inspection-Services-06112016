@@ -26,6 +26,14 @@ CREATE TABLE inspection_media
   CONSTRAINT ukva22graa6xmesqil9hh2f0ft UNIQUE (blobid, "user")
 );
 
+CREATE SEQUENCE inspection_media_id_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE inspection_media_id_seq
+
 CREATE TABLE inspection_report
 (
   user_id character varying(255) NOT NULL,
