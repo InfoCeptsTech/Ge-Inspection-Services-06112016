@@ -83,9 +83,9 @@ public class IssueDaoImpl implements IssueDao{
     }
     
 	@Override
-	public List<InspectionMedia>  getIssueDtls(String inspectorId,String inspectionId,String assetId,String userId) {
+	public List<InspectionMedia>  getIssueDtls(String inspectorId,String assetId,String userId) {
 		List<InspectionMedia> inspectionDtlList=null;
-		inspectionDtlList=issueDtlRepository.findIssue(inspectorId,assetId,inspectionId,userId);
+		inspectionDtlList=issueDtlRepository.findIssue(inspectorId,assetId,userId);
 		return inspectionDtlList;
 	}
 

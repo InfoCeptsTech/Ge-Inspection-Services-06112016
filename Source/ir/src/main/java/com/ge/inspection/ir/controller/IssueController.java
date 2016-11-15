@@ -164,7 +164,7 @@ public class IssueController {
 		String issueDateJson="";
 		
 		if(issueInspectionList.size()>0){
-			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,issueInspectionList.get(0).getInspectionId(),assetId,userId);
+			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,assetId,userId);
 			IssueModel[] issueModelArray=getIssueJson(assetList,issueInspectionList,inspectionMediaList,assetIndex);
 			issueDateJson=JSONUtil.toJson(issueModelArray);
 		}
@@ -172,12 +172,13 @@ public class IssueController {
 		return issueDateJson;
 	}
 	@CrossOrigin
-	@RequestMapping(value = "/inspection/getIssues/inspectorId={inspectorId}&inspectionId={inspectionId}&assetId={assetId}&userId={userId}", method = RequestMethod.GET)
-	public String getIssue(@PathVariable String inspectorId,@PathVariable String inspectionId,@PathVariable String assetId,@PathVariable String userId){
+	@RequestMapping(value = "/inspection/getIssues/inspectorId={inspectorId}&assetId={assetId}&userId={userId}", method = RequestMethod.GET)
+	public String getIssue(@PathVariable String inspectorId,@PathVariable String assetId,@PathVariable String userId){
 		List<String> assetList=inspectionDao.getAsset(inspectorId);
 		int assetIndex=assetList.indexOf(assetId);
 		List<IssueInspection> issueInspectionList=issueDaoImpl.getIssueDate(inspectorId,assetId,userId);
 		String issueDateJson="";
+		/*
 		int inspectionIndex=0;
 		
 		for(IssueInspection issueInspection:issueInspectionList){
@@ -185,16 +186,38 @@ public class IssueController {
 				break;
 			}
 			inspectionIndex++;
-		}
+		}*/
 		
 		if(issueInspectionList.size()>0){
-			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,issueInspectionList.get(inspectionIndex).getInspectionId(),assetId,userId);
+			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,assetId,userId);
 			IssueModel[] issueModelArray=getIssueJson(assetList,issueInspectionList,inspectionMediaList,assetIndex);
 			issueDateJson=JSONUtil.toJson(issueModelArray);
 		}
 		
 		return issueDateJson;
 	}
+	
+	@CrossOrigin
+	@RequestMapping
+	public String getIssueByDate(@PathVariable String inspectorId,@PathVariable String assetId,@PathVariable String userId,@PathVariable String date){
+		
+		List<String> assetList=inspectionDao.getAsset(inspectorId);
+		int assetIndex=assetList.indexOf(assetId);
+		List<IssueInspection> issueInspectionList=issueDaoImpl.getIssueDate(inspectorId,assetId,userId);
+		String issueDateJson="";
+		
+		if(issueInspectionList.size()>0){
+			List<InspectionMedia> inspectionMediaList= issueDaoImpl.getIssueDtls(inspectorId,assetId,userId);
+			IssueModel[] issueModelArray=getIssueJson(assetList,issueInspectionList,inspectionMediaList,assetIndex);
+			issueDateJson=JSONUtil.toJson(issueModelArray);
+		}
+		
+		return null;
+	}
+	
+	
+	
+	
 	@CrossOrigin
 	@RequestMapping(value = "/inspection/getIssueMarker/inspectorId={inspectorId}&userId={userId}", method = RequestMethod.GET)
 	public String getIssueMarker(@PathVariable String inspectorId,@PathVariable String userId){

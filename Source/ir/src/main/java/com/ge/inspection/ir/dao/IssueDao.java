@@ -7,7 +7,7 @@ import com.ge.inspection.ir.model.IssueInspection;
 import com.ge.inspection.ir.model.IssueMarkerModel;
 
 public interface IssueDao {
-  public List<InspectionMedia>  getIssueDtls(String inspectorId,String inspectionId,String assetId,String userId);
+  public List<InspectionMedia>  getIssueDtls(String inspectorId,String assetId,String userId);
   public void addIssue(List<InspectionMedia> inspectionMediaList);
   public void addUpdateIssue(List<InspectionMedia> inspectionMediaList);
   public void updateIssue(InspectionMedia inspectionMedia);

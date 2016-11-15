@@ -21,10 +21,9 @@ public interface IssueDtlRepository extends
 			@Param("assetId") String assetId,
 			@Param("userId") String userId);
 
-	@Query("SELECT u FROM InspectionMedia u WHERE u.defectType!=null and LOWER(u.userId) =LOWER(:userId) AND LOWER(u.inspectorId) = LOWER(:inspectorId) and LOWER(u.assetId) = LOWER(:assetId) and LOWER(u.inspectionId) = LOWER(:inspectionId) order by u.inspectionId")
+	@Query("SELECT u FROM InspectionMedia u WHERE u.defectType!=null and LOWER(u.userId) =LOWER(:userId) AND LOWER(u.inspectorId) = LOWER(:inspectorId) and LOWER(u.assetId) = LOWER(:assetId) order by u.inspectionId")
 	List<InspectionMedia> findIssue(@Param("inspectorId") String inspectorId,
 			@Param("assetId") String assetId,
-			@Param("inspectionId") String inspectionId,
 			@Param("userId") String userId);
 
 	// @Query("SELECT u FROM InspectionMedia u WHERE LOWER(u.inspectorId) = LOWER(:inspectorId) and u.issueDate=:issueDate")
